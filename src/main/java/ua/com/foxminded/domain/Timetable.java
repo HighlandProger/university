@@ -1,4 +1,4 @@
-package ua.com.foxminded.lesson;
+package ua.com.foxminded.domain;
 
 import java.util.List;
 

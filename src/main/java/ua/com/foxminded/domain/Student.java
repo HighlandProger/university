@@ -1,4 +1,4 @@
-package ua.com.foxminded.domain.person;
+package ua.com.foxminded.domain;
 
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Person;

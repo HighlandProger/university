@@ -1,7 +1,7 @@
-package ua.com.foxminded.lesson;
+package ua.com.foxminded.domain;
 
 import ua.com.foxminded.domain.Group;
-import ua.com.foxminded.domain.person.Teacher;
+import ua.com.foxminded.domain.Teacher;
 
 import java.util.Date;
 

@@ -1,7 +1,5 @@
 package ua.com.foxminded.domain;
 
-import ua.com.foxminded.domain.person.Student;
-
 import java.util.List;
 
 public class Group {

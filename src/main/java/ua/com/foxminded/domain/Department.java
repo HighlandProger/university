@@ -1,7 +1,5 @@
 package ua.com.foxminded.domain;
 
-import ua.com.foxminded.domain.person.Teacher;
-
 import java.util.List;
 
 public class Department {
