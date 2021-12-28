@@ -1,18 +1,27 @@
 package ua.com.foxminded.domain;
 
-import java.util.List;
-
 public class Department {
 
-    private int id;
+    private Long id;
     private String name;
-    private List<Teacher> teachers;
 
-    public int getId() {
+    public Department(){
+    }
+
+    public Department(String name){
+        this.name = name;
+    }
+
+    public Department(long id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -1,10 +1,19 @@
 package ua.com.foxminded.domain;
 
-public class Person {
+public abstract class Person {
 
     private String firstName;
     private String lastName;
     private int age;
+
+    Person() {
+    }
+
+    Person(String firstName, String lastName, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -28,5 +37,14 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+            "firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", age=" + age +
+            '}';
     }
 }

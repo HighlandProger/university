@@ -1,16 +1,40 @@
 package ua.com.foxminded.domain;
 
-import ua.com.foxminded.domain.Group;
-import ua.com.foxminded.domain.Teacher;
-
 import java.util.Date;
 
 public class Lesson {
 
+    private Long id;
     private String name;
-    private Teacher teacher;
-    private Group group;
+    private Long teacherId;
+    private Long groupId;
     private Date date;
+
+    public Lesson() {
+    }
+
+    public Lesson(String name, long teacherId, long groupId, Date date) {
+        this.name = name;
+        this.teacherId = teacherId;
+        this.groupId = groupId;
+        this.date = date;
+    }
+
+    public Lesson(long id, String name, long teacherId, long groupId, Date date) {
+        this.id = id;
+        this.name = name;
+        this.teacherId = teacherId;
+        this.groupId = groupId;
+        this.date = date;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -20,20 +44,20 @@ public class Lesson {
         this.name = name;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
+    public Long getTeacherId() {
+        return teacherId;
     }
 
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
     }
 
-    public Group getGroup() {
-        return group;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public Date getDate() {

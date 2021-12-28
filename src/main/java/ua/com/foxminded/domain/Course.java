@@ -2,14 +2,21 @@ package ua.com.foxminded.domain;
 
 public class Course {
 
-    private int id;
+    private Long id;
     private int establishYear;
 
-    public int getId() {
+    public Course(){
+    }
+
+    public Course(int establishYear){
+        this.establishYear = establishYear;
+        this.id = establishYear%10L;
+    }
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

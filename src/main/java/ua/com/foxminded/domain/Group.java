@@ -1,37 +1,44 @@
 package ua.com.foxminded.domain;
 
-import java.util.List;
-
 public class Group {
 
-    private int id;
-    private Department department;
-    private Course course;
+    private Long id;
+    private Long departmentId;
+    private Long courseId;
     private int groupNumber;
-    private List<Student> students;
 
-    public int getId() {
+    public Group(){
+    }
+
+    public Group(Long departmentId, Long courseId, int groupNumber){
+        this.id = Long.parseLong("" + departmentId + courseId + groupNumber);
+        this.departmentId = departmentId;
+        this.courseId = courseId;
+        this.groupNumber = groupNumber;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Department getDepartment() {
-        return department;
+    public Long getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
-    public Course getCourse() {
-        return course;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public int getGroupNumber() {
