@@ -1,18 +1,19 @@
-package ua.com.foxminded.dao.postgresql;
+package ua.com.foxminded.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.CRUD;
+import ua.com.foxminded.dao.CrudDao;
 import ua.com.foxminded.dao.mapper.DepartmentMapper;
 import ua.com.foxminded.domain.Department;
 
+import javax.sql.DataSource;
 import java.util.List;
 
-public class PostgreSqlDepartmentDao implements CRUD<Department> {
+public class DepartmentDao implements CrudDao<Department> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PostgreSqlDepartmentDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public DepartmentDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override

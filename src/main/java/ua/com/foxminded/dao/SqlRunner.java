@@ -1,6 +1,7 @@
 package ua.com.foxminded.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +14,8 @@ public class SqlRunner {
     private static final String TABLES_SQL_FILE_NAME = "init.db";
     private final JdbcTemplate jdbcTemplate;
 
-    public SqlRunner(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public SqlRunner(DriverManagerDataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public void createTables() {

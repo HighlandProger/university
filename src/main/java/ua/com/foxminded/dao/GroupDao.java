@@ -1,18 +1,19 @@
-package ua.com.foxminded.dao.postgresql;
+package ua.com.foxminded.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.CRUD;
+import ua.com.foxminded.dao.CrudDao;
 import ua.com.foxminded.dao.mapper.GroupMapper;
 import ua.com.foxminded.domain.Group;
 
+import javax.sql.DataSource;
 import java.util.List;
 
-public class PostgreSqlGroupDao implements CRUD<Group> {
+public class GroupDao implements CrudDao<Group> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PostgreSqlGroupDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public GroupDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override

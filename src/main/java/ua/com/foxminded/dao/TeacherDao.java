@@ -1,18 +1,19 @@
-package ua.com.foxminded.dao.postgresql;
+package ua.com.foxminded.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.CRUD;
+import ua.com.foxminded.dao.CrudDao;
 import ua.com.foxminded.dao.mapper.TeacherMapper;
 import ua.com.foxminded.domain.Teacher;
 
+import javax.sql.DataSource;
 import java.util.List;
 
-public class PostgreSqlTeacherDao implements CRUD<Teacher> {
+public class TeacherDao implements CrudDao<Teacher> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PostgreSqlTeacherDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public TeacherDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override

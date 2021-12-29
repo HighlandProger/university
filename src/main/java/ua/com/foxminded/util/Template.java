@@ -1,13 +1,12 @@
 package ua.com.foxminded.util;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-public class Template {
+public class Template extends DriverManagerDataSource {
 
     private Template(){}
 
-    private static DriverManagerDataSource getDriverManager(){
+    public static DriverManagerDataSource getDataSource(){
 
         DriverManagerDataSource driverManager = new DriverManagerDataSource();
 
@@ -19,7 +18,4 @@ public class Template {
         return driverManager;
     }
 
-    public static JdbcTemplate getJdbcTemplate() {
-        return new JdbcTemplate(getDriverManager());
-    }
 }

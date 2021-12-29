@@ -1,18 +1,19 @@
-package ua.com.foxminded.dao.postgresql;
+package ua.com.foxminded.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.CRUD;
+import ua.com.foxminded.dao.CrudDao;
 import ua.com.foxminded.dao.mapper.CourseMapper;
 import ua.com.foxminded.domain.Course;
 
+import javax.sql.DataSource;
 import java.util.List;
 
-public class PostgreSqlCourseDao implements CRUD<Course> {
+public class CourseDao implements CrudDao<Course> {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public PostgreSqlCourseDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public CourseDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
