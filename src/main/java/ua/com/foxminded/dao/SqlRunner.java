@@ -39,8 +39,7 @@ public class SqlRunner {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return output.toString();
-
     }
-
 }

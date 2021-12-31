@@ -10,6 +10,7 @@ public class GroupMapper implements RowMapper<Group> {
 
     @Override
     public Group mapRow(ResultSet rs, int rowNum) throws SQLException {
+
         Group group = new Group();
         group.setId(rs.getLong("id"));
         group.setDepartmentId(rs.getLong("department_id"));

@@ -1,12 +1,12 @@
 package ua.com.foxminded.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.CrudDao;
 import ua.com.foxminded.dao.mapper.TeacherMapper;
 import ua.com.foxminded.domain.Teacher;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 public class TeacherDao implements CrudDao<Teacher> {
 
@@ -20,17 +20,15 @@ public class TeacherDao implements CrudDao<Teacher> {
     public Teacher create(Teacher teacher) {
 
         String sql = "INSERT INTO teachers (first_name, last_name, age) VALUES (?,?,?) RETURNING teachers.*;";
-        return jdbcTemplate.query(sql, new TeacherMapper(),
-            teacher.getFirstName(), teacher.getLastName(), teacher.getAge()).
-            stream().findAny().orElseThrow(RuntimeException::new);
+        return jdbcTemplate.queryForObject(sql, new TeacherMapper(),
+            teacher.getFirstName(), teacher.getLastName(), teacher.getAge());
     }
 
     @Override
-    public Teacher getById(long id) {
+    public Optional<Teacher> getById(long id) {
 
         String sql = "SELECT * FROM teachers WHERE id = ?;";
-        return jdbcTemplate.query(sql, new TeacherMapper(), id)
-            .stream().findAny().orElse(null);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new TeacherMapper(), id));
     }
 
     @Override

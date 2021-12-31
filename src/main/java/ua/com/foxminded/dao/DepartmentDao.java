@@ -1,12 +1,12 @@
 package ua.com.foxminded.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.CrudDao;
 import ua.com.foxminded.dao.mapper.DepartmentMapper;
 import ua.com.foxminded.domain.Department;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 public class DepartmentDao implements CrudDao<Department> {
 
@@ -20,17 +20,15 @@ public class DepartmentDao implements CrudDao<Department> {
     public Department create(Department department) {
 
         String sql = "INSERT INTO departments (id, name) VALUES (?,?) RETURNING departments.*;";
-        return jdbcTemplate.query(sql, new DepartmentMapper(),
-            department.getId(), department.getName()).
-            stream().findAny().orElseThrow(RuntimeException::new);
+        return jdbcTemplate.queryForObject(sql, new DepartmentMapper(),
+            department.getId(), department.getName());
     }
 
     @Override
-    public Department getById(long id) {
+    public Optional<Department> getById(long id) {
 
         String sql = "SELECT * FROM departments WHERE id = ?;";
-        return jdbcTemplate.query(sql, new DepartmentMapper(), id)
-            .stream().findAny().orElse(null);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new DepartmentMapper(), id));
     }
 
     @Override

@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS groups(id SERIAL NOT NULL PRIMARY KEY, department_id 
 CREATE TABLE IF NOT EXISTS departments(id SERIAL NOT NULL PRIMARY KEY, name varchar(20));
 CREATE TABLE IF NOT EXISTS courses(id INT PRIMARY KEY, name varchar(20));
 CREATE TABLE IF NOT EXISTS students(id SERIAL NOT NULL PRIMARY KEY, group_id INT, first_name varchar(20), last_name varchar(20), age INT);
-CREATE TABLE IF NOT EXISTS teachers(first_name varchar(20), last_name varchar(20), age INT);
+CREATE TABLE IF NOT EXISTS teachers(id SERIAL NOT NULL PRIMARY KEY, department_id INT, first_name varchar(20), last_name varchar(20), age INT);
 CREATE TABLE IF NOT EXISTS lessons(id SERIAL NOT NULL PRIMARY KEY, name varchar(20), teacher_id INT, group_id INT, date DATE);

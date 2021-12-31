@@ -8,29 +8,28 @@ public class DataSourceFactory {
 
     private DriverManagerDataSource dataSource;
 
-    private DataSourceFactory(){
+    private DataSourceFactory() {
     }
 
-    public static DataSourceFactory getInstance(){
-        if (instance == null){
+    public static DataSourceFactory getInstance() {
+        if (instance == null) {
             instance = new DataSourceFactory();
         }
         return instance;
     }
 
-    public DriverManagerDataSource initDataSource(){
+    public DriverManagerDataSource initDataSource() {
 
-        if (dataSource!=null){
-            return dataSource;
+        if (this.dataSource != null) {
+            return this.dataSource;
         }
 
-        DriverManagerDataSource driverManager = new DriverManagerDataSource();
+        dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/university_db");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("postgres");
 
-        driverManager.setDriverClassName("org.postgresql.Driver");
-        driverManager.setUrl("jdbc:postgresql://localhost:5432/university_db");
-        driverManager.setUsername("postgres");
-        driverManager.setPassword("postgres");
-
-        return driverManager;
+        return dataSource;
     }
 }
