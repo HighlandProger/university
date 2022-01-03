@@ -19,9 +19,9 @@ public class TeacherDao implements CrudDao<Teacher> {
     @Override
     public Teacher create(Teacher teacher) {
 
-        String sql = "INSERT INTO teachers (first_name, last_name, age) VALUES (?,?,?) RETURNING teachers.*;";
+        String sql = "INSERT INTO teachers (department_id, first_name, last_name, age) VALUES (?,?,?,?) RETURNING teachers.*;";
         return jdbcTemplate.queryForObject(sql, new TeacherMapper(),
-            teacher.getFirstName(), teacher.getLastName(), teacher.getAge());
+            teacher.getDepartmentId(), teacher.getFirstName(), teacher.getLastName(), teacher.getAge());
     }
 
     @Override

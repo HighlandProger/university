@@ -1,18 +1,20 @@
 package ua.com.foxminded.domain;
 
+import java.util.Objects;
+
 public class Department {
 
     private Long id;
     private String name;
 
-    public Department(){
+    public Department() {
     }
 
-    public Department(String name){
+    public Department(String name) {
         this.name = name;
     }
 
-    public Department(long id, String name){
+    public Department(long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -33,4 +35,17 @@ public class Department {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Department)) return false;
+        Department that = (Department) o;
+        return Objects.equals(id, that.id) &&
+            name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 }

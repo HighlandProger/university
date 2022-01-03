@@ -19,9 +19,9 @@ public class DepartmentDao implements CrudDao<Department> {
     @Override
     public Department create(Department department) {
 
-        String sql = "INSERT INTO departments (id, name) VALUES (?,?) RETURNING departments.*;";
+        String sql = "INSERT INTO departments (name) VALUES (?) RETURNING departments.*;";
         return jdbcTemplate.queryForObject(sql, new DepartmentMapper(),
-            department.getId(), department.getName());
+            department.getName());
     }
 
     @Override

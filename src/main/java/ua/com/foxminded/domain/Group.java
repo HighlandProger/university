@@ -1,5 +1,7 @@
 package ua.com.foxminded.domain;
 
+import java.util.Objects;
+
 public class Group {
 
     private Long id;
@@ -7,10 +9,10 @@ public class Group {
     private Long courseId;
     private int groupNumber;
 
-    public Group(){
+    public Group() {
     }
 
-    public Group(Long departmentId, Long courseId, int groupNumber){
+    public Group(Long departmentId, Long courseId, int groupNumber) {
         this.id = Long.parseLong("" + departmentId + courseId + groupNumber);
         this.departmentId = departmentId;
         this.courseId = courseId;
@@ -47,5 +49,21 @@ public class Group {
 
     public void setGroupNumber(int groupNumber) {
         this.groupNumber = groupNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Group)) return false;
+        Group group = (Group) o;
+        return groupNumber == group.groupNumber &&
+            id.equals(group.id) &&
+            departmentId.equals(group.departmentId) &&
+            courseId.equals(group.courseId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, departmentId, courseId, groupNumber);
     }
 }

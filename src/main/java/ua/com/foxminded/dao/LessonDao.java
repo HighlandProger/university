@@ -21,7 +21,7 @@ public class LessonDao implements CrudDao<Lesson> {
 
         String sql = "INSERT INTO lessons (name, teacher_id, group_id, date) VALUES (?,?,?,?) RETURNING lessons.*;";
         return jdbcTemplate.queryForObject(sql, new LessonMapper(),
-            lesson.getId(), lesson.getTeacherId(), lesson.getGroupId(), lesson.getDate());
+            lesson.getName(), lesson.getTeacherId(), lesson.getGroupId(), lesson.getDate());
     }
 
     @Override

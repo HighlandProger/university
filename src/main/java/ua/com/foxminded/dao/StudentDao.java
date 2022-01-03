@@ -19,9 +19,9 @@ public class StudentDao implements CrudDao<Student> {
     @Override
     public Student create(Student student) {
 
-        String sql = "INSERT INTO students (first_name, last_name, age) VALUES (?,?,?) RETURNING students.*;";
+        String sql = "INSERT INTO students (group_id, first_name, last_name, age) VALUES (?,?,?,?) RETURNING students.*;";
         return jdbcTemplate.queryForObject(sql, new StudentMapper(),
-            student.getFirstName(), student.getLastName(), student.getAge());
+            student.getGroupId(), student.getFirstName(), student.getLastName(), student.getAge());
     }
 
     @Override

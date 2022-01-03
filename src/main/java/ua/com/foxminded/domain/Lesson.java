@@ -1,6 +1,8 @@
 package ua.com.foxminded.domain;
 
-import java.util.Date;
+import ua.com.foxminded.util.DateUtils;
+
+import java.util.Objects;
 
 public class Lesson {
 
@@ -8,24 +10,39 @@ public class Lesson {
     private String name;
     private Long teacherId;
     private Long groupId;
-    private Date date;
+    private Long date;
 
     public Lesson() {
     }
 
-    public Lesson(String name, long teacherId, long groupId, Date date) {
+    public Lesson(String name, Long teacherId, Long groupId, Long date) {
         this.name = name;
         this.teacherId = teacherId;
         this.groupId = groupId;
         this.date = date;
     }
 
-    public Lesson(long id, String name, long teacherId, long groupId, Date date) {
+    public Lesson(String name, Long teacherId, Long groupId, String dateString) {
+        this.name = name;
+        this.teacherId = teacherId;
+        this.groupId = groupId;
+        this.date = DateUtils.getMillisecondsFromDateString(dateString);
+    }
+
+    public Lesson(Long id, String name, Long teacherId, Long groupId, Long date) {
         this.id = id;
         this.name = name;
         this.teacherId = teacherId;
         this.groupId = groupId;
         this.date = date;
+    }
+
+    public Lesson(Long id, String name, Long teacherId, Long groupId, String dateString) {
+        this.id = id;
+        this.name = name;
+        this.teacherId = teacherId;
+        this.groupId = groupId;
+        this.date = DateUtils.getMillisecondsFromDateString(dateString);
     }
 
     public Long getId() {
@@ -60,11 +77,39 @@ public class Lesson {
         this.groupId = groupId;
     }
 
-    public Date getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Long date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lesson)) return false;
+        Lesson lesson = (Lesson) o;
+        return Objects.equals(id, lesson.id) &&
+            name.equals(lesson.name) &&
+            teacherId.equals(lesson.teacherId) &&
+            groupId.equals(lesson.groupId) &&
+            date.equals(lesson.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, teacherId, groupId, date);
+    }
+
+    @Override
+    public String toString() {
+        return "Lesson{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", teacherId=" + teacherId +
+            ", groupId=" + groupId +
+            ", date=" + date +
+            '}';
     }
 }

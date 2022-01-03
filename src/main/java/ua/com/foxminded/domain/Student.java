@@ -1,5 +1,7 @@
 package ua.com.foxminded.domain;
 
+import java.util.Objects;
+
 public class Student extends Person {
 
     private Long id;
@@ -35,33 +37,17 @@ public class Student extends Person {
     }
 
     @Override
-    public String getFirstName() {
-        return super.getFirstName();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id) &&
+            Objects.equals(groupId, student.groupId);
     }
 
     @Override
-    public void setFirstName(String firstName) {
-        super.setFirstName(firstName);
-    }
-
-    @Override
-    public String getLastName() {
-        return super.getLastName();
-    }
-
-    @Override
-    public void setLastName(String lastName) {
-        super.setLastName(lastName);
-    }
-
-    @Override
-    public int getAge() {
-        return super.getAge();
-    }
-
-    @Override
-    public void setAge(int age) {
-        super.setAge(age);
+    public int hashCode() {
+        return Objects.hash(id, groupId);
     }
 
     @Override
