@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Department {
 
     private Long id;
+
     private String name;
 
     public Department() {
@@ -14,7 +15,7 @@ public class Department {
         this.name = name;
     }
 
-    public Department(long id, String name) {
+    public Department(Long id, String name) {
         this.id = id;
         this.name = name;
     }

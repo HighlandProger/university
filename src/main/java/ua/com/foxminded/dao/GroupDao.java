@@ -19,9 +19,9 @@ public class GroupDao implements CrudDao<Group> {
     @Override
     public Group create(Group group) {
 
-        String sql = "INSERT INTO groups (id, department_id, course_id, group_number) VALUES (?,?,?,?) RETURNING groups.*;";
+        String sql = "INSERT INTO groups (department_id, course_id, group_number) VALUES (?,?,?) RETURNING groups.*;";
         return jdbcTemplate.queryForObject(sql, new GroupMapper(),
-            group.getId(), group.getDepartmentId(), group.getCourseId(), group.getGroupNumber());
+            group.getDepartmentId(), group.getCourseId(), group.getGroupNumber());
     }
 
     @Override

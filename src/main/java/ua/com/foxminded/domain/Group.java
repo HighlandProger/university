@@ -13,7 +13,13 @@ public class Group {
     }
 
     public Group(Long departmentId, Long courseId, int groupNumber) {
-        this.id = Long.parseLong("" + departmentId + courseId + groupNumber);
+        this.departmentId = departmentId;
+        this.courseId = courseId;
+        this.groupNumber = groupNumber;
+    }
+
+    public Group(Long id, Long departmentId, Long courseId, int groupNumber) {
+        this.id = id;
         this.departmentId = departmentId;
         this.courseId = courseId;
         this.groupNumber = groupNumber;

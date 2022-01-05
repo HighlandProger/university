@@ -10,8 +10,10 @@ import ua.com.foxminded.util.DataSourceFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GroupDaoTest {
 
@@ -19,7 +21,6 @@ class GroupDaoTest {
     private final SqlRunner sqlRunner = new SqlRunner(dataSource);
     private final GroupDao groupDao = new GroupDao(dataSource);
     private Group expectedGroup;
-    private Group actualGroup;
 
     @BeforeEach
     void initTables() {
@@ -31,8 +32,8 @@ class GroupDaoTest {
 
         assertEquals(0, groupDao.getAll().size());
 
-        expectedGroup = new Group(1L, 1L, 2);
-        actualGroup = groupDao.create(expectedGroup);
+        expectedGroup = new Group(1L, 1L, 1L, 2);
+        Group actualGroup = groupDao.create(expectedGroup);
 
         assertEquals(expectedGroup, actualGroup);
     }
@@ -41,26 +42,24 @@ class GroupDaoTest {
     void getById_shouldReturnGroup() {
 
         assertEquals(0, groupDao.getAll().size());
-        Department department = new Department(1, "IT");
+        Department department = new Department("IT");
         Course course = new Course(2021);
-        Group group1 = new Group(department.getId(), course.getId(), 1);
-        Group group2 = new Group(department.getId(), course.getId(), 2);
-        Group group3 = new Group(department.getId(), course.getId(), 3);
-        groupDao.create(group1);
-        groupDao.create(group2);
-        groupDao.create(group3);
+        Group group1 =  groupDao.create(new Group(department.getId(), course.getId(), 1));
+        Group group2 =  groupDao.create(new Group(department.getId(), course.getId(), 2));
+        Group group3 =  groupDao.create(new Group(department.getId(), course.getId(), 3));
 
         expectedGroup = group2;
-        groupDao.getById(expectedGroup.getId()).ifPresent(group -> actualGroup = group);
+        Optional<Group> actualGroup = groupDao.getById(expectedGroup.getId());
 
-        assertEquals(expectedGroup, actualGroup);
+        assertTrue(actualGroup.isPresent());
+        assertEquals(expectedGroup, actualGroup.get());
     }
 
     @Test
     void getAll_shouldReturnAllGroups() {
 
         assertEquals(0, groupDao.getAll().size());
-        Department department = new Department(1, "IT");
+        Department department = new Department("IT");
         Course course = new Course(2021);
         Group group1 = groupDao.create(new Group(department.getId(), course.getId(), 1));
         Group group2 = groupDao.create(new Group(department.getId(), course.getId(), 2));
@@ -76,7 +75,7 @@ class GroupDaoTest {
     void delete_shouldDeleteGroup() {
 
         assertEquals(0, groupDao.getAll().size());
-        Department department = new Department(1, "IT");
+        Department department = new Department( "IT");
         Course course = new Course(2021);
         Group group = groupDao.create(new Group(department.getId(), course.getId(), 1));
 

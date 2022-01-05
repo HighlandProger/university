@@ -19,9 +19,9 @@ public class CourseDao implements CrudDao<Course> {
     @Override
     public Course create(Course course) {
 
-        String sql = "INSERT INTO courses (id, establish_year) VALUES (?,?) RETURNING courses.*;";
+        String sql = "INSERT INTO courses (establish_year) VALUES (?) RETURNING courses.*;";
         return jdbcTemplate.queryForObject(sql, new CourseMapper(),
-            course.getId(), course.getEstablishYear());
+            course.getEstablishYear());
     }
 
     @Override

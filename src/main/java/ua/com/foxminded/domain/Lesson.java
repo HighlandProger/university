@@ -1,40 +1,29 @@
 package ua.com.foxminded.domain;
 
-import ua.com.foxminded.util.DateUtils;
-
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Lesson {
+
+    private static final String TIME_PATTERN = "dd.MM.yyyy HH:mm";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_PATTERN);
 
     private Long id;
     private String name;
     private Long teacherId;
     private Long groupId;
-    private Long date;
+    private LocalDateTime dateTime;
 
     public Lesson() {
-    }
-
-    public Lesson(String name, Long teacherId, Long groupId, Long date) {
-        this.name = name;
-        this.teacherId = teacherId;
-        this.groupId = groupId;
-        this.date = date;
     }
 
     public Lesson(String name, Long teacherId, Long groupId, String dateString) {
         this.name = name;
         this.teacherId = teacherId;
         this.groupId = groupId;
-        this.date = DateUtils.getMillisecondsFromDateString(dateString);
-    }
-
-    public Lesson(Long id, String name, Long teacherId, Long groupId, Long date) {
-        this.id = id;
-        this.name = name;
-        this.teacherId = teacherId;
-        this.groupId = groupId;
-        this.date = date;
+        this.dateTime = LocalDateTime.parse(dateString, formatter);
     }
 
     public Lesson(Long id, String name, Long teacherId, Long groupId, String dateString) {
@@ -42,7 +31,7 @@ public class Lesson {
         this.name = name;
         this.teacherId = teacherId;
         this.groupId = groupId;
-        this.date = DateUtils.getMillisecondsFromDateString(dateString);
+        this.dateTime = LocalDateTime.parse(dateString, formatter);
     }
 
     public Long getId() {
@@ -77,12 +66,12 @@ public class Lesson {
         this.groupId = groupId;
     }
 
-    public Long getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Long date) {
-        this.date = date;
+    public void setDateTime(Timestamp timestamp) {
+        this.dateTime = timestamp.toLocalDateTime();
     }
 
     @Override
@@ -94,12 +83,12 @@ public class Lesson {
             name.equals(lesson.name) &&
             teacherId.equals(lesson.teacherId) &&
             groupId.equals(lesson.groupId) &&
-            date.equals(lesson.date);
+            dateTime.equals(lesson.dateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, teacherId, groupId, date);
+        return Objects.hash(id, name, teacherId, groupId, dateTime);
     }
 
     @Override
@@ -109,7 +98,7 @@ public class Lesson {
             ", name='" + name + '\'' +
             ", teacherId=" + teacherId +
             ", groupId=" + groupId +
-            ", date=" + date +
+            ", dateTime=" + dateTime.format(formatter) +
             '}';
     }
 }

@@ -5,6 +5,7 @@ import ua.com.foxminded.dao.mapper.LessonMapper;
 import ua.com.foxminded.domain.Lesson;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,9 +20,9 @@ public class LessonDao implements CrudDao<Lesson> {
     @Override
     public Lesson create(Lesson lesson) {
 
-        String sql = "INSERT INTO lessons (name, teacher_id, group_id, date) VALUES (?,?,?,?) RETURNING lessons.*;";
+        String sql = "INSERT INTO lessons (name, teacher_id, group_id, date_time) VALUES (?,?,?,?) RETURNING lessons.*;";
         return jdbcTemplate.queryForObject(sql, new LessonMapper(),
-            lesson.getName(), lesson.getTeacherId(), lesson.getGroupId(), lesson.getDate());
+            lesson.getName(), lesson.getTeacherId(), lesson.getGroupId(), Timestamp.valueOf(lesson.getDateTime()));
     }
 
     @Override

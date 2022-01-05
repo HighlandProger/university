@@ -10,8 +10,10 @@ import ua.com.foxminded.util.DataSourceFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LessonDaoTest {
 
@@ -19,7 +21,6 @@ class LessonDaoTest {
     private final SqlRunner sqlRunner = new SqlRunner(dataSource);
     private final LessonDao lessonDao = new LessonDao(dataSource);
     private Lesson expectedLesson;
-    private Lesson actualLesson;
 
     @BeforeEach
     void initTables() {
@@ -31,12 +32,14 @@ class LessonDaoTest {
 
         assertEquals(0, lessonDao.getAll().size());
         Teacher teacher = new Teacher(1L, 2L, "John", "Travolta", 54);
-        Group group = new Group(1L, 2L, 3);
+        Group group = new Group(1L,1L, 2L, 3);
         String lessonDate = "01.01.2022 15:30";
 
         expectedLesson = new Lesson(1L, "Algebra", teacher.getId(), group.getId(), lessonDate);
-        actualLesson = lessonDao.create(expectedLesson);
+        Lesson actualLesson = lessonDao.create(expectedLesson);
 
+        System.out.println(expectedLesson.getGroupId());
+        System.out.println(actualLesson.getGroupId());
         assertEquals(expectedLesson, actualLesson);
     }
 
@@ -52,9 +55,10 @@ class LessonDaoTest {
         Lesson lesson3 = lessonDao.create(new Lesson("Drawing", teacher.getId(), group.getId(), lessonDate));
 
         expectedLesson = lesson2;
-        lessonDao.getById(expectedLesson.getId()).ifPresent(lesson -> actualLesson = lesson);
+        Optional<Lesson> actualLesson = lessonDao.getById(expectedLesson.getId());
 
-        assertEquals(expectedLesson, actualLesson);
+        assertTrue(actualLesson.isPresent());
+        assertEquals(expectedLesson, actualLesson.get());
     }
 
     @Test
@@ -78,7 +82,8 @@ class LessonDaoTest {
     void delete_shouldDeleteLesson() {
 
         assertEquals(0, lessonDao.getAll().size());
-        Lesson lesson = lessonDao.create(new Lesson(null, null, null, 0L));
+        String lessonDate = "01.01.2022 15:30";
+        Lesson lesson = lessonDao.create(new Lesson(null, null, null, lessonDate));
         assertEquals(1, lessonDao.getAll().size());
 
         lessonDao.delete(lesson.getId());

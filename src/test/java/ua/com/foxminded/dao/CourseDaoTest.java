@@ -8,8 +8,10 @@ import ua.com.foxminded.util.DataSourceFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CourseDaoTest {
 
@@ -17,7 +19,6 @@ class CourseDaoTest {
     private final SqlRunner sqlRunner = new SqlRunner(dataSource);
     private final CourseDao courseDao = new CourseDao(dataSource);
     private Course expectedCourse;
-    private Course actualCourse;
 
     @BeforeEach
     void initTables() {
@@ -29,8 +30,8 @@ class CourseDaoTest {
 
         assertEquals(0, courseDao.getAll().size());
 
-        expectedCourse = new Course(2021);
-        actualCourse = courseDao.create(expectedCourse);
+        expectedCourse = new Course(1L, 2021);
+        Course actualCourse = courseDao.create(expectedCourse);
 
         assertEquals(expectedCourse, actualCourse);
     }
@@ -44,9 +45,10 @@ class CourseDaoTest {
         Course course3 = courseDao.create(new Course(2023));
 
         expectedCourse = course2;
-        courseDao.getById(expectedCourse.getId()).ifPresent(course -> actualCourse = course);
+        Optional<Course> actualCourse = courseDao.getById(expectedCourse.getId());
 
-        assertEquals(expectedCourse, actualCourse);
+        assertTrue(actualCourse.isPresent());
+        assertEquals(expectedCourse, actualCourse.get());
     }
 
     @Test

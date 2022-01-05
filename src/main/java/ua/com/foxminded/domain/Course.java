@@ -12,7 +12,11 @@ public class Course {
 
     public Course(int establishYear) {
         this.establishYear = establishYear;
-        this.id = establishYear % 10L;
+    }
+
+    public Course(Long id, int establishYear) {
+        this.id = id;
+        this.establishYear = establishYear;
     }
 
     public Long getId() {
