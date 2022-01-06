@@ -42,11 +42,11 @@ class GroupDaoTest {
     void getById_shouldReturnGroup() {
 
         assertEquals(0, groupDao.getAll().size());
-        Department department = new Department("IT");
-        Course course = new Course(2021);
-        Group group1 =  groupDao.create(new Group(department.getId(), course.getId(), 1));
-        Group group2 =  groupDao.create(new Group(department.getId(), course.getId(), 2));
-        Group group3 =  groupDao.create(new Group(department.getId(), course.getId(), 3));
+        Department department = new Department(1L, "IT");
+        Course course = new Course(1L, 2021);
+        Group group1 = groupDao.create(new Group(department.getId(), course.getId(), 1));
+        Group group2 = groupDao.create(new Group(department.getId(), course.getId(), 2));
+        Group group3 = groupDao.create(new Group(department.getId(), course.getId(), 3));
 
         expectedGroup = group2;
         Optional<Group> actualGroup = groupDao.getById(expectedGroup.getId());
@@ -59,8 +59,8 @@ class GroupDaoTest {
     void getAll_shouldReturnAllGroups() {
 
         assertEquals(0, groupDao.getAll().size());
-        Department department = new Department("IT");
-        Course course = new Course(2021);
+        Department department = new Department(1L, "IT");
+        Course course = new Course(1L, 2021);
         Group group1 = groupDao.create(new Group(department.getId(), course.getId(), 1));
         Group group2 = groupDao.create(new Group(department.getId(), course.getId(), 2));
         Group group3 = groupDao.create(new Group(department.getId(), course.getId(), 3));
@@ -75,7 +75,7 @@ class GroupDaoTest {
     void delete_shouldDeleteGroup() {
 
         assertEquals(0, groupDao.getAll().size());
-        Department department = new Department( "IT");
+        Department department = new Department("IT");
         Course course = new Course(2021);
         Group group = groupDao.create(new Group(department.getId(), course.getId(), 1));
 

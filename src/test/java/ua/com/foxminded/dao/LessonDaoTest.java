@@ -32,14 +32,12 @@ class LessonDaoTest {
 
         assertEquals(0, lessonDao.getAll().size());
         Teacher teacher = new Teacher(1L, 2L, "John", "Travolta", 54);
-        Group group = new Group(1L,1L, 2L, 3);
+        Group group = new Group(1L, 1L, 2L, 3);
         String lessonDate = "01.01.2022 15:30";
 
         expectedLesson = new Lesson(1L, "Algebra", teacher.getId(), group.getId(), lessonDate);
         Lesson actualLesson = lessonDao.create(expectedLesson);
 
-        System.out.println(expectedLesson.getGroupId());
-        System.out.println(actualLesson.getGroupId());
         assertEquals(expectedLesson, actualLesson);
     }
 
@@ -48,7 +46,7 @@ class LessonDaoTest {
 
         assertEquals(0, lessonDao.getAll().size());
         Teacher teacher = new Teacher(1L, 2L, "John", "Travolta", 54);
-        Group group = new Group(1L, 2L, 3);
+        Group group = new Group(1L, 1L, 2L, 3);
         String lessonDate = "01.01.2022 15:30";
         Lesson lesson1 = lessonDao.create(new Lesson("Algebra", teacher.getId(), group.getId(), lessonDate));
         Lesson lesson2 = lessonDao.create(new Lesson("Geometry", teacher.getId(), group.getId(), lessonDate));
@@ -66,7 +64,7 @@ class LessonDaoTest {
 
         assertEquals(0, lessonDao.getAll().size());
         Teacher teacher = new Teacher(1L, 2L, "John", "Travolta", 54);
-        Group group = new Group(1L, 2L, 3);
+        Group group = new Group(1L, 1L, 2L, 3);
         String lessonDate = "01.01.2022 15:30";
         Lesson lesson1 = lessonDao.create(new Lesson("Algebra", teacher.getId(), group.getId(), lessonDate));
         Lesson lesson2 = lessonDao.create(new Lesson("Geometry", teacher.getId(), group.getId(), lessonDate));

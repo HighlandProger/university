@@ -1,17 +1,21 @@
 package ua.com.foxminded.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.mapper.GroupMapper;
+import org.springframework.stereotype.Component;
 import ua.com.foxminded.domain.Group;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class GroupDao implements CrudDao<Group> {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public GroupDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -20,7 +24,7 @@ public class GroupDao implements CrudDao<Group> {
     public Group create(Group group) {
 
         String sql = "INSERT INTO groups (department_id, course_id, group_number) VALUES (?,?,?) RETURNING groups.*;";
-        return jdbcTemplate.queryForObject(sql, new GroupMapper(),
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Group.class),
             group.getDepartmentId(), group.getCourseId(), group.getGroupNumber());
     }
 
@@ -28,14 +32,14 @@ public class GroupDao implements CrudDao<Group> {
     public Optional<Group> getById(long id) {
 
         String sql = "SELECT * FROM groups WHERE id = ?;";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new GroupMapper(), id));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Group.class), id));
     }
 
     @Override
     public List<Group> getAll() {
 
         String sql = "SELECT * FROM groups;";
-        return jdbcTemplate.query(sql, new GroupMapper());
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Group.class));
     }
 
     @Override

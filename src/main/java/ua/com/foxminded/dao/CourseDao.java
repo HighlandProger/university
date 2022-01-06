@@ -1,17 +1,21 @@
 package ua.com.foxminded.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import ua.com.foxminded.dao.mapper.CourseMapper;
+import org.springframework.stereotype.Component;
 import ua.com.foxminded.domain.Course;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class CourseDao implements CrudDao<Course> {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public CourseDao(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -20,7 +24,7 @@ public class CourseDao implements CrudDao<Course> {
     public Course create(Course course) {
 
         String sql = "INSERT INTO courses (establish_year) VALUES (?) RETURNING courses.*;";
-        return jdbcTemplate.queryForObject(sql, new CourseMapper(),
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Course.class),
             course.getEstablishYear());
     }
 
@@ -28,14 +32,14 @@ public class CourseDao implements CrudDao<Course> {
     public Optional<Course> getById(long id) {
 
         String sql = "SELECT * FROM courses WHERE id = ?;";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new CourseMapper(), id));
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Course.class), id));
     }
 
     @Override
     public List<Course> getAll() {
 
         String sql = "SELECT * FROM courses;";
-        return jdbcTemplate.query(sql, new CourseMapper());
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Course.class));
     }
 
     @Override
