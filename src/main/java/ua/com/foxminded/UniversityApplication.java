@@ -1,15 +1,19 @@
 package ua.com.foxminded;
 
-import ua.com.foxminded.dao.CrudDao;
-import ua.com.foxminded.domain.Student;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.com.foxminded.domain.Course;
+import ua.com.foxminded.service.CourseService;
 
 public class UniversityApplication {
 
     public static void main(String[] args) {
 
-        ApplicationService service = new ApplicationService();
-        CrudDao dao = service.getCrudDao(ApplicationService.STUDENT_DAO_BEAN);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 
-        dao.create(new Student("Jack", "Nicolson", 32));
+        CourseService courseService = context.getBean("courseService", CourseService.class);
+
+        Course course = new Course(2021);
+
+        courseService.create(course);
     }
 }

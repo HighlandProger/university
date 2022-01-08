@@ -3,14 +3,14 @@ package ua.com.foxminded.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ua.com.foxminded.domain.Group;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class GroupDao implements CrudDao<Group> {
 
     private final JdbcTemplate jdbcTemplate;

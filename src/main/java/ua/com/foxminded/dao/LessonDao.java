@@ -3,7 +3,7 @@ package ua.com.foxminded.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ua.com.foxminded.domain.Lesson;
 
 import javax.sql.DataSource;
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Repository
 public class LessonDao implements CrudDao<Lesson> {
 
     private final JdbcTemplate jdbcTemplate;
