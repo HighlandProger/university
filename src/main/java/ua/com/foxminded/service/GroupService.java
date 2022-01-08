@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.GroupDao;
 import ua.com.foxminded.domain.Group;
-import ua.com.foxminded.exception.ServiceException;
+import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +24,8 @@ public class GroupService {
     }
 
     public Group getById(Long id) {
-
-        Optional<Group> group = groupDao.getById(id);
-        if (!group.isPresent()) {
-            throw new ServiceException("Group with id=" + id + " is not found");
-        }
-        return group.get();
+        return groupDao.getById(id).orElseThrow(() ->
+            new EntityNotFoundException("Group with id=" + id + " is not found"));
     }
 
     public List<Group> getAll() {

@@ -3,8 +3,9 @@ package ua.com.foxminded.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.LessonDao;
+import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Lesson;
-import ua.com.foxminded.exception.ServiceException;
+import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +25,8 @@ public class LessonService {
     }
 
     public Lesson getById(Long id) {
-
-        Optional<Lesson> lesson = lessonDao.getById(id);
-        if (!lesson.isPresent()) {
-            throw new ServiceException("Lesson with id=" + id + " is not found");
-        }
-        return lesson.get();
+        return lessonDao.getById(id).orElseThrow(() ->
+            new EntityNotFoundException("Lesson with id=" + id + " is not found"));
     }
 
     public List<Lesson> getAll() {

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.TeacherDao;
 import ua.com.foxminded.domain.Teacher;
-import ua.com.foxminded.exception.ServiceException;
+import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +24,8 @@ public class TeacherService {
     }
 
     public Teacher getById(Long id) {
-
-        Optional<Teacher> teacher = teacherDao.getById(id);
-        if (!teacher.isPresent()) {
-            throw new ServiceException("Teacher with id=" + id + " is not found");
-        }
-        return teacher.get();
+        return teacherDao.getById(id).orElseThrow(() ->
+            new EntityNotFoundException("Teacher with id=" + id + " is not found"));
     }
 
     public List<Teacher> getAll() {

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.DepartmentDao;
 import ua.com.foxminded.domain.Department;
-import ua.com.foxminded.exception.ServiceException;
+import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,12 +24,8 @@ public class DepartmentService {
     }
 
     public Department getById(Long id){
-
-        Optional<Department> department = departmentDao.getById(id);
-        if (!department.isPresent()) {
-            throw new ServiceException("Department with id=" + id +" is not found");
-        }
-        return department.get();
+        return departmentDao.getById(id).orElseThrow(() ->
+            new EntityNotFoundException("Department with id=" + id + " is not found"));
     }
 
     public List<Department> getAll(){
