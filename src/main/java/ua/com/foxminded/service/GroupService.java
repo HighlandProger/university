@@ -7,7 +7,6 @@ import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GroupService {
