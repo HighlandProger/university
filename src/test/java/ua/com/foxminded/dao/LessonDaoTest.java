@@ -2,11 +2,12 @@ package ua.com.foxminded.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import ua.com.foxminded.SpringConfig;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Lesson;
 import ua.com.foxminded.domain.Teacher;
-import ua.com.foxminded.util.DataSourceFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LessonDaoTest {
 
-    private final DriverManagerDataSource dataSource = DataSourceFactory.getInstance().initDataSource();
+    private final DriverManagerDataSource dataSource =
+        new AnnotationConfigApplicationContext(SpringConfig.class).getBean("dataSource", DriverManagerDataSource.class);
     private final SqlRunner sqlRunner = new SqlRunner(dataSource);
     private final LessonDao lessonDao = new LessonDao(dataSource);
     private Lesson expectedLesson;

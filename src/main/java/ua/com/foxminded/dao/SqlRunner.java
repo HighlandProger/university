@@ -1,5 +1,7 @@
 package ua.com.foxminded.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -11,8 +13,10 @@ import java.util.MissingResourceException;
 
 public class SqlRunner {
 
+
     private static final String TABLES_SQL_FILE_NAME = "init.db";
     private final JdbcTemplate jdbcTemplate;
+    private final Logger logger = LoggerFactory.getLogger(SqlRunner.class.getName());
 
     public SqlRunner(DriverManagerDataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -20,11 +24,15 @@ public class SqlRunner {
 
     public void createTables() {
 
+        logger.info("Creating tables");
+
         String sql = readFile();
         jdbcTemplate.update(sql);
     }
 
     private String readFile() {
+
+        logger.info("Reading file {}", TABLES_SQL_FILE_NAME);
 
         StringBuilder output = new StringBuilder();
 
