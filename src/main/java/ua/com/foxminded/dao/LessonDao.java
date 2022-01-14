@@ -3,6 +3,7 @@ package ua.com.foxminded.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,11 @@ import java.util.Optional;
 @Repository
 public class LessonDao implements CrudDao<Lesson> {
 
-    private final Logger logger = LoggerFactory.getLogger(LessonDao.class.getName());
+    private static final String CREATE_SQL = "INSERT INTO lessons (name, teacher_id, group_id, date_time) VALUES (?,?,?,?) RETURNING lessons.*;";
+    private static final String GET_BY_ID_SQL = "SELECT * FROM lessons WHERE id = ?;";
+    private static final String GET_ALL_SQL = "SELECT * FROM lessons;";
+    private static final String DELETE_SQL = "DELETE FROM lessons WHERE id = ?;";
+    private static final Logger logger = LoggerFactory.getLogger(LessonDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -27,34 +32,40 @@ public class LessonDao implements CrudDao<Lesson> {
     @Override
     public Lesson create(Lesson lesson) {
 
-        logger.info("Creating new lesson");
-        String sql = "INSERT INTO lessons (name, teacher_id, group_id, date_time) VALUES (?,?,?,?) RETURNING lessons.*;";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Lesson.class),
-            lesson.getName(), lesson.getTeacherId(), lesson.getGroupId(), Timestamp.valueOf(lesson.getDateTime()));
+        logger.debug("Creating new lesson");
+        Lesson createdLesson = jdbcTemplate.queryForObject(CREATE_SQL, new BeanPropertyRowMapper<>(Lesson.class), lesson.getName(), lesson.getTeacherId(), lesson.getGroupId(), Timestamp.valueOf(lesson.getDateTime()));
+        logger.debug("Lesson has been created");
+        return createdLesson;
     }
 
     @Override
     public Optional<Lesson> getById(long id) {
 
         logger.info("Getting lesson by id = {}", id);
-        String sql = "SELECT * FROM lessons WHERE id = ?;";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Lesson.class), id));
+        try {
+            Lesson obtainedLesson = jdbcTemplate.queryForObject(GET_BY_ID_SQL, new BeanPropertyRowMapper<>(Lesson.class), id);
+            logger.debug("Lesson with id ={} has been obtained", id);
+            return Optional.ofNullable(obtainedLesson);
+        } catch (EmptyResultDataAccessException exception) {
+            logger.warn("Couldn't find lesson with id = {}", id);
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Lesson> getAll() {
 
-        logger.info("Getting all lessons");
-        String sql = "SELECT * FROM lessons;";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Lesson.class));
+        logger.debug("Getting all lessons");
+        List<Lesson> obtainedLessons = jdbcTemplate.query(GET_ALL_SQL, new BeanPropertyRowMapper<>(Lesson.class));
+        logger.debug("All lessons have been obtained");
+        return obtainedLessons;
     }
 
     @Override
     public void delete(long id) {
 
-        logger.info("Deleting lesson with id = {}", id);
-        String sql = "DELETE FROM lessons WHERE id = ?;";
-        jdbcTemplate.update(sql, id);
+        logger.debug("Deleting lesson with id = {}", id);
+        jdbcTemplate.update(DELETE_SQL, id);
+        logger.debug("Lesson with id = {} has been deleted", id);
     }
-
 }

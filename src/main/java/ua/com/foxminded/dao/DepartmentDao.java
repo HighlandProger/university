@@ -3,6 +3,7 @@ package ua.com.foxminded.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,11 @@ import java.util.Optional;
 @Repository
 public class DepartmentDao implements CrudDao<Department> {
 
-    private final Logger logger = LoggerFactory.getLogger(DepartmentDao.class.getName());
+    private static final String CREATE_SQL = "INSERT INTO departments (name) VALUES (?) RETURNING departments.*;";
+    private static final String GET_BY_ID_SQL = "SELECT * FROM departments WHERE id = ?;";
+    private static final String GET_ALL_SQL = "SELECT * FROM departments;";
+    private static final String DELETE_SQL = "DELETE FROM departments WHERE id = ?;";
+    private static final Logger logger = LoggerFactory.getLogger(DepartmentDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -26,34 +31,41 @@ public class DepartmentDao implements CrudDao<Department> {
     @Override
     public Department create(Department department) {
 
-        logger.info("Creating new department");
-        String sql = "INSERT INTO departments (name) VALUES (?) RETURNING departments.*;";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Department.class),
-            department.getName());
+        logger.debug("Creating new department");
+        Department createdDepartment = jdbcTemplate.queryForObject(CREATE_SQL, new BeanPropertyRowMapper<>(Department.class), department.getName());
+        logger.debug("Department has been created");
+        return createdDepartment;
     }
 
     @Override
     public Optional<Department> getById(long id) {
 
-        logger.info("Getting department by id = {}", id);
-        String sql = "SELECT * FROM departments WHERE id = ?;";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Department.class), id));
+        logger.debug("Getting department by id = {}", id);
+        try {
+            Department obtainedDepartment = jdbcTemplate.queryForObject(GET_BY_ID_SQL, new BeanPropertyRowMapper<>(Department.class), id);
+            logger.debug("Department with id ={} has been obtained", id);
+            return Optional.ofNullable(obtainedDepartment);
+        } catch (EmptyResultDataAccessException exception) {
+            logger.warn("Couldn't find department with id = {}", id);
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Department> getAll() {
 
-        logger.info("Getting all departments");
-        String sql = "SELECT * FROM departments;";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Department.class));
+        logger.debug("Getting all departments");
+        List<Department> obtainedDepartments = jdbcTemplate.query(GET_ALL_SQL, new BeanPropertyRowMapper<>(Department.class));
+        logger.debug("All departments have been obtained");
+        return obtainedDepartments;
     }
 
     @Override
     public void delete(long id) {
 
-        logger.info("Deleting department with id = {}", id);
-        String sql = "DELETE FROM departments WHERE id = ?;";
-        jdbcTemplate.update(sql, id);
+        logger.debug("Deleting department with id = {}", id);
+        jdbcTemplate.update(DELETE_SQL, id);
+        logger.debug("Department with id = {} has been deleted", id);
     }
 
 }

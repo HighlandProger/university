@@ -13,10 +13,9 @@ import java.util.MissingResourceException;
 
 public class SqlRunner {
 
-
     private static final String TABLES_SQL_FILE_NAME = "init.db";
+    private static final Logger logger = LoggerFactory.getLogger(SqlRunner.class.getName());
     private final JdbcTemplate jdbcTemplate;
-    private final Logger logger = LoggerFactory.getLogger(SqlRunner.class.getName());
 
     public SqlRunner(DriverManagerDataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -24,16 +23,15 @@ public class SqlRunner {
 
     public void createTables() {
 
-        logger.info("Creating tables");
-
+        logger.debug("Creating tables");
         String sql = readFile();
         jdbcTemplate.update(sql);
+        logger.debug("Tables created");
     }
 
     private String readFile() {
 
-        logger.info("Reading file {}", TABLES_SQL_FILE_NAME);
-
+        logger.debug("Reading file {}", TABLES_SQL_FILE_NAME);
         StringBuilder output = new StringBuilder();
 
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(TABLES_SQL_FILE_NAME)) {
@@ -45,6 +43,7 @@ public class SqlRunner {
                 output.append(reader.readLine());
             }
         } catch (IOException e) {
+            logger.warn("Couldn't read {} file", TABLES_SQL_FILE_NAME);
             e.printStackTrace();
         }
 

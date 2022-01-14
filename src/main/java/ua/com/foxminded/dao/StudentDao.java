@@ -3,6 +3,7 @@ package ua.com.foxminded.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,11 @@ import java.util.Optional;
 @Repository
 public class StudentDao implements CrudDao<Student> {
 
-    private final Logger logger = LoggerFactory.getLogger(StudentDao.class.getName());
+    private static final String CREATE_SQL = "INSERT INTO students (group_id, first_name, last_name, age) VALUES (?,?,?,?) RETURNING students.*;";
+    private static final String GET_BY_ID_SQL = "SELECT * FROM students WHERE id = ?;";
+    private static final String GET_ALL_SQL = "SELECT * FROM students;";
+    private static final String DELETE_SQL = "DELETE FROM students WHERE id = ?;";
+    private static final Logger logger = LoggerFactory.getLogger(StudentDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -26,33 +31,40 @@ public class StudentDao implements CrudDao<Student> {
     @Override
     public Student create(Student student) {
 
-        logger.info("Creating new student");
-        String sql = "INSERT INTO students (group_id, first_name, last_name, age) VALUES (?,?,?,?) RETURNING students.*;";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Student.class),
-            student.getGroupId(), student.getFirstName(), student.getLastName(), student.getAge());
+        logger.debug("Creating new student");
+        Student createdStudent = jdbcTemplate.queryForObject(CREATE_SQL, new BeanPropertyRowMapper<>(Student.class), student.getGroupId(), student.getFirstName(), student.getLastName(), student.getAge());
+        logger.debug("Student has been created");
+        return createdStudent;
     }
 
     @Override
     public Optional<Student> getById(long id) {
 
-        logger.info("Getting student by id = {}", id);
-        String sql = "SELECT * FROM students WHERE id = ?;";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Student.class), id));
+        logger.debug("Getting student by id = {}", id);
+        try {
+            Student obtainedStudent = jdbcTemplate.queryForObject(GET_BY_ID_SQL, new BeanPropertyRowMapper<>(Student.class), id);
+            logger.debug("Student with id ={} has been obtained", id);
+            return Optional.ofNullable(obtainedStudent);
+        } catch (EmptyResultDataAccessException exception) {
+            logger.warn("Couldn't find student with id = {}", id);
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Student> getAll() {
 
-        logger.info("Getting all student");
-        String sql = "SELECT * FROM students;";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Student.class));
+        logger.debug("Getting all students");
+        List<Student> obtainedStudents = jdbcTemplate.query(GET_ALL_SQL, new BeanPropertyRowMapper<>(Student.class));
+        logger.debug("All students have been obtained");
+        return obtainedStudents;
     }
 
     @Override
     public void delete(long id) {
 
-        logger.info("Deleting student with id = {}", id);
-        String sql = "DELETE FROM students WHERE id = ?;";
-        jdbcTemplate.update(sql, id);
+        logger.debug("Deleting student with id = {}", id);
+        jdbcTemplate.update(DELETE_SQL, id);
+        logger.debug("Student with id = {} has been deleted", id);
     }
 }
