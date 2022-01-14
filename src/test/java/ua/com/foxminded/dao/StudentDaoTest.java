@@ -1,6 +1,5 @@
 package ua.com.foxminded.dao;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -19,14 +18,8 @@ class StudentDaoTest {
 
     private final DriverManagerDataSource dataSource =
         new AnnotationConfigApplicationContext(SpringConfig.class).getBean("dataSource", DriverManagerDataSource.class);
-    private final SqlRunner sqlRunner = new SqlRunner(dataSource);
     private final StudentDao studentDao = new StudentDao(dataSource);
     private Student expectedStudent;
-
-    @BeforeEach
-    void initTables() {
-        sqlRunner.createTables();
-    }
 
     @Test
     void create_shouldCreateStudent() {
