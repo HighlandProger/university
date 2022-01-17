@@ -9,14 +9,13 @@
         </File>
     </Appenders>
     <Loggers>
-        <Root level="INFO">
-            <AppenderRef ref="Console" />
-            <AppenderRef ref="MyFile"/>
-        </Root>
-
         <Logger name="ua.com.foxminded" level="debug" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="MyFile"/>
         </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="MyFile"/>
+        </Root>
     </Loggers>
 </Configuration>

@@ -34,6 +34,19 @@ public class Lesson {
         this.dateTime = LocalDateTime.parse(dateString, formatter);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lesson)) return false;
+        Lesson lesson = (Lesson) o;
+        return getName().equals(lesson.getName()) && getTeacherId().equals(lesson.getTeacherId()) && getGroupId().equals(lesson.getGroupId()) && getDateTime().equals(lesson.getDateTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getTeacherId(), getGroupId(), getDateTime());
+    }
+
     public Long getId() {
         return id;
     }
@@ -75,30 +88,7 @@ public class Lesson {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Lesson)) return false;
-        Lesson lesson = (Lesson) o;
-        return Objects.equals(id, lesson.id) &&
-            name.equals(lesson.name) &&
-            teacherId.equals(lesson.teacherId) &&
-            groupId.equals(lesson.groupId) &&
-            dateTime.equals(lesson.dateTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, teacherId, groupId, dateTime);
-    }
-
-    @Override
     public String toString() {
-        return "Lesson{" +
-            "id=" + id +
-            ", name='" + name + '\'' +
-            ", teacherId=" + teacherId +
-            ", groupId=" + groupId +
-            ", dateTime=" + dateTime.format(formatter) +
-            '}';
+        return "Lesson{" + "id=" + id + ", name='" + name + '\'' + ", teacherId=" + teacherId + ", groupId=" + groupId + ", dateTime=" + dateTime.format(formatter) + '}';
     }
 }

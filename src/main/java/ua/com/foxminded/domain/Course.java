@@ -40,12 +40,11 @@ public class Course {
         if (this == o) return true;
         if (!(o instanceof Course)) return false;
         Course course = (Course) o;
-        return establishYear == course.establishYear &&
-            id.equals(course.id);
+        return getEstablishYear() == course.getEstablishYear();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, establishYear);
+        return Objects.hash(getEstablishYear());
     }
 }

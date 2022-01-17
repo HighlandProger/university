@@ -41,21 +41,16 @@ public class Student extends Person {
         if (this == o) return true;
         if (!(o instanceof Student)) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id) &&
-            Objects.equals(groupId, student.groupId);
+        return Objects.equals(getGroupId(), student.getGroupId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, groupId);
+        return Objects.hash(getGroupId());
     }
 
     @Override
     public String toString() {
-        return "Student{" +
-            "id=" + id +
-            ", groupId=" + groupId +
-            ", " + super.toString() +
-            '}';
+        return "Student{" + "id=" + id + ", groupId=" + groupId + ", " + super.toString() + '}';
     }
 }

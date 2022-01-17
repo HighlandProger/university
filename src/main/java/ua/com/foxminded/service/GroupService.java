@@ -9,7 +9,7 @@ import ua.com.foxminded.exception.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class GroupService {
+public class GroupService implements CrudService<Group> {
 
     private final GroupDao groupDao;
 
@@ -18,19 +18,22 @@ public class GroupService {
         this.groupDao = groupDao;
     }
 
+    @Override
     public Group create(Group group) {
         return groupDao.create(group);
     }
 
+    @Override
     public Group getById(Long id) {
-        return groupDao.getById(id).orElseThrow(() ->
-            new EntityNotFoundException("Group with id=" + id + " is not found"));
+        return groupDao.getById(id).orElseThrow(() -> new EntityNotFoundException("Group with id=" + id + " is not found"));
     }
 
+    @Override
     public List<Group> getAll() {
         return groupDao.getAll();
     }
 
+    @Override
     public void delete(Long id) {
         groupDao.delete(id);
     }

@@ -1,9 +1,13 @@
 package ua.com.foxminded.dao;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import ua.com.foxminded.SpringConfig;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
+import ua.com.foxminded.config.SpringDaoTestConfig;
 import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.domain.Student;
 
@@ -14,11 +18,15 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class StudentDaoTest {
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = SpringDaoTestConfig.class)
+@Transactional
+@Rollback
+class StudentDaoIT {
 
-    private final DriverManagerDataSource dataSource =
-        new AnnotationConfigApplicationContext(SpringConfig.class).getBean("dataSource", DriverManagerDataSource.class);
-    private final StudentDao studentDao = new StudentDao(dataSource);
+    @Autowired
+    private StudentDao studentDao;
+
     private Student expectedStudent;
 
     @Test

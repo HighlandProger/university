@@ -38,11 +38,7 @@ public class Teacher extends Person {
 
     @Override
     public String toString() {
-        return "Teacher{" +
-            "id=" + id +
-            ", departmentId=" + departmentId +
-            ", " + super.toString() +
-            '}';
+        return "Teacher{" + "id=" + id + ", departmentId=" + departmentId + ", " + super.toString() + '}';
     }
 
     @Override
@@ -50,12 +46,11 @@ public class Teacher extends Person {
         if (this == o) return true;
         if (!(o instanceof Teacher)) return false;
         Teacher teacher = (Teacher) o;
-        return Objects.equals(id, teacher.id) &&
-            Objects.equals(departmentId, teacher.departmentId);
+        return Objects.equals(getDepartmentId(), teacher.getDepartmentId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, departmentId);
+        return Objects.hash(getDepartmentId());
     }
 }

@@ -25,6 +25,19 @@ public class Group {
         this.groupNumber = groupNumber;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Group)) return false;
+        Group group = (Group) o;
+        return getGroupNumber() == group.getGroupNumber() && getDepartmentId().equals(group.getDepartmentId()) && getCourseId().equals(group.getCourseId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDepartmentId(), getCourseId(), getGroupNumber());
+    }
+
     public Long getId() {
         return id;
     }
@@ -57,19 +70,4 @@ public class Group {
         this.groupNumber = groupNumber;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Group)) return false;
-        Group group = (Group) o;
-        return groupNumber == group.groupNumber &&
-            id.equals(group.id) &&
-            departmentId.equals(group.departmentId) &&
-            courseId.equals(group.courseId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, departmentId, courseId, groupNumber);
-    }
 }

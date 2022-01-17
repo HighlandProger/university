@@ -9,7 +9,7 @@ import ua.com.foxminded.exception.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class StudentService {
+public class StudentService implements CrudService<Student> {
 
     private final StudentDao studentDao;
 
@@ -18,19 +18,22 @@ public class StudentService {
         this.studentDao = studentDao;
     }
 
+    @Override
     public Student create(Student student) {
         return studentDao.create(student);
     }
 
+    @Override
     public Student getById(Long id) {
-        return studentDao.getById(id).orElseThrow(() ->
-            new EntityNotFoundException("Student with id=" + id + " is not found"));
+        return studentDao.getById(id).orElseThrow(() -> new EntityNotFoundException("Student with id=" + id + " is not found"));
     }
 
+    @Override
     public List<Student> getAll() {
         return studentDao.getAll();
     }
 
+    @Override
     public void delete(Long id) {
         studentDao.delete(id);
     }

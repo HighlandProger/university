@@ -1,8 +1,7 @@
-package ua.com.foxminded;
+package ua.com.foxminded.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
@@ -13,9 +12,8 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("ua.com.foxminded")
 @PropertySource("classpath:application.properties")
-public class SpringConfig {
+public class DataSourceConfig {
 
     @Value("${postgres.driver}")
     private String driverClassName;
@@ -45,7 +43,7 @@ public class SpringConfig {
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
 
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-        resourceDatabasePopulator.addScript(new ClassPathResource("/init.db"));
+        resourceDatabasePopulator.addScript(new ClassPathResource("/db/schema.sql"));
 
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
         dataSourceInitializer.setDataSource(dataSource);
