@@ -8,9 +8,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
-import ua.com.foxminded.domain.Course;
-import ua.com.foxminded.domain.Department;
-import ua.com.foxminded.domain.Group;
+import ua.com.foxminded.model.Course;
+import ua.com.foxminded.model.Department;
+import ua.com.foxminded.model.Group;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,5 +85,24 @@ class GroupDaoIT {
         groupDao.delete(group.getId());
 
         assertEquals(0, groupDao.getAll().size());
+    }
+
+    @Test
+    void update_shouldUpdateGroup() {
+
+        assertEquals(0, groupDao.getAll().size());
+        Group group1 = groupDao.create(new Group(1L, 1L, 1));
+        Group group2 = new Group(2L, 2L, 2);
+        assertEquals(1, groupDao.getAll().size());
+
+        groupDao.update(group1.getId(), group2);
+
+        Optional<Group> updatedGroup = groupDao.getById(group1.getId());
+
+        assertTrue(updatedGroup.isPresent());
+        assertEquals(group1.getId(), updatedGroup.get().getId());
+        assertEquals(group2.getDepartmentId(), updatedGroup.get().getDepartmentId());
+        assertEquals(group2.getCourseId(), updatedGroup.get().getCourseId());
+        assertEquals(group2.getGroupNumber(), updatedGroup.get().getGroupNumber());
     }
 }

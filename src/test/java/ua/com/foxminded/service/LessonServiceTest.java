@@ -6,9 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.LessonDao;
-import ua.com.foxminded.domain.Lesson;
+import ua.com.foxminded.model.Lesson;
 import ua.com.foxminded.exception.EntityNotFoundException;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,8 +20,11 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class LessonServiceTest {
 
+    private static final String TIME_PATTERN = "dd.MM.yyyy HH:mm";
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_PATTERN);
+
     private final Lesson expectedLesson =
-        new Lesson(1L, "Algebra", 1L, 2L, "05.01.2022 13:00");
+        new Lesson(1L, "Algebra", 1L, 2L, LocalDateTime.parse("05.01.2022 13:00", formatter));
     private final long randomId = 5;
 
     @InjectMocks
@@ -73,5 +78,13 @@ class LessonServiceTest {
         lessonService.delete(randomId);
 
         verify(lessonDao).delete(randomId);
+    }
+
+    @Test
+    void  update_shouldCallLessonDaoUpdate() {
+
+        lessonService.update(randomId, expectedLesson);
+
+        verify(lessonDao).update(randomId, expectedLesson);
     }
 }

@@ -3,8 +3,8 @@ package ua.com.foxminded.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.GroupDao;
-import ua.com.foxminded.domain.Group;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Group;
 
 import java.util.List;
 
@@ -36,5 +36,10 @@ public class GroupService implements CrudService<Group> {
     @Override
     public void delete(Long id) {
         groupDao.delete(id);
+    }
+
+    @Override
+    public void update(Long id, Group group) {
+        groupDao.update(id, group);
     }
 }

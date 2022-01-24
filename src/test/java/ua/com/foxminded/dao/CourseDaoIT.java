@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
-import ua.com.foxminded.domain.Course;
+import ua.com.foxminded.model.Course;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,5 +78,22 @@ class CourseDaoIT {
         courseDao.delete(course.getId());
 
         assertEquals(0, courseDao.getAll().size());
+    }
+
+    @Test
+    void update_shouldUpdateCourse() {
+
+        assertEquals(0, courseDao.getAll().size());
+        Course course1 = courseDao.create(new Course(2021));
+        Course course2 = new Course(2030);
+        assertEquals(1, courseDao.getAll().size());
+
+        courseDao.update(course1.getId(), course2);
+
+        Optional<Course> updatedCourse = courseDao.getById(course1.getId());
+
+        assertTrue(updatedCourse.isPresent());
+        assertEquals(course1.getId(), updatedCourse.get().getId());
+        assertEquals(course2.getEstablishYear(), updatedCourse.get().getEstablishYear());
     }
 }

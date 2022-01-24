@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.com.foxminded.domain.Course;
+import ua.com.foxminded.model.Course;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -20,6 +20,7 @@ public class CourseDao implements CrudDao<Course> {
     private static final String GET_BY_ID_SQL = "SELECT * FROM courses WHERE id = ?;";
     private static final String GET_ALL_SQL = "SELECT * FROM courses;";
     private static final String DELETE_SQL = "DELETE FROM courses WHERE id = ?;";
+    private static final String UPDATE_SQL = "UPDATE courses SET establish_year = ? WHERE id = ?" ;
     private static final Logger logger = LoggerFactory.getLogger(CourseDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
@@ -66,5 +67,13 @@ public class CourseDao implements CrudDao<Course> {
         logger.debug("Deleting course with id = {}", id);
         jdbcTemplate.update(DELETE_SQL, id);
         logger.debug("Course with id = {} has been deleted", id);
+    }
+
+    @Override
+    public void update(long id, Course course) {
+
+        logger.debug("Updating course with id = {}", id);
+        jdbcTemplate.update(UPDATE_SQL, course.getEstablishYear(), id);
+        logger.debug("Course with id = {} has been updated", id);
     }
 }

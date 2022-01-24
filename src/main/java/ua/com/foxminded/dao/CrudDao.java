@@ -12,4 +12,6 @@ public interface CrudDao<T> {
     List<T> getAll();
 
     void delete(long id);
+
+    void update(long id, T value);
 }

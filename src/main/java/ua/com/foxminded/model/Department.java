@@ -1,4 +1,4 @@
-package ua.com.foxminded.domain;
+package ua.com.foxminded.model;
 
 import java.util.Objects;
 

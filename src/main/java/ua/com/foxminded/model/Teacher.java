@@ -1,4 +1,4 @@
-package ua.com.foxminded.domain;
+package ua.com.foxminded.model;
 
 import java.util.Objects;
 
@@ -18,6 +18,11 @@ public class Teacher extends Person {
 
     public Teacher(String firstName, String lastName, int age) {
         super(firstName, lastName, age);
+    }
+
+    public Teacher(String firstName, String lastName, int age, long departmentId) {
+        super(firstName, lastName, age);
+        this.departmentId = departmentId;
     }
 
     public Long getId() {

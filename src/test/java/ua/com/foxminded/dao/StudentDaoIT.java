@@ -8,8 +8,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
-import ua.com.foxminded.domain.Group;
-import ua.com.foxminded.domain.Student;
+import ua.com.foxminded.model.Group;
+import ua.com.foxminded.model.Student;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,5 +80,25 @@ class StudentDaoIT {
         studentDao.delete(student.getId());
 
         assertEquals(0, studentDao.getAll().size());
+    }
+
+    @Test
+    void update_shouldUpdateStudent() {
+
+        assertEquals(0, studentDao.getAll().size());
+        Student student1 = studentDao.create(new Student("John", "Johnson", 11, 1L));
+        Student student2 = new Student("Nick", "Nickolson", 22, 2L);
+        assertEquals(1, studentDao.getAll().size());
+
+        studentDao.update(student1.getId(), student2);
+
+        Optional<Student> updatedStudent = studentDao.getById(student1.getId());
+
+        assertTrue(updatedStudent.isPresent());
+        assertEquals(student1.getId(), updatedStudent.get().getId());
+        assertEquals(student2.getFirstName(), updatedStudent.get().getFirstName());
+        assertEquals(student2.getLastName(), updatedStudent.get().getLastName());
+        assertEquals(student2.getAge(), updatedStudent.get().getAge());
+        assertEquals(student2.getGroupId(), updatedStudent.get().getGroupId());
     }
 }

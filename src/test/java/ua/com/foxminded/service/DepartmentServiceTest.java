@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.DepartmentDao;
-import ua.com.foxminded.domain.Department;
+import ua.com.foxminded.model.Department;
 import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.Optional;
@@ -72,5 +72,13 @@ class DepartmentServiceTest {
         departmentService.delete(randomId);
 
         verify(departmentDao).delete(randomId);
+    }
+
+    @Test
+    void  update_shouldCallDepartmentDaoUpdate() {
+
+        departmentService.update(randomId, expectedDepartment);
+
+        verify(departmentDao).update(randomId, expectedDepartment);
     }
 }

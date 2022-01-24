@@ -1,4 +1,4 @@
-package ua.com.foxminded.domain;
+package ua.com.foxminded.model;
 
 import java.util.Objects;
 
@@ -18,6 +18,11 @@ public class Student extends Person {
 
     public Student(String firstName, String lastName, int age) {
         super(firstName, lastName, age);
+    }
+
+    public Student(String firstName, String lastName, int age, long groupId) {
+        super(firstName, lastName, age);
+        this.groupId =groupId;
     }
 
     public Long getId() {

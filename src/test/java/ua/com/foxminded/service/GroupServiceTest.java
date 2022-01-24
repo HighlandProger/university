@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.GroupDao;
-import ua.com.foxminded.domain.Group;
+import ua.com.foxminded.model.Group;
 import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.Optional;
@@ -72,5 +72,13 @@ class GroupServiceTest {
         groupService.delete(randomId);
 
         verify(groupDao).delete(randomId);
+    }
+
+    @Test
+    void  update_shouldCallGroupDaoUpdate() {
+
+        groupService.update(randomId, expectedGroup);
+
+        verify(groupDao).update(randomId, expectedGroup);
     }
 }

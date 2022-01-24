@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All lessons</title>
+</head>
+<body>
+
+<div th:each="lesson : ${lessons}">
+    <a th:href="@{/lessons/{id}(id=${lesson.getId()})}"
+       th:text="${'lesson ' + lesson.getName() + ' for group with id = ' + lesson.getGroupId() + ' and teacher with id = ' + lesson.getTeacherId() + ' starts at ' + #temporals.format(lesson.getDateTime(), 'dd.MM.yyyy HH:mm')}">lesson</a>
+</div>
+
+<br/>
+<hr/>
+
+<a href="/lessons/new">Create new Lesson!</a>
+
+</body>
+</html>

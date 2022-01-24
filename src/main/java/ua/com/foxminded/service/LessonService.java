@@ -3,8 +3,8 @@ package ua.com.foxminded.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.LessonDao;
-import ua.com.foxminded.domain.Lesson;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Lesson;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ public class LessonService implements CrudService<Lesson> {
     }
 
     @Override
-    public Lesson create(Lesson group) {
-        return lessonDao.create(group);
+    public Lesson create(Lesson lesson) {
+        return lessonDao.create(lesson);
     }
 
     @Override
@@ -36,5 +36,10 @@ public class LessonService implements CrudService<Lesson> {
     @Override
     public void delete(Long id) {
         lessonDao.delete(id);
+    }
+
+    @Override
+    public void update(Long id, Lesson lesson) {
+        lessonDao.update(id, lesson);
     }
 }

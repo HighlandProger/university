@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New lesson</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/lessons}" th:object="${lesson}">
+    <label for="name">Enter name</label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="groupId">Enter group id</label>
+    <input type="text" th:field="*{groupId}" id="groupId"/>
+    <br/>
+    <label for="teacherId">Enter teacher id</label>
+    <input type="text" th:field="*{teacherId}" id="teacherId"/>
+    <br/>
+    <label for="dateTime">Enter date time</label>
+    <input type="text" th:field="*{dateTime}" id="dateTime"/>
+    <br/>
+    <input type="submit" value="Create!"/>
+</form>
+
+</body>
+</html>

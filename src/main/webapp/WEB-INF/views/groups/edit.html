@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update group</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/groups/{id}(id=${group.getId()})}" th:object="${group}">
+    <label for="departmentId">Enter department id</label>
+    <input type="text" th:field="*{departmentId}" id="departmentId"/>
+    <br/>
+    <label for="courseId">Enter course id</label>
+    <input type="text" th:field="*{courseId}" id="courseId"/>
+    <br/>
+    <label for="groupNumber">Enter group number</label>
+    <input type="text" th:field="*{groupNumber}" id="groupNumber"/>
+    <br/>
+
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

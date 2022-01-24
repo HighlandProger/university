@@ -8,8 +8,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
-import ua.com.foxminded.domain.Department;
-import ua.com.foxminded.domain.Teacher;
+import ua.com.foxminded.model.Department;
+import ua.com.foxminded.model.Student;
+import ua.com.foxminded.model.Teacher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -79,5 +80,25 @@ class TeacherDaoIT {
         teacherDao.delete(teacher.getId());
 
         assertEquals(0, teacherDao.getAll().size());
+    }
+
+    @Test
+    void update_shouldUpdateTeacher() {
+
+        assertEquals(0, teacherDao.getAll().size());
+        Teacher teacher1 = teacherDao.create(new Teacher("Tom", "Thompson", 44, 4L));
+        Teacher teacher2 = new Teacher("Paul", "Paulson", 55, 5L);
+        assertEquals(1, teacherDao.getAll().size());
+
+        teacherDao.update(teacher1.getId(), teacher2);
+
+        Optional<Teacher> updatedTeacher = teacherDao.getById(teacher1.getId());
+
+        assertTrue(updatedTeacher.isPresent());
+        assertEquals(teacher1.getId(), updatedTeacher.get().getId());
+        assertEquals(teacher2.getFirstName(), updatedTeacher.get().getFirstName());
+        assertEquals(teacher2.getLastName(), updatedTeacher.get().getLastName());
+        assertEquals(teacher2.getAge(), updatedTeacher.get().getAge());
+        assertEquals(teacher2.getDepartmentId(), updatedTeacher.get().getDepartmentId());
     }
 }

@@ -11,4 +11,6 @@ public interface CrudService<T> {
     List<T> getAll();
 
     void delete(Long id);
+
+    void update(Long id, T value);
 }

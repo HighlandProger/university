@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.com.foxminded.domain.Group;
+import ua.com.foxminded.model.Group;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -20,6 +20,7 @@ public class GroupDao implements CrudDao<Group> {
     private static final String GET_BY_ID_SQL = "SELECT * FROM groups WHERE id = ?;";
     private static final String GET_ALL_SQL = "SELECT * FROM groups;";
     private static final String DELETE_SQL = "DELETE FROM groups WHERE id = ?;";
+    private static final String UPDATE_SQL = "UPDATE groups SET department_id = ?, course_id = ?, group_number = ? WHERE id = ?";
     private static final Logger logger = LoggerFactory.getLogger(GroupDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
@@ -66,5 +67,14 @@ public class GroupDao implements CrudDao<Group> {
         logger.debug("Deleting group with id = {}", id);
         jdbcTemplate.update(DELETE_SQL, id);
         logger.debug("Group with id = {} has been deleted", id);
+    }
+
+    @Override
+    public void update(long id, Group group) {
+
+        logger.debug("Updating group with id = {}", id);
+        jdbcTemplate.update(UPDATE_SQL,
+            group.getDepartmentId(), group.getCourseId(), group.getGroupNumber(), id);
+        logger.debug("Group with id = {} has been updated", id);
     }
 }

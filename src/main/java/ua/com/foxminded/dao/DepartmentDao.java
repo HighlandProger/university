@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.com.foxminded.domain.Department;
+import ua.com.foxminded.model.Department;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -20,6 +20,7 @@ public class DepartmentDao implements CrudDao<Department> {
     private static final String GET_BY_ID_SQL = "SELECT * FROM departments WHERE id = ?;";
     private static final String GET_ALL_SQL = "SELECT * FROM departments;";
     private static final String DELETE_SQL = "DELETE FROM departments WHERE id = ?;";
+    private static final String UPDATE_SQL = "UPDATE departments SET name = ? WHERE id = ?";
     private static final Logger logger = LoggerFactory.getLogger(DepartmentDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
@@ -68,4 +69,11 @@ public class DepartmentDao implements CrudDao<Department> {
         logger.debug("Department with id = {} has been deleted", id);
     }
 
+    @Override
+    public void update(long id, Department department) {
+
+        logger.debug("Updating department with id = {}", id);
+        jdbcTemplate.update(UPDATE_SQL, department.getName(), id);
+        logger.debug("Department with id = {} has been updated", id);
+    }
 }

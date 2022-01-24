@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.StudentDao;
-import ua.com.foxminded.domain.Student;
+import ua.com.foxminded.model.Student;
 import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.Optional;
@@ -73,5 +73,13 @@ class StudentServiceTest {
         studentService.delete(randomId);
 
         verify(studentDao).delete(randomId);
+    }
+
+    @Test
+    void  update_shouldCallStudentDaoUpdate() {
+
+        studentService.update(randomId, expectedStudent);
+
+        verify(studentDao).update(randomId, expectedStudent);
     }
 }

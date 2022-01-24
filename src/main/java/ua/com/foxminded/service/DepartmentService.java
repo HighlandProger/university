@@ -3,8 +3,8 @@ package ua.com.foxminded.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.DepartmentDao;
-import ua.com.foxminded.domain.Department;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Department;
 
 import java.util.List;
 
@@ -36,5 +36,10 @@ public class DepartmentService implements CrudService<Department> {
     @Override
     public void delete(Long id) {
         departmentDao.delete(id);
+    }
+
+    @Override
+    public void update(Long id, Department department) {
+        departmentDao.update(id, department);
     }
 }

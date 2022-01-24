@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ua.com.foxminded.domain.Teacher;
+import ua.com.foxminded.model.Teacher;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -20,6 +20,7 @@ public class TeacherDao implements CrudDao<Teacher> {
     private static final String GET_BY_ID_SQL = "SELECT * FROM teachers WHERE id = ?;";
     private static final String GET_ALL_SQL = "SELECT * FROM teachers;";
     private static final String DELETE_SQL = "DELETE FROM teachers WHERE id = ?;";
+    private static final String UPDATE_SQL = "UPDATE teachers SET department_id = ?, first_name = ?, last_name = ?, age =? WHERE id = ?" ;
     private static final Logger logger = LoggerFactory.getLogger(TeacherDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
@@ -66,5 +67,14 @@ public class TeacherDao implements CrudDao<Teacher> {
         logger.debug("Deleting teacher with id = {}", id);
         jdbcTemplate.update(DELETE_SQL, id);
         logger.debug("Teacher with id = {} has been deleted", id);
+    }
+
+    @Override
+    public void update(long id, Teacher teacher){
+
+        logger.debug("Updating student with id = {}", id);
+        jdbcTemplate.update(UPDATE_SQL,
+            teacher.getDepartmentId(), teacher.getFirstName(), teacher.getLastName(), teacher.getAge(), id);
+        logger.debug("Student with id = {} has been updated", id);
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
-import ua.com.foxminded.domain.Department;
+import ua.com.foxminded.model.Department;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,5 +78,22 @@ class DepartmentDaoIT {
         departmentDao.delete(department.getId());
 
         assertEquals(0, departmentDao.getAll().size());
+    }
+
+    @Test
+    void update_shouldUpdateDepartment() {
+
+        assertEquals(0, departmentDao.getAll().size());
+        Department department1 = departmentDao.create(new Department("IT"));
+        Department department2 = new Department("Geography");
+        assertEquals(1, departmentDao.getAll().size());
+
+        departmentDao.update(department1.getId(), department2);
+
+        Optional<Department> updatedDepartment = departmentDao.getById(department1.getId());
+
+        assertTrue(updatedDepartment.isPresent());
+        assertEquals(department1.getId(), updatedDepartment.get().getId());
+        assertEquals(department2.getName(), updatedDepartment.get().getName());
     }
 }

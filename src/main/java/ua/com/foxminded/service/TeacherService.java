@@ -3,7 +3,7 @@ package ua.com.foxminded.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.com.foxminded.dao.TeacherDao;
-import ua.com.foxminded.domain.Teacher;
+import ua.com.foxminded.model.Teacher;
 import ua.com.foxminded.exception.EntityNotFoundException;
 
 import java.util.List;
@@ -36,5 +36,10 @@ public class TeacherService implements CrudService<Teacher> {
     @Override
     public void delete(Long id) {
         teacherDao.delete(id);
+    }
+
+    @Override
+    public void update(Long id, Teacher teacher) {
+        teacherDao.update(id, teacher);
     }
 }

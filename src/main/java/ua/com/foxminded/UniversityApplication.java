@@ -2,7 +2,7 @@ package ua.com.foxminded;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ua.com.foxminded.config.SpringConfig;
-import ua.com.foxminded.domain.Course;
+import ua.com.foxminded.model.Course;
 import ua.com.foxminded.service.CourseService;
 
 public class UniversityApplication {

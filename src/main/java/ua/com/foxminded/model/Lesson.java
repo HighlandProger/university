@@ -1,6 +1,5 @@
-package ua.com.foxminded.domain;
+package ua.com.foxminded.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -19,19 +18,21 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(String name, Long teacherId, Long groupId, String dateString) {
-        this.name = name;
-        this.teacherId = teacherId;
-        this.groupId = groupId;
-        this.dateTime = LocalDateTime.parse(dateString, formatter);
-    }
+    public Lesson(Long id, String name, Long teacherId, Long groupId, LocalDateTime dateTime) {
 
-    public Lesson(Long id, String name, Long teacherId, Long groupId, String dateString) {
         this.id = id;
         this.name = name;
         this.teacherId = teacherId;
         this.groupId = groupId;
-        this.dateTime = LocalDateTime.parse(dateString, formatter);
+        this.dateTime = dateTime;
+    }
+
+    public Lesson(String name, Long teacherId, Long groupId, LocalDateTime dateTime) {
+
+        this.name = name;
+        this.teacherId = teacherId;
+        this.groupId = groupId;
+        this.dateTime = dateTime;
     }
 
     @Override
@@ -81,10 +82,6 @@ public class Lesson {
 
     public LocalDateTime getDateTime() {
         return dateTime;
-    }
-
-    public void setDateTime(Timestamp timestamp) {
-        this.dateTime = timestamp.toLocalDateTime();
     }
 
     @Override
