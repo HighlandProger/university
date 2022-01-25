@@ -44,13 +44,11 @@ public class StudentController extends CrudController<Student> {
     }
 
     @Override
-    @GetMapping
     public String index(Model model) {
         return super.index(model);
     }
 
     @Override
-    @GetMapping("/{id}")
     public String show(@PathVariable(ID) long id, Model model) {
         return super.show(id, model);
     }
@@ -67,7 +65,6 @@ public class StudentController extends CrudController<Student> {
     }
 
     @Override
-    @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable(ID) long id) {
         return super.edit(model, id);
     }

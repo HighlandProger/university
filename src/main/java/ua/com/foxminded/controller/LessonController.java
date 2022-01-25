@@ -52,13 +52,11 @@ public class LessonController extends CrudController<Lesson> {
     }
 
     @Override
-    @GetMapping
     public String index(Model model) {
         return super.index(model);
     }
 
     @Override
-    @GetMapping("/{id}")
     public String show(@PathVariable(ID) long id, Model model) {
         return super.show(id, model);
     }
@@ -69,7 +67,11 @@ public class LessonController extends CrudController<Lesson> {
     }
 
     @PostMapping
-    public String create(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, Model model) {
+    public String create(@RequestParam("name") String name,
+                         @RequestParam("groupId") Long groupId,
+                         @RequestParam("teacherId") Long teacherId,
+                         @RequestParam("dateTime") String dateTimeString,
+                         Model model) {
 
         Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, postMappingFormatter)));
         model.addAttribute(ATTRIBUTE_NAME, lesson);
@@ -78,13 +80,17 @@ public class LessonController extends CrudController<Lesson> {
     }
 
     @Override
-    @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable(ID) long id) {
         return super.edit(model, id);
     }
 
     @PatchMapping("/{id}")
-    public String update(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, Model model, @PathVariable(ID) long id) {
+    public String update(@RequestParam("name") String name,
+                         @RequestParam("groupId") Long groupId,
+                         @RequestParam("teacherId") Long teacherId,
+                         @RequestParam("dateTime") String dateTimeString,
+                         Model model,
+                         @PathVariable(ID) long id) {
 
         lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, patchMappingFormatter)));
         model.addAttribute(ATTRIBUTE_NAME, lessonService.getById(id));

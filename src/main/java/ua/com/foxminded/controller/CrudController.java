@@ -1,15 +1,16 @@
 package ua.com.foxminded.controller;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import ua.com.foxminded.service.CrudService;
 
 public abstract class CrudController<T> {
 
-    static final String INDEX_VIEW = "/index";
-    static final String SHOW_VIEW = "/show";
-    static final String EDIT_VIEW = "/edit";
-    static final String NEW_VIEW = "/new";
-    static final String REDIRECT = "redirect:/";
+    protected static final String REDIRECT = "redirect:/";
+    private static final String INDEX_VIEW = "/index";
+    private static final String SHOW_VIEW = "/show";
+    private static final String EDIT_VIEW = "/edit";
+    private static final String NEW_VIEW = "/new";
 
     abstract CrudService<T> getCrudService();
 
@@ -19,39 +20,41 @@ public abstract class CrudController<T> {
 
     abstract String getAttributeName();
 
-
-    String index(Model model) {
+    @GetMapping
+    protected String index(Model model) {
         model.addAttribute(this.getIndexAttributeName(), this.getCrudService().getAll());
         return this.getRootPackage() + INDEX_VIEW;
     }
 
-    String show(long id, Model model) {
+    @GetMapping("/{id}")
+    protected String show(long id, Model model) {
         model.addAttribute(this.getAttributeName(), this.getCrudService().getById(id));
         return this.getRootPackage() + SHOW_VIEW;
     }
 
-    String newEntity() {
+    protected String newEntity() {
         return this.getRootPackage() + NEW_VIEW;
     }
 
-    String create(T model) {
+    protected String create(T model) {
 
         this.getCrudService().create(model);
         return REDIRECT + this.getRootPackage();
     }
 
-    String edit(Model model, long id) {
+    @GetMapping("/{id}/edit")
+    protected String edit(Model model, long id) {
 
         model.addAttribute(this.getAttributeName(), this.getCrudService().getById(id));
         return this.getRootPackage() + EDIT_VIEW;
     }
 
-    String update(T model, long id) {
+    protected String update(T model, long id) {
         this.getCrudService().update(id, model);
         return REDIRECT + this.getRootPackage();
     }
 
-    String delete(long id) {
+    protected String delete(long id) {
 
         this.getCrudService().delete(id);
         return REDIRECT + this.getRootPackage();
