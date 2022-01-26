@@ -24,31 +24,29 @@ public class GroupController extends CrudController<Group> {
     }
 
     @Override
-    CrudService<Group> getCrudService() {
+    protected CrudService<Group> getCrudService() {
         return groupService;
     }
 
     @Override
-    String getRootPackage() {
+    protected String getRootPackage() {
         return ROOT_PACKAGE;
     }
 
     @Override
-    String getIndexAttributeName() {
+    protected String getIndexEntityName() {
         return INDEX_ATTRIBUTE_NAME;
     }
 
     @Override
-    String getAttributeName() {
+    protected String getEntityName() {
         return ATTRIBUTE_NAME;
     }
 
-    @Override
     public String index(Model model) {
         return super.index(model);
     }
 
-    @Override
     public String show(@PathVariable(ID) long id, Model model) {
         return super.show(id, model);
     }
@@ -58,24 +56,20 @@ public class GroupController extends CrudController<Group> {
         return super.newEntity();
     }
 
-    @Override
     @PostMapping
     public String create(@ModelAttribute(ATTRIBUTE_NAME) Group group) {
         return super.create(group);
     }
 
-    @Override
     public String edit(Model model, @PathVariable(ID) long id) {
         return super.edit(model, id);
     }
 
-    @Override
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public String update(@ModelAttribute(ATTRIBUTE_NAME) Group group, @PathVariable(ID) long id) {
         return super.update(group, id);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     public String delete(@PathVariable(ID) long id) {
         return super.delete(id);

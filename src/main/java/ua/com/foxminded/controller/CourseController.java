@@ -13,8 +13,8 @@ import ua.com.foxminded.service.CrudService;
 public class CourseController extends CrudController<Course> {
 
     private static final String ROOT_PACKAGE = "courses";
-    private static final String INDEX_ATTRIBUTE_NAME = "courses";
-    private static final String ATTRIBUTE_NAME = "course";
+    private static final String INDEX_ENTITY_NAME = "courses";
+    private static final String ENTITY_NAME = "course";
     private static final String ID = "id";
     private final CourseService courseService;
 
@@ -24,58 +24,52 @@ public class CourseController extends CrudController<Course> {
     }
 
     @Override
-    CrudService<Course> getCrudService() {
+    protected CrudService<Course> getCrudService() {
         return courseService;
     }
 
     @Override
-    String getRootPackage() {
+    protected String getRootPackage() {
         return ROOT_PACKAGE;
     }
 
     @Override
-    String getIndexAttributeName() {
-        return INDEX_ATTRIBUTE_NAME;
+    protected String getIndexEntityName() {
+        return INDEX_ENTITY_NAME;
     }
 
     @Override
-    String getAttributeName() {
-        return ATTRIBUTE_NAME;
+    protected String getEntityName() {
+        return ENTITY_NAME;
     }
 
-    @Override
     public String index(Model model) {
         return super.index(model);
     }
 
-    @Override
     public String show(@PathVariable(ID) long id, Model model) {
         return super.show(id, model);
     }
 
     @GetMapping("/new")
-    public String newEntity(@ModelAttribute(ATTRIBUTE_NAME) Course course) {
+    public String newEntity(@ModelAttribute(ENTITY_NAME) Course course) {
         return super.newEntity();
     }
 
-    @Override
     @PostMapping
-    public String create(@ModelAttribute(ATTRIBUTE_NAME) Course course) {
+    public String create(@ModelAttribute(ENTITY_NAME) Course course) {
         return super.create(course);
     }
 
-    @Override
     public String edit(Model model, @PathVariable(ID) long id) {
         return super.edit(model, id);
     }
 
-    @Override
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute(ATTRIBUTE_NAME) Course course, @PathVariable(ID) long id) {
+    @PutMapping("/{id}")
+    public String update(@ModelAttribute(ENTITY_NAME) Course course, @PathVariable(ID) long id) {
         return super.update(course, id);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     public String delete(@PathVariable(ID) long id) {
         return super.delete(id);

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/courses/{id}(id=${course.getId()})}" th:object="${course}">
+<form th:method="PUT" th:action="@{/courses/{id}(id=${course.getId()})}" th:object="${course}">
     <label for="establishYear">Enter establish year</label>
     <input type="text" th:field="*{establishYear}" id="establishYear"/>
     <br/>

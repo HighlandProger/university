@@ -12,23 +12,23 @@ public abstract class CrudController<T> {
     private static final String EDIT_VIEW = "/edit";
     private static final String NEW_VIEW = "/new";
 
-    abstract CrudService<T> getCrudService();
+    protected abstract CrudService<T> getCrudService();
 
-    abstract String getRootPackage();
+    protected abstract String getRootPackage();
 
-    abstract String getIndexAttributeName();
+    protected abstract String getIndexEntityName();
 
-    abstract String getAttributeName();
+    protected abstract String getEntityName();
 
     @GetMapping
     protected String index(Model model) {
-        model.addAttribute(this.getIndexAttributeName(), this.getCrudService().getAll());
+        model.addAttribute(this.getIndexEntityName(), this.getCrudService().getAll());
         return this.getRootPackage() + INDEX_VIEW;
     }
 
     @GetMapping("/{id}")
     protected String show(long id, Model model) {
-        model.addAttribute(this.getAttributeName(), this.getCrudService().getById(id));
+        model.addAttribute(this.getEntityName(), this.getCrudService().getById(id));
         return this.getRootPackage() + SHOW_VIEW;
     }
 
@@ -45,7 +45,7 @@ public abstract class CrudController<T> {
     @GetMapping("/{id}/edit")
     protected String edit(Model model, long id) {
 
-        model.addAttribute(this.getAttributeName(), this.getCrudService().getById(id));
+        model.addAttribute(this.getEntityName(), this.getCrudService().getById(id));
         return this.getRootPackage() + EDIT_VIEW;
     }
 

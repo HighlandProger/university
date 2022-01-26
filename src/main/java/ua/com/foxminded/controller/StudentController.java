@@ -24,31 +24,29 @@ public class StudentController extends CrudController<Student> {
     }
 
     @Override
-    CrudService<Student> getCrudService() {
+    protected CrudService<Student> getCrudService() {
         return studentService;
     }
 
     @Override
-    String getRootPackage() {
+    protected String getRootPackage() {
         return ROOT_PACKAGE;
     }
 
     @Override
-    String getIndexAttributeName() {
+    protected String getIndexEntityName() {
         return INDEX_ATTRIBUTE_NAME;
     }
 
     @Override
-    String getAttributeName() {
+    protected String getEntityName() {
         return ATTRIBUTE_NAME;
     }
 
-    @Override
     public String index(Model model) {
         return super.index(model);
     }
 
-    @Override
     public String show(@PathVariable(ID) long id, Model model) {
         return super.show(id, model);
     }
@@ -58,24 +56,20 @@ public class StudentController extends CrudController<Student> {
         return super.newEntity();
     }
 
-    @Override
     @PostMapping
     public String create(@ModelAttribute(ATTRIBUTE_NAME) Student student) {
         return super.create(student);
     }
 
-    @Override
     public String edit(Model model, @PathVariable(ID) long id) {
         return super.edit(model, id);
     }
 
-    @Override
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public String update(@ModelAttribute(ATTRIBUTE_NAME) Student student, @PathVariable(ID) long id) {
         return super.update(student, id);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     public String delete(@PathVariable(ID) long id) {
         return super.delete(id);

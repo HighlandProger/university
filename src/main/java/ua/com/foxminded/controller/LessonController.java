@@ -32,31 +32,29 @@ public class LessonController extends CrudController<Lesson> {
     }
 
     @Override
-    CrudService<Lesson> getCrudService() {
+    protected CrudService<Lesson> getCrudService() {
         return lessonService;
     }
 
     @Override
-    String getRootPackage() {
+    protected String getRootPackage() {
         return ROOT_PACKAGE;
     }
 
     @Override
-    String getIndexAttributeName() {
+    protected String getIndexEntityName() {
         return INDEX_ATTRIBUTE_NAME;
     }
 
     @Override
-    String getAttributeName() {
+    protected String getEntityName() {
         return ATTRIBUTE_NAME;
     }
 
-    @Override
     public String index(Model model) {
         return super.index(model);
     }
 
-    @Override
     public String show(@PathVariable(ID) long id, Model model) {
         return super.show(id, model);
     }
@@ -79,12 +77,11 @@ public class LessonController extends CrudController<Lesson> {
         return REDIRECT + ROOT_PACKAGE;
     }
 
-    @Override
     public String edit(Model model, @PathVariable(ID) long id) {
         return super.edit(model, id);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public String update(@RequestParam("name") String name,
                          @RequestParam("groupId") Long groupId,
                          @RequestParam("teacherId") Long teacherId,
@@ -98,7 +95,6 @@ public class LessonController extends CrudController<Lesson> {
         return REDIRECT + ROOT_PACKAGE;
     }
 
-    @Override
     @DeleteMapping("/{id}")
     public String delete(@PathVariable(ID) long id) {
         return super.delete(id);
