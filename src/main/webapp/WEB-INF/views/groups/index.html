@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<div th:each="group : ${groups}">
-    <a th:href="@{/groups/{id}(id=${group.getId()})}"
-       th:text="${group.getDepartmentId() + '' + group.getCourseId() + '' + group.getGroupNumber}">group</a>
+<div th:each="entity : ${entities}">
+    <a th:href="@{/groups/{id}(id=${entity.getId()})}"
+       th:text="${entity.getDepartmentId() + '' + entity.getCourseId() + '' + entity.getGroupNumber}">group</a>
 </div>
 
 <br/>

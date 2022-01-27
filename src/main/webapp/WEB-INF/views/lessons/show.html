@@ -6,14 +6,14 @@
 </head>
 <body>
 
-<p th:text="${lesson.getName()}">VALUE</p>
-<p th:text="${lesson.getGroupId()}">VALUE</p>
-<p th:text="${lesson.getTeacherId()}">VALUE</p>
-<p th:text="${#temporals.format(lesson.getDateTime(), 'dd.MM.yyyy HH:mm')}">VALUE</p>
+<p th:text="${entity.getName()}">VALUE</p>
+<p th:text="${entity.getGroupId()}">VALUE</p>
+<p th:text="${entity.getTeacherId()}">VALUE</p>
+<p th:text="${#temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">VALUE</p>
 
-<a th:href="@{/lessons/{id}/edit(id=${lesson.getId()})}">Edit</a>
+<a th:href="@{/lessons/{id}/edit(id=${entity.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/lessons/{id}(id=${lesson.getId()})}">
+<form th:method="DELETE" th:action="@{/lessons/{id}(id=${entity.getId()})}">
     <input type="submit" value="Delete!"/>
 
 </form>

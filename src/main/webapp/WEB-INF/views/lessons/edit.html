@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="PUT" th:action="@{/lessons/{id}(id=${lesson.getId()})}" th:object="${lesson}">
+<form th:method="PUT" th:action="@{/lessons/{id}(id=${entity.getId()})}" th:object="${entity}">
     <label for="name">Enter name</label>
     <input type="text" th:field="*{name}" id="name"/>
     <br/>

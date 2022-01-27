@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/courses}" th:object="${course}">
+<form th:method="POST" th:action="@{/courses}" th:object="${entity}">
     <label for="establishYear">Enter establish year</label>
     <input type="text" th:field="*{establishYear}" id="establishYear"/>
     <br/>

@@ -2,17 +2,17 @@
 <html lang="en" xmlns:th="http//thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Student</title>
+    <title>Teacher</title>
 </head>
 <body>
 
-<p th:text="${teacher.getFirstName()}">VALUE</p>
-<p th:text="${teacher.getLastName()}">VALUE</p>
-<p th:text="${teacher.getAge()}">VALUE</p>
+<p th:text="${entity.getFirstName()}">VALUE</p>
+<p th:text="${entity.getLastName()}">VALUE</p>
+<p th:text="${entity.getAge()}">VALUE</p>
 
-<a th:href="@{/teachers/{id}/edit(id=${teacher.getId()})}">Edit</a>
+<a th:href="@{/teachers/{id}/edit(id=${entity.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/teachers/{id}(id=${teacher.getId()})}">
+<form th:method="DELETE" th:action="@{/teachers/{id}(id=${entity.getId()})}">
     <input type="submit" value="Delete!"/>
 
 </form>

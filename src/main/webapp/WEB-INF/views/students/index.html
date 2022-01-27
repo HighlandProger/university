@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<div th:each="student : ${students}">
-    <a th:href="@{/students/{id}(id=${student.getId()})}"
-       th:text="${student.getFirstName() + ' '+ student.getLastName() +', ' + student.getAge()}">user</a>
+<div th:each="entity : ${entities}">
+    <a th:href="@{/students/{id}(id=${entity.getId()})}"
+       th:text="${entity.getFirstName() + ' '+ entity.getLastName() +', ' + entity.getAge()}">user</a>
 </div>
 
 <br/>

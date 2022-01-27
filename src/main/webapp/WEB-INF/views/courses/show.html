@@ -6,11 +6,11 @@
 </head>
 <body>
 
-<p th:text="${course.getEstablishYear()}">VALUE</p>
+<p th:text="${entity.getEstablishYear()}">VALUE</p>
 
-<a th:href="@{/courses/{id}/edit(id=${course.getId()})}">Edit</a>
+<a th:href="@{/courses/{id}/edit(id=${entity.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/courses/{id}(id=${course.getId()})}">
+<form th:method="DELETE" th:action="@{/courses/{id}(id=${entity.getId()})}">
     <input type="submit" value="Delete!"/>
 
 </form>

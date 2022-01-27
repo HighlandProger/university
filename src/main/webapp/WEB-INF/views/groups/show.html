@@ -6,13 +6,13 @@
 </head>
 <body>
 
-<p th:text="${group.getDepartmentId()}">VALUE</p>
-<p th:text="${group.getCourseId()}">VALUE</p>
-<p th:text="${group.getGroupNumber()}">VALUE</p>
+<p th:text="${entity.getDepartmentId()}">VALUE</p>
+<p th:text="${entity.getCourseId()}">VALUE</p>
+<p th:text="${entity.getGroupNumber()}">VALUE</p>
 
-<a th:href="@{/groups/{id}/edit(id=${group.getId()})}">Edit</a>
+<a th:href="@{/groups/{id}/edit(id=${entity.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/groups/{id}(id=${group.getId()})}">
+<form th:method="DELETE" th:action="@{/groups/{id}(id=${entity.getId()})}">
     <input type="submit" value="Delete!"/>
 
 </form>

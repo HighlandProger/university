@@ -5,15 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.model.Lesson;
-import ua.com.foxminded.service.CrudService;
 import ua.com.foxminded.service.LessonService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static ua.com.foxminded.controller.CrudController.REDIRECT;
+
 @Controller
 @RequestMapping("/lessons")
-public class LessonController extends CrudController<Lesson> {
+public class LessonController {
 
     private static final String POST_MAPPING_TIME_PATTERN = "dd.MM.yyyy HH:mm";
     private static final DateTimeFormatter postMappingFormatter = DateTimeFormatter.ofPattern(POST_MAPPING_TIME_PATTERN);
@@ -21,8 +22,12 @@ public class LessonController extends CrudController<Lesson> {
     private static final DateTimeFormatter patchMappingFormatter = DateTimeFormatter.ofPattern(PATCH_MAPPING_TIME_PATTERN);
 
     private static final String ROOT_PACKAGE = "lessons";
-    private static final String INDEX_ATTRIBUTE_NAME = "lessons";
-    private static final String ATTRIBUTE_NAME = "lesson";
+    private static final String ENTITY_NAME = "entity";
+    private static final String INDEX_ENTITY_NAME = "entities";
+    private static final String INDEX_VIEW = "/index";
+    private static final String SHOW_VIEW = "/show";
+    private static final String EDIT_VIEW = "/edit";
+    private static final String NEW_VIEW = "/new";
     private static final String ID = "id";
     private final LessonService lessonService;
 
@@ -31,54 +36,41 @@ public class LessonController extends CrudController<Lesson> {
         this.lessonService = lessonService;
     }
 
-    @Override
-    protected CrudService<Lesson> getCrudService() {
-        return lessonService;
+    @GetMapping
+    protected String index(Model model) {
+        model.addAttribute(INDEX_ENTITY_NAME, lessonService.getAll());
+        return ROOT_PACKAGE + INDEX_VIEW;
     }
 
-    @Override
-    protected String getRootPackage() {
-        return ROOT_PACKAGE;
-    }
-
-    @Override
-    protected String getIndexEntityName() {
-        return INDEX_ATTRIBUTE_NAME;
-    }
-
-    @Override
-    protected String getEntityName() {
-        return ATTRIBUTE_NAME;
-    }
-
-    public String index(Model model) {
-        return super.index(model);
-    }
-
-    public String show(@PathVariable(ID) long id, Model model) {
-        return super.show(id, model);
+    @GetMapping("/{id}")
+    protected String show(@PathVariable(ID) long id, Model model) {
+        model.addAttribute(ENTITY_NAME, lessonService.getById(id));
+        return ROOT_PACKAGE + SHOW_VIEW;
     }
 
     @GetMapping("/new")
-    public String newEntity(@ModelAttribute(ATTRIBUTE_NAME) Lesson lesson) {
-        return super.newEntity();
+    protected String newEntity(@ModelAttribute("entity") Lesson lesson) {
+        return ROOT_PACKAGE + NEW_VIEW;
     }
 
     @PostMapping
-    public String create(@RequestParam("name") String name,
-                         @RequestParam("groupId") Long groupId,
-                         @RequestParam("teacherId") Long teacherId,
-                         @RequestParam("dateTime") String dateTimeString,
-                         Model model) {
+    public String createLesson(@RequestParam("name") String name,
+                               @RequestParam("groupId") Long groupId,
+                               @RequestParam("teacherId") Long teacherId,
+                               @RequestParam("dateTime") String dateTimeString,
+                               Model model) {
 
         Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, postMappingFormatter)));
-        model.addAttribute(ATTRIBUTE_NAME, lesson);
+        model.addAttribute(ENTITY_NAME, lesson);
 
         return REDIRECT + ROOT_PACKAGE;
     }
 
-    public String edit(Model model, @PathVariable(ID) long id) {
-        return super.edit(model, id);
+    @GetMapping("/{id}/edit")
+    protected String edit(Model model, @PathVariable(ID) long id) {
+
+        model.addAttribute(ENTITY_NAME, lessonService.getById(id));
+        return ROOT_PACKAGE + EDIT_VIEW;
     }
 
     @PutMapping("/{id}")
@@ -90,14 +82,15 @@ public class LessonController extends CrudController<Lesson> {
                          @PathVariable(ID) long id) {
 
         lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, patchMappingFormatter)));
-        model.addAttribute(ATTRIBUTE_NAME, lessonService.getById(id));
+        model.addAttribute(ENTITY_NAME, lessonService.getById(id));
 
         return REDIRECT + ROOT_PACKAGE;
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable(ID) long id) {
-        return super.delete(id);
+        lessonService.delete(id);
+        return REDIRECT + ROOT_PACKAGE;
     }
 }
 

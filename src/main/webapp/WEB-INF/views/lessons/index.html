@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<div th:each="lesson : ${lessons}">
-    <a th:href="@{/lessons/{id}(id=${lesson.getId()})}"
-       th:text="${'lesson ' + lesson.getName() + ' for group with id = ' + lesson.getGroupId() + ' and teacher with id = ' + lesson.getTeacherId() + ' starts at ' + #temporals.format(lesson.getDateTime(), 'dd.MM.yyyy HH:mm')}">lesson</a>
+<div th:each="entity : ${entities}">
+    <a th:href="@{/lessons/{id}(id=${entity.getId()})}"
+       th:text="${'lesson ' + entity.getName() + ' for group with id = ' + entity.getGroupId() + ' and teacher with id = ' + entity.getTeacherId() + ' starts at ' + #temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">lesson</a>
 </div>
 
 <br/>

@@ -6,13 +6,13 @@
 </head>
 <body>
 
-<p th:text="${student.getFirstName()}">VALUE</p>
-<p th:text="${student.getLastName()}">VALUE</p>
-<p th:text="${student.getAge()}">VALUE</p>
+<p th:text="${entity.getFirstName()}">VALUE</p>
+<p th:text="${entity.getLastName()}">VALUE</p>
+<p th:text="${entity.getAge()}">VALUE</p>
 
-<a th:href="@{/students/{id}/edit(id=${student.getId()})}">Edit</a>
+<a th:href="@{/students/{id}/edit(id=${entity.getId()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/students/{id}(id=${student.getId()})}">
+<form th:method="DELETE" th:action="@{/students/{id}(id=${entity.getId()})}">
     <input type="submit" value="Delete!"/>
 
 </form>
