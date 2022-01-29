@@ -1,4 +1,4 @@
-package ua.com.foxminded.controller;
+package ua.com.foxminded.controller.modelcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,7 @@ import ua.com.foxminded.service.LessonService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static ua.com.foxminded.controller.CrudController.REDIRECT;
+import static ua.com.foxminded.controller.modelcontrollers.CrudController.REDIRECT;
 
 @Controller
 @RequestMapping("/lessons")

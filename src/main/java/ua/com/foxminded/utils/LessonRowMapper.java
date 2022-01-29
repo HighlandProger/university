@@ -1,4 +1,4 @@
-package ua.com.foxminded.rowmapper;
+package ua.com.foxminded.utils;
 
 import org.springframework.jdbc.core.RowMapper;
 import ua.com.foxminded.model.Lesson;

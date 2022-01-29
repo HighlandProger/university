@@ -1,4 +1,4 @@
-package ua.com.foxminded.controller;
+package ua.com.foxminded.controller.modelcontrollers;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

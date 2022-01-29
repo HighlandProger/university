@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main menu</title>
+</head>
+<body>
+
+<a href="/students/new">Create new Student!</a>
+<br/>
+<a href="/teachers/new">Create new Teacher!</a>
+<br/>
+<a href="/courses/new">Create new Course!</a>
+<br/>
+<a href="/groups/new">Create new Group!</a>
+<br/>
+<a href="/departments/new">Create new Department!</a>
+<br/>
+<a href="/lessons/new">Create new Lesson!</a>
+<br/>
+<br/>
+
+<form th:method="POST" th:action="@{/}" th:object="${entity}">
+    <input type="submit" value="Create default!"/>
+</form>
+
+<br/>
+
+<a href="/timetable/">Timetable!</a>
+
+</body>
+</html>

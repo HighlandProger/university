@@ -1,4 +1,4 @@
-package ua.com.foxminded.controller;
+package ua.com.foxminded.controller.modelcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -7,7 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ua.com.foxminded.model.Lesson;
-import ua.com.foxminded.rowmapper.LessonRowMapper;
+import ua.com.foxminded.utils.LessonRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;

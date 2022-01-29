@@ -2,20 +2,21 @@
 <html lang="en" xmlns:th="http//thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All courses</title>
+    <title>Timetable</title>
 </head>
 <body>
 
+<h1>Timetable</h1>
+
+<hr/>
+
 <div th:each="entity : ${entities}">
-    <a th:href="@{/courses/{id}(id=${entity.getId()})}"
-       th:text="${entity.getEstablishYear()}">course</a>
+       <p th:text="${entity.getName() + ' - ' + #temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">lesson</p>
 </div>
 
 <br/>
 <hr/>
 
-<a href="/courses/new">Create new Course!</a>
-<br/>
 <a href="/">Back to main menu</a>
 
 </body>
