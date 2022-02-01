@@ -10,6 +10,7 @@
 <p th:text="${entity.getGroupId()}">VALUE</p>
 <p th:text="${entity.getTeacherId()}">VALUE</p>
 <p th:text="${#temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">VALUE</p>
+<p th:text="${entity.getClassRoomId()}">VALUE</p>
 
 <a th:href="@{/lessons/{id}/edit(id=${entity.getId()})}">Edit</a>
 

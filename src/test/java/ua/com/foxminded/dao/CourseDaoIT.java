@@ -13,6 +13,7 @@ import ua.com.foxminded.model.Course;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Rollback
 class CourseDaoIT {
 
+    private static final int GENERATED_COURSES_COUNT = 3;
+
     @Autowired
     private CourseDao courseDao;
 
@@ -31,7 +34,7 @@ class CourseDaoIT {
     @Test
     void create_shouldCreateCourse() {
 
-        assertEquals(0, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
 
         expectedCourse = new Course(1L, 2021);
         Course actualCourse = courseDao.create(expectedCourse);
@@ -42,7 +45,7 @@ class CourseDaoIT {
     @Test
     void getById_shouldReturnCourse() {
 
-        assertEquals(0, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
         Course course1 = courseDao.create(new Course(2021));
         Course course2 = courseDao.create(new Course(2022));
         Course course3 = courseDao.create(new Course(2023));
@@ -57,13 +60,13 @@ class CourseDaoIT {
     @Test
     void getAll_shouldReturnAllCourses() {
 
-        assertEquals(0, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
         Course course1 = courseDao.create(new Course(2021));
         Course course2 = courseDao.create(new Course(2022));
         Course course3 = courseDao.create(new Course(2023));
 
         List<Course> expectedCourses = Arrays.asList(course1, course2, course3);
-        List<Course> actualCourses = courseDao.getAll();
+        List<Course> actualCourses = courseDao.getAll().stream().skip(GENERATED_COURSES_COUNT).collect(Collectors.toList());
 
         assertEquals(expectedCourses, actualCourses);
     }
@@ -71,22 +74,22 @@ class CourseDaoIT {
     @Test
     void delete_shouldDeleteCourse() {
 
-        assertEquals(0, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
         Course course = courseDao.create(new Course(2021));
-        assertEquals(1, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT + 1, courseDao.getAll().size());
 
         courseDao.delete(course.getId());
 
-        assertEquals(0, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
     }
 
     @Test
     void update_shouldUpdateCourse() {
 
-        assertEquals(0, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
         Course course1 = courseDao.create(new Course(2021));
         Course course2 = new Course(2030);
-        assertEquals(1, courseDao.getAll().size());
+        assertEquals(GENERATED_COURSES_COUNT + 1, courseDao.getAll().size());
 
         courseDao.update(course1.getId(), course2);
 

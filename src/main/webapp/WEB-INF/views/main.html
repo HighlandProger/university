@@ -6,27 +6,20 @@
 </head>
 <body>
 
-<a href="/students/new">Create new Student!</a>
-<br/>
-<a href="/teachers/new">Create new Teacher!</a>
-<br/>
-<a href="/courses/new">Create new Course!</a>
-<br/>
-<a href="/groups/new">Create new Group!</a>
-<br/>
-<a href="/departments/new">Create new Department!</a>
-<br/>
-<a href="/lessons/new">Create new Lesson!</a>
-<br/>
-<br/>
-
-<form th:method="POST" th:action="@{/}" th:object="${entity}">
-    <input type="submit" value="Create default!"/>
-</form>
+<p>Please select an option</p>
+<ol>
+    <li><a href="/students/new" th:href="@{/students/new}">Create new Student!</a></li>
+    <li><a href="/teachers/new" th:href="@{/teachers/new}">Create new Teacher!</a></li>
+    <li><a href="/courses/new" th:href="@{/courses/new}">Create new Course!</a></li>
+    <li><a href="/groups/new" th:href="@{/groups/new}">Create new Group!</a></li>
+    <li><a href="/departments/new" th:href="@{/departments/new}">Create new Department!</a></li>
+    <li><a href="/classrooms/new" th:href="@{/classrooms/new}">Create new Class room!</a></li>
+    <li><a href="/lessons/new" th:href="@{/lessons/new}">Create new Lesson!</a></li>
+</ol>
 
 <br/>
 
-<a href="/timetable/">Timetable!</a>
+<a href="/lessons">Timetable!</a>
 
 </body>
 </html>

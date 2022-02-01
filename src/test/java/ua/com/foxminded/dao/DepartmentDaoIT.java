@@ -13,6 +13,7 @@ import ua.com.foxminded.model.Department;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Rollback
 class DepartmentDaoIT {
 
+    private static final int GENERATED_DEPARTMENTS_COUNT = 3;
+
     @Autowired
     private DepartmentDao departmentDao;
 
@@ -31,7 +34,7 @@ class DepartmentDaoIT {
     @Test
     void create_shouldCreateDepartment() {
 
-        assertEquals(0, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT, departmentDao.getAll().size());
 
         expectedDepartment = new Department(1L, "IT");
         Department actualDepartment = departmentDao.create(expectedDepartment);
@@ -42,7 +45,7 @@ class DepartmentDaoIT {
     @Test
     void getById_shouldReturnDepartment() {
 
-        assertEquals(0, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT, departmentDao.getAll().size());
         Department department1 = departmentDao.create(new Department("IT"));
         Department department2 = departmentDao.create(new Department("History"));
         Department department3 = departmentDao.create(new Department("Gelology"));
@@ -57,13 +60,13 @@ class DepartmentDaoIT {
     @Test
     void getAll_shouldReturnAllDepartments() {
 
-        assertEquals(0, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT, departmentDao.getAll().size());
         Department department1 = departmentDao.create(new Department("IT"));
         Department department2 = departmentDao.create(new Department("History"));
         Department department3 = departmentDao.create(new Department("Gelology"));
 
         List<Department> expectedDepartments = Arrays.asList(department1, department2, department3);
-        List<Department> actualDepartments = departmentDao.getAll();
+        List<Department> actualDepartments = departmentDao.getAll().stream().skip(GENERATED_DEPARTMENTS_COUNT).collect(Collectors.toList());
 
         assertEquals(expectedDepartments, actualDepartments);
     }
@@ -71,22 +74,22 @@ class DepartmentDaoIT {
     @Test
     void delete_shouldDeleteDepartment() {
 
-        assertEquals(0, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT, departmentDao.getAll().size());
         Department department = departmentDao.create(new Department("IT"));
-        assertEquals(1, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT + 1, departmentDao.getAll().size());
 
         departmentDao.delete(department.getId());
 
-        assertEquals(0, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT, departmentDao.getAll().size());
     }
 
     @Test
     void update_shouldUpdateDepartment() {
 
-        assertEquals(0, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT, departmentDao.getAll().size());
         Department department1 = departmentDao.create(new Department("IT"));
         Department department2 = new Department("Geography");
-        assertEquals(1, departmentDao.getAll().size());
+        assertEquals(GENERATED_DEPARTMENTS_COUNT + 1, departmentDao.getAll().size());
 
         departmentDao.update(department1.getId(), department2);
 

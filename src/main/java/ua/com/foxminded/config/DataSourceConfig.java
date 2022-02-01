@@ -15,6 +15,9 @@ import javax.sql.DataSource;
 @PropertySource("classpath:application.properties")
 public class DataSourceConfig {
 
+    private static final String SCHEMA_SQL_FILE = "/db/schema.sql";
+    private static final String TEST_DATA_FILE = "/db/testData.sql";
+
     @Value("${postgres.driver}")
     private String driverClassName;
 
@@ -43,7 +46,8 @@ public class DataSourceConfig {
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource) {
 
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-        resourceDatabasePopulator.addScript(new ClassPathResource("/db/schema.sql"));
+        resourceDatabasePopulator.addScript(new ClassPathResource(SCHEMA_SQL_FILE));
+        resourceDatabasePopulator.addScript(new ClassPathResource(TEST_DATA_FILE));
 
         DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
         dataSourceInitializer.setDataSource(dataSource);

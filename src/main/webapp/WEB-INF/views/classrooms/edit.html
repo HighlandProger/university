@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update class room</title>
+</head>
+<body>
+
+<form th:method="PUT" th:action="@{/classrooms/{id}(id=${entity.getId()})}" th:object="${entity}">
+    <label for="classNumber">Enter class number</label>
+    <input type="text" th:field="*{classNumber}" id="classNumber"/>
+    <br/>
+
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>

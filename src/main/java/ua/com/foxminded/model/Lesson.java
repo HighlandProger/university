@@ -14,25 +14,28 @@ public class Lesson {
     private Long teacherId;
     private Long groupId;
     private LocalDateTime dateTime;
+    private Long classRoomId;
 
     public Lesson() {
     }
 
-    public Lesson(Long id, String name, Long teacherId, Long groupId, LocalDateTime dateTime) {
+    public Lesson(Long id, String name, Long teacherId, Long groupId, LocalDateTime dateTime, Long classRoomId) {
 
         this.id = id;
         this.name = name;
         this.teacherId = teacherId;
         this.groupId = groupId;
         this.dateTime = dateTime;
+        this.classRoomId = classRoomId;
     }
 
-    public Lesson(String name, Long teacherId, Long groupId, LocalDateTime dateTime) {
+    public Lesson(String name, Long teacherId, Long groupId, LocalDateTime dateTime, Long classRoomId) {
 
         this.name = name;
         this.teacherId = teacherId;
         this.groupId = groupId;
         this.dateTime = dateTime;
+        this.classRoomId = classRoomId;
     }
 
     @Override
@@ -82,6 +85,14 @@ public class Lesson {
 
     public LocalDateTime getDateTime() {
         return dateTime;
+    }
+
+    public void setClassRoom(Long classRoomId) {
+        this.classRoomId = classRoomId;
+    }
+
+    public Long getClassRoomId() {
+        return classRoomId;
     }
 
     @Override

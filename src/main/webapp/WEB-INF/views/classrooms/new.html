@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New class room</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/classrooms}" th:object="${entity}">
+    <label for="classNumber">Enter class number</label>
+    <input type="text" th:field="*{classNumber}" id="classNumber"/>
+    <br/>
+
+    <input type="submit" value="Create!"/>
+</form>
+
+</body>
+</html>

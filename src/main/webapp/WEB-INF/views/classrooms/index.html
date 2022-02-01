@@ -2,21 +2,20 @@
 <html lang="en" xmlns:th="http//thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All teachers</title>
+    <title>All class rooms</title>
 </head>
 <body>
 
 <div th:each="entity : ${entities}">
-    <a th:href="@{/teachers/{id}(id=${entity.getId()})}"
-       th:text="${entity.getFirstName() + ' '+ entity.getLastName() +', ' + entity.getAge()}">user</a>
+    <a th:href="@{/classrooms/{id}(id=${entity.getId()})}"
+       th:text="${entity.getClassNumber()}">class room</a>
 </div>
 
 <br/>
 <hr/>
 
-<a href="/teachers/new">Create new Teacher!</a>
+<a href="/classrooms/new">Create new Class room!</a>
 <br/>
-
 <footer>
     <div th:insert="~{fragments/footer :: footer1}"></div>
 </footer>

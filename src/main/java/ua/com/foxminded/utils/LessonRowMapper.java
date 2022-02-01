@@ -17,7 +17,8 @@ public class LessonRowMapper implements RowMapper<Lesson> {
         Long groupId = rs.getLong("group_id");
         Long teacherId = rs.getLong("teacher_id");
         LocalDateTime dateTime = rs.getTimestamp("date_time").toLocalDateTime();
+        Long classRoomId = rs.getLong("class_room_id");
 
-        return new Lesson(id, name, groupId, teacherId, dateTime);
+        return new Lesson(id, name, groupId, teacherId, dateTime, classRoomId);
     }
 }

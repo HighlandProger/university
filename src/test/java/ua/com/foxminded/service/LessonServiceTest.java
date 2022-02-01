@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 class LessonServiceTest {
 
     private final Lesson expectedLesson =
-        new Lesson(1L, "Algebra", 1L, 2L, DateUtils.getLocalDateTimeFromString("05.01.2022 13:00"));
+        new Lesson(1L, "Algebra", 1L, 2L, DateUtils.getLocalDateTimeFromString("05.01.2022 13:00"), 1L);
     private final long randomId = 5;
 
     @InjectMocks

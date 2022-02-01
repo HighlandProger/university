@@ -8,7 +8,7 @@
 
 <div th:each="entity : ${entities}">
     <a th:href="@{/lessons/{id}(id=${entity.getId()})}"
-       th:text="${'lesson ' + entity.getName() + ' for group with id = ' + entity.getGroupId() + ' and teacher with id = ' + entity.getTeacherId() + ' starts at ' + #temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">lesson</a>
+       th:text="${'lesson ' + entity.getName() + ' for group with id = ' + entity.getGroupId() + ' and teacher with id = ' + entity.getTeacherId() + ' starts at ' + #temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm') + ' in class room with id = ' + entity.getClassRoomId()}">lesson</a>
 </div>
 
 <br/>
@@ -16,7 +16,10 @@
 
 <a href="/lessons/new">Create new Lesson!</a>
 <br/>
-<a href="/">Back to main menu</a>
+
+<footer>
+    <div th:insert="~{fragments/footer :: footer1}"></div>
+</footer>
 
 </body>
 </html>

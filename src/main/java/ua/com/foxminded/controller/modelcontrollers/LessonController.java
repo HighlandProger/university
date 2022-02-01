@@ -58,9 +58,10 @@ public class LessonController {
                                @RequestParam("groupId") Long groupId,
                                @RequestParam("teacherId") Long teacherId,
                                @RequestParam("dateTime") String dateTimeString,
+                               @RequestParam("classRoomId") Long classRoomId,
                                Model model) {
 
-        Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, postMappingFormatter)));
+        Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, postMappingFormatter), classRoomId));
         model.addAttribute(ENTITY_NAME, lesson);
 
         return REDIRECT + ROOT_PACKAGE;
@@ -78,10 +79,10 @@ public class LessonController {
                          @RequestParam("groupId") Long groupId,
                          @RequestParam("teacherId") Long teacherId,
                          @RequestParam("dateTime") String dateTimeString,
-                         Model model,
+                         @RequestParam("classRoomId") Long classRoomId, Model model,
                          @PathVariable(ID) long id) {
 
-        lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, patchMappingFormatter)));
+        lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, patchMappingFormatter), classRoomId));
         model.addAttribute(ENTITY_NAME, lessonService.getById(id));
 
         return REDIRECT + ROOT_PACKAGE;

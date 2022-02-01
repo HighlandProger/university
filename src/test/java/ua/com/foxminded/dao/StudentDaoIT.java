@@ -14,6 +14,7 @@ import ua.com.foxminded.model.Student;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Rollback
 class StudentDaoIT {
 
+    private static final int GENERATED_STUDENTS_COUNT = 3;
+
     @Autowired
     private StudentDao studentDao;
 
@@ -32,7 +35,7 @@ class StudentDaoIT {
     @Test
     void create_shouldCreateStudent() {
 
-        assertEquals(0, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
         Group group = new Group(1L, 1L, 1L, 2);
 
         expectedStudent = new Student(1L, group.getId(), "Tom", "Holland", 24);
@@ -44,7 +47,7 @@ class StudentDaoIT {
     @Test
     void getById_shouldReturnStudent() {
 
-        assertEquals(0, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
         Student student1 = studentDao.create(new Student("Joe", "Frazer", 25));
         Student student2 = studentDao.create(new Student("Nicole", "Kidman", 29));
         Student student3 = studentDao.create(new Student("Tom", "Cruz", 34));
@@ -59,13 +62,13 @@ class StudentDaoIT {
     @Test
     void getAll_shouldReturnAllStudents() {
 
-        assertEquals(0, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
         Student student1 = studentDao.create(new Student("Justin", "Timberlake", 32));
         Student student2 = studentDao.create(new Student("Bob", "Marley", 40));
         Student student3 = studentDao.create(new Student("Tom", "Hanks", 48));
 
         List<Student> expectedStudents = Arrays.asList(student1, student2, student3);
-        List<Student> actualStudents = studentDao.getAll();
+        List<Student> actualStudents = studentDao.getAll().stream().skip(GENERATED_STUDENTS_COUNT).collect(Collectors.toList());
 
         assertEquals(expectedStudents, actualStudents);
     }
@@ -73,22 +76,22 @@ class StudentDaoIT {
     @Test
     void delete_shouldDeleteStudent() {
 
-        assertEquals(0, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
         Student student = studentDao.create(new Student("Bob", "Marley", 40));
-        assertEquals(1, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT + 1, studentDao.getAll().size());
 
         studentDao.delete(student.getId());
 
-        assertEquals(0, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
     }
 
     @Test
     void update_shouldUpdateStudent() {
 
-        assertEquals(0, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
         Student student1 = studentDao.create(new Student("John", "Johnson", 11, 1L));
         Student student2 = new Student("Nick", "Nickolson", 22, 2L);
-        assertEquals(1, studentDao.getAll().size());
+        assertEquals(GENERATED_STUDENTS_COUNT + 1, studentDao.getAll().size());
 
         studentDao.update(student1.getId(), student2);
 

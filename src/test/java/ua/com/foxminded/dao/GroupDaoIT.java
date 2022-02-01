@@ -15,6 +15,7 @@ import ua.com.foxminded.model.Group;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Rollback
 class GroupDaoIT {
 
+    private static final int GENERATED_GROUPS_COUNT = 6;
+
     @Autowired
     private GroupDao groupDao;
 
@@ -33,7 +36,7 @@ class GroupDaoIT {
     @Test
     void create_shouldCreateGroup() {
 
-        assertEquals(0, groupDao.getAll().size());
+        assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
 
         expectedGroup = new Group(1L, 1L, 1L, 2);
         Group actualGroup = groupDao.create(expectedGroup);
@@ -44,7 +47,7 @@ class GroupDaoIT {
     @Test
     void getById_shouldReturnGroup() {
 
-        assertEquals(0, groupDao.getAll().size());
+        assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
         Department department = new Department(1L, "IT");
         Course course = new Course(1L, 2021);
         Group group1 = groupDao.create(new Group(department.getId(), course.getId(), 1));
@@ -61,7 +64,7 @@ class GroupDaoIT {
     @Test
     void getAll_shouldReturnAllGroups() {
 
-        assertEquals(0, groupDao.getAll().size());
+        assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
         Department department = new Department(1L, "IT");
         Course course = new Course(1L, 2021);
         Group group1 = groupDao.create(new Group(department.getId(), course.getId(), 1));
@@ -69,7 +72,7 @@ class GroupDaoIT {
         Group group3 = groupDao.create(new Group(department.getId(), course.getId(), 3));
 
         List<Group> expectedGroups = Arrays.asList(group1, group2, group3);
-        List<Group> actualGroups = groupDao.getAll();
+        List<Group> actualGroups = groupDao.getAll().stream().skip(GENERATED_GROUPS_COUNT).collect(Collectors.toList());
 
         assertEquals(expectedGroups, actualGroups);
     }
@@ -77,23 +80,23 @@ class GroupDaoIT {
     @Test
     void delete_shouldDeleteGroup() {
 
-        assertEquals(0, groupDao.getAll().size());
+        assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
         Department department = new Department("IT");
         Course course = new Course(2021);
         Group group = groupDao.create(new Group(department.getId(), course.getId(), 1));
 
         groupDao.delete(group.getId());
 
-        assertEquals(0, groupDao.getAll().size());
+        assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
     }
 
     @Test
     void update_shouldUpdateGroup() {
 
-        assertEquals(0, groupDao.getAll().size());
+        assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
         Group group1 = groupDao.create(new Group(1L, 1L, 1));
         Group group2 = new Group(2L, 2L, 2);
-        assertEquals(1, groupDao.getAll().size());
+        assertEquals(GENERATED_GROUPS_COUNT + 1, groupDao.getAll().size());
 
         groupDao.update(group1.getId(), group2);
 

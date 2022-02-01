@@ -17,11 +17,11 @@ import java.util.Optional;
 @Repository
 public class LessonDao implements CrudDao<Lesson> {
 
-    private static final String CREATE_SQL = "INSERT INTO lessons (name, teacher_id, group_id, date_time) VALUES (?,?,?,?) RETURNING lessons.*;";
+    private static final String CREATE_SQL = "INSERT INTO lessons (name, teacher_id, group_id, date_time, class_room_id) VALUES (?,?,?,?,?) RETURNING lessons.*;";
     private static final String GET_BY_ID_SQL = "SELECT * FROM lessons WHERE id = ?;";
     private static final String GET_ALL_SQL = "SELECT * FROM lessons;";
     private static final String DELETE_SQL = "DELETE FROM lessons WHERE id = ?;";
-    private static final String UPDATE_SQL = "UPDATE lessons SET name = ?, group_id = ?, teacher_id = ?, date_time = ? WHERE id = ?";
+    private static final String UPDATE_SQL = "UPDATE lessons SET name = ?, group_id = ?, teacher_id = ?, date_time = ?, class_room_id = ? WHERE id = ?";
     private static final Logger logger = LoggerFactory.getLogger(LessonDao.class.getName());
     private final JdbcTemplate jdbcTemplate;
 
@@ -34,7 +34,7 @@ public class LessonDao implements CrudDao<Lesson> {
     public Lesson create(Lesson lesson) {
 
         logger.debug("Creating new lesson");
-        Lesson createdLesson = jdbcTemplate.queryForObject(CREATE_SQL, new LessonRowMapper(), lesson.getName(), lesson.getTeacherId(), lesson.getGroupId(), Timestamp.valueOf(lesson.getDateTime()));
+        Lesson createdLesson = jdbcTemplate.queryForObject(CREATE_SQL, new LessonRowMapper(), lesson.getName(), lesson.getTeacherId(), lesson.getGroupId(), Timestamp.valueOf(lesson.getDateTime()), lesson.getClassRoomId());
         logger.debug("Lesson has been created");
         return createdLesson;
     }
@@ -74,8 +74,7 @@ public class LessonDao implements CrudDao<Lesson> {
     public void update(long id, Lesson lesson) {
 
         logger.debug("Updating lesson with id = {}", id);
-        jdbcTemplate.update(UPDATE_SQL,
-            lesson.getName(), lesson.getGroupId(), lesson.getTeacherId(), lesson.getDateTime(), id);
+        jdbcTemplate.update(UPDATE_SQL, lesson.getName(), lesson.getGroupId(), lesson.getTeacherId(), lesson.getDateTime(), lesson.getClassRoomId(), id);
         logger.debug("Lesson with id = {} has been updated", id);
     }
 }

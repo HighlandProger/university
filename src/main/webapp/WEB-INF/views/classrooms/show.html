@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Class room</title>
+</head>
+<body>
+
+<p th:text="${entity.getClassNumber()}">VALUE</p>
+
+<a th:href="@{/classrooms/{id}/edit(id=${entity.getId()})}">Edit</a>
+
+<form th:method="DELETE" th:action="@{/classrooms/{id}(id=${entity.getId()})}">
+    <input type="submit" value="Delete!"/>
+
+</form>
+</body>
+</html>

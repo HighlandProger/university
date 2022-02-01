@@ -15,6 +15,7 @@ import ua.com.foxminded.model.Teacher;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,14 +26,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Rollback
 class TeacherDaoIT {
 
+    private static final int GENERATED_TEACHERS_COUNT = 3;
+
     @Autowired
     private TeacherDao teacherDao;
+
     private Teacher expectedTeacher;
 
     @Test
     void create_shouldCreateTeacher() {
 
-        assertEquals(0, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
         Department department = new Department(1L, "IT");
 
         expectedTeacher = new Teacher(1L, department.getId(), "Antony", "Hopkins", 58);
@@ -44,7 +48,7 @@ class TeacherDaoIT {
     @Test
     void getById_shouldReturnTeacher() {
 
-        assertEquals(0, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
         Teacher teacher1 = teacherDao.create(new Teacher("John", "Week", 48));
         Teacher teacher2 = teacherDao.create(new Teacher("Stan", "Lee", 67));
         Teacher teacher3 = teacherDao.create(new Teacher("Jim", "Kerry", 58));
@@ -59,13 +63,13 @@ class TeacherDaoIT {
     @Test
     void getAll_shouldReturnAllTeachers() {
 
-        assertEquals(0, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
         Teacher teacher1 = teacherDao.create(new Teacher("John", "Week", 48));
         Teacher teacher2 = teacherDao.create(new Teacher("Stan", "Lee", 67));
         Teacher teacher3 = teacherDao.create(new Teacher("Jim", "Kerry", 58));
 
         List<Teacher> expectedTeachers = Arrays.asList(teacher1, teacher2, teacher3);
-        List<Teacher> actualTeachers = teacherDao.getAll();
+        List<Teacher> actualTeachers = teacherDao.getAll().stream().skip(GENERATED_TEACHERS_COUNT).collect(Collectors.toList());
 
         assertEquals(expectedTeachers, actualTeachers);
     }
@@ -73,22 +77,22 @@ class TeacherDaoIT {
     @Test
     void delete_shouldDeleteTeacher() {
 
-        assertEquals(0, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
         Teacher teacher = teacherDao.create(new Teacher("John", "Week", 48));
-        assertEquals(1, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT + 1, teacherDao.getAll().size());
 
         teacherDao.delete(teacher.getId());
 
-        assertEquals(0, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
     }
 
     @Test
     void update_shouldUpdateTeacher() {
 
-        assertEquals(0, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
         Teacher teacher1 = teacherDao.create(new Teacher("Tom", "Thompson", 44, 4L));
         Teacher teacher2 = new Teacher("Paul", "Paulson", 55, 5L);
-        assertEquals(1, teacherDao.getAll().size());
+        assertEquals(GENERATED_TEACHERS_COUNT + 1, teacherDao.getAll().size());
 
         teacherDao.update(teacher1.getId(), teacher2);
 
