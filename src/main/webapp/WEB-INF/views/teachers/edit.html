@@ -16,6 +16,13 @@
     <label for="age">Enter age</label>
     <input type="text" th:field="*{age}" id="age"/>
     <br/>
+    <label for="departmentId">Select department</label>
+    <select th:field="*{departmentId}" id ="departmentId">
+        <option th:each="department : ${departments}" th:value="${department.getId()}" th:text="${department.getName()}">
+        </option>
+    </select>
+    <br/>
+
     <input type="submit" value="Update!"/>
 </form>
 

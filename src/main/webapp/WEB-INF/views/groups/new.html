@@ -7,15 +7,26 @@
 <body>
 
 <form th:method="POST" th:action="@{/groups}" th:object="${entity}">
-    <label for="departmentId">Enter department id</label>
-    <input type="text" th:field="*{departmentId}" id="departmentId"/>
+
+    <label for="departmentId">Select department name</label>
+    <select th:field="*{departmentId}" id ="departmentId">
+        <option th:each="department : ${departments}" th:value="${department.getId()}" th:text="${department.getName()}">
+        </option>
+    </select>
     <br/>
-    <label for="courseId">Enter course id</label>
-    <input type="text" th:field="*{courseId}" id="courseId"/>
+    <label for="courseId">Select course establish year</label>
+    <select th:field="*{courseId}" id ="courseId">
+        <option th:each="course : ${courses}" th:value="${course.getId()}" th:text="${course.getEstablishYear()}">
+        </option>
+    </select>
     <br/>
-    <label for="groupNumber">Enter group number</label>
-    <input type="text" th:field="*{groupNumber}" id="groupNumber"/>
+    <label for="groupNumber">Select group number</label>
+    <select th:field="*{groupNumber}" id ="groupNumber">
+        <option th:each="i : ${#numbers.sequence(1, 9)}" th:value="${i}" th:text="${i}">
+        </option>
+    </select>
     <br/>
+
     <input type="submit" value="Create!"/>
 </form>
 

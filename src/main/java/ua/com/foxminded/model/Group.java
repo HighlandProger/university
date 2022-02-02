@@ -70,4 +70,7 @@ public class Group {
         this.groupNumber = groupNumber;
     }
 
+    public String getAbbreviation(){
+        return "" + departmentId + courseId + groupNumber;
+    }
 }

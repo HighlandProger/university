@@ -6,11 +6,11 @@
 </head>
 <body>
 
-<p th:text="${entity.getName()}">VALUE</p>
-<p th:text="${entity.getGroupId()}">VALUE</p>
-<p th:text="${entity.getTeacherId()}">VALUE</p>
-<p th:text="${#temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">VALUE</p>
-<p th:text="${entity.getClassRoomId()}">VALUE</p>
+<p th:text="'Lesson: ' + ${entity.getName()}">VALUE</p>
+<p th:text="'Group: ' + ${group.getAbbreviation()}">VALUE</p>
+<p th:text="'Teacher: ' + ${teacher.getFirstName() + ' ' + teacher.getLastName()}">VALUE</p>
+<p th:text="'Date time: ' + ${#temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">VALUE</p>
+<p th:text="'Class room number: ' + ${classroom.getClassNumber()}">VALUE</p>
 
 <a th:href="@{/lessons/{id}/edit(id=${entity.getId()})}">Edit</a>
 

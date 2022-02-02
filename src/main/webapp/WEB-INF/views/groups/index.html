@@ -8,7 +8,7 @@
 
 <div th:each="entity : ${entities}">
     <a th:href="@{/groups/{id}(id=${entity.getId()})}"
-       th:text="${entity.getDepartmentId() + '' + entity.getCourseId() + '' + entity.getGroupNumber}">group</a>
+       th:text="${entity.getAbbreviation()}">group</a>
 </div>
 
 <br/>

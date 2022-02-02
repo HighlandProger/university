@@ -6,9 +6,9 @@
 </head>
 <body>
 
-<p th:text="${entity.getDepartmentId()}">VALUE</p>
-<p th:text="${entity.getCourseId()}">VALUE</p>
-<p th:text="${entity.getGroupNumber()}">VALUE</p>
+<p th:text="'Department: ' + ${department.getName()}">VALUE</p>
+<p th:text="'Course establish year: ' + ${course.getEstablishYear()}">VALUE</p>
+<p th:text="'Group number: ' + ${entity.getGroupNumber()}">VALUE</p>
 
 <a th:href="@{/groups/{id}/edit(id=${entity.getId()})}">Edit</a>
 

@@ -7,13 +7,13 @@ import ua.com.foxminded.service.CrudService;
 public abstract class CrudController<T> {
 
     protected static final String REDIRECT = "redirect:/";
-    private static final String INDEX_VIEW = "/index";
-    private static final String SHOW_VIEW = "/show";
-    private static final String EDIT_VIEW = "/edit";
-    private static final String NEW_VIEW = "/new";
-    private static final String ID = "id";
-    private static final String ENTITY_NAME = "entity";
-    private static final String INDEX_ENTITY_NAME = "entities";
+    protected static final String INDEX_VIEW = "/index";
+    protected static final String SHOW_VIEW = "/show";
+    protected static final String EDIT_VIEW = "/edit";
+    protected static final String NEW_VIEW = "/new";
+    protected static final String ID = "id";
+    protected static final String ENTITY_NAME = "entity";
+    protected static final String INDEX_ENTITY_NAME = "entities";
 
     protected abstract CrudService<T> getCrudService();
 
@@ -32,7 +32,8 @@ public abstract class CrudController<T> {
     }
 
     @GetMapping("/new")
-    protected String newEntity(@ModelAttribute("entity") T value) {
+    protected String newEntity(Model model, T value) {
+        model.addAttribute(ENTITY_NAME, value);
         return this.getRootPackage() + NEW_VIEW;
     }
 

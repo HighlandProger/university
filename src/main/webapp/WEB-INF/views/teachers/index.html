@@ -8,7 +8,7 @@
 
 <div th:each="entity : ${entities}">
     <a th:href="@{/teachers/{id}(id=${entity.getId()})}"
-       th:text="${entity.getFirstName() + ' '+ entity.getLastName() +', ' + entity.getAge()}">user</a>
+       th:text="${entity.getFirstName() + ' '+ entity.getLastName() +', ' + entity.getAge()  + ', department id = ' + entity.getDepartmentId()}">teacher</a>
 </div>
 
 <br/>

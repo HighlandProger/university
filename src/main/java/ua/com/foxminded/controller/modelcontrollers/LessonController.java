@@ -5,7 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.model.Lesson;
+import ua.com.foxminded.service.ClassRoomService;
+import ua.com.foxminded.service.GroupService;
 import ua.com.foxminded.service.LessonService;
+import ua.com.foxminded.service.TeacherService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,27 +32,52 @@ public class LessonController {
     private static final String EDIT_VIEW = "/edit";
     private static final String NEW_VIEW = "/new";
     private static final String ID = "id";
+    private static final String GROUPS_NAME = "groups";
+    private static final String GROUP_NAME = "group";
+    private static final String TEACHERS_NAME = "teachers";
+    private static final String TEACHER_NAME = "teacher";
+    private static final String CLASSROOMS_NAME = "classrooms";
+    private static final String CLASSROOM_NAME = "classroom";
+
     private final LessonService lessonService;
+    private final GroupService groupService;
+    private final TeacherService teacherService;
+    private final ClassRoomService classRoomService;
 
     @Autowired
-    public LessonController(LessonService lessonService) {
+    public LessonController(LessonService lessonService, GroupService groupService,
+                            TeacherService teacherService, ClassRoomService classRoomService) {
         this.lessonService = lessonService;
+        this.groupService = groupService;
+        this.teacherService = teacherService;
+        this.classRoomService = classRoomService;
     }
 
     @GetMapping
     protected String index(Model model) {
+
         model.addAttribute(INDEX_ENTITY_NAME, lessonService.getAll());
         return ROOT_PACKAGE + INDEX_VIEW;
     }
 
     @GetMapping("/{id}")
     protected String show(@PathVariable(ID) long id, Model model) {
-        model.addAttribute(ENTITY_NAME, lessonService.getById(id));
+
+        Lesson lesson = lessonService.getById(id);
+        model.addAttribute(ENTITY_NAME, lesson);
+        model.addAttribute(GROUP_NAME, groupService.getById(lesson.getGroupId()));
+        model.addAttribute(TEACHER_NAME, teacherService.getById(lesson.getTeacherId()));
+        model.addAttribute(CLASSROOM_NAME, classRoomService.getById(lesson.getClassRoomId()));
         return ROOT_PACKAGE + SHOW_VIEW;
     }
 
     @GetMapping("/new")
-    protected String newEntity(@ModelAttribute("entity") Lesson lesson) {
+    protected String newEntity(Model model) {
+
+        model.addAttribute(ENTITY_NAME, new Lesson());
+        model.addAttribute(GROUPS_NAME, groupService.getAll());
+        model.addAttribute(TEACHERS_NAME, teacherService.getAll());
+        model.addAttribute(CLASSROOMS_NAME, classRoomService.getAll());
         return ROOT_PACKAGE + NEW_VIEW;
     }
 
@@ -71,6 +99,9 @@ public class LessonController {
     protected String edit(Model model, @PathVariable(ID) long id) {
 
         model.addAttribute(ENTITY_NAME, lessonService.getById(id));
+        model.addAttribute(GROUPS_NAME, groupService.getAll());
+        model.addAttribute(TEACHERS_NAME, teacherService.getAll());
+        model.addAttribute(CLASSROOMS_NAME, classRoomService.getAll());
         return ROOT_PACKAGE + EDIT_VIEW;
     }
 
@@ -90,6 +121,7 @@ public class LessonController {
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable(ID) long id) {
+
         lessonService.delete(id);
         return REDIRECT + ROOT_PACKAGE;
     }

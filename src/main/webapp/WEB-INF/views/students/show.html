@@ -9,6 +9,7 @@
 <p th:text="${entity.getFirstName()}">VALUE</p>
 <p th:text="${entity.getLastName()}">VALUE</p>
 <p th:text="${entity.getAge()}">VALUE</p>
+<p th:text="${group.getAbbreviation()}">VALUE</p>
 
 <a th:href="@{/students/{id}/edit(id=${entity.getId()})}">Edit</a>
 
