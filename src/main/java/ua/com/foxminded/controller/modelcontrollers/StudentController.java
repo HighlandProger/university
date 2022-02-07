@@ -16,8 +16,7 @@ import ua.com.foxminded.service.StudentService;
 public class StudentController extends CrudController<Student> {
 
     private static final String ROOT_PACKAGE = "students";
-    private static final String GROUPS_NAME = "groups";
-    private static final String GROUP_NAME = "group";
+    private static final String GROUPS_ATTRIBUTE_NAME = "groups";
     private final StudentService studentService;
     private final GroupService groupService;
 
@@ -41,8 +40,8 @@ public class StudentController extends CrudController<Student> {
     @GetMapping("/new")
     public String newEntity(Model model, Student student) {
 
-        model.addAttribute(ENTITY_NAME, student);
-        model.addAttribute(GROUPS_NAME, groupService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, student);
+        model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
         return ROOT_PACKAGE + NEW_VIEW;
     }
 
@@ -50,18 +49,8 @@ public class StudentController extends CrudController<Student> {
     @GetMapping("/{id}/edit")
     protected String edit(Model model, @PathVariable(ID) long id) {
 
-        model.addAttribute(ENTITY_NAME, this.getCrudService().getById(id));
-        model.addAttribute(GROUPS_NAME, groupService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, this.getCrudService().getById(id));
+        model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
         return this.getRootPackage() + EDIT_VIEW;
-    }
-
-    @Override
-    @GetMapping("/{id}")
-    protected String show(@PathVariable(ID) long id, Model model) {
-
-        Student student = studentService.getById(id);
-        model.addAttribute(ENTITY_NAME, student);
-        model.addAttribute(GROUP_NAME, groupService.getById(student.getGroupId()));
-        return this.getRootPackage() + SHOW_VIEW;
     }
 }

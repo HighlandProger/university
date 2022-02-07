@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http//thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Main menu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link th:href="@{/static/css/style.css}" rel="stylesheet" />
+
+</head>
+<body>
+
+<figure class="text-center">
+    <blockquote class="blockquote">
+        <p class="h1">Welcome to MPI - the best university in the universe!</p>
+    </blockquote>
+</figure>
+
+<header>
+    <div th:insert="~{fragments/header :: header1}"></div>
+</header>
+
+<div class="title-holder text-left" style="margin: 30px auto 10px auto; width:70%">
+    <h1>MPI History</h1>
+</div>
+
+<div class="advertising-box">
+</div>
+
+<p class="p-history">
+    <img src="https://mgimo.ru/upload/medialibrary/1a2/1a21c140168b3b719b84b7d4948e4262.jpg" alt="MPI-logo"/>
+    For more than seven decades MPI has become one of the leading Russian universities,
+    training specialists in 18 areas: international relations,
+    foreign regional studies, economics, law, journalism,
+    political science, advertising and public relations, sociology, management,
+    trade, ecology and environmental management, state and municipal
+    management, finance and credit, linguistics, teacher education,
+    psychology, personnel management, business informatics.
+</p>
+
+<footer>
+    <div th:insert="~{fragments/footer :: footer}"></div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>

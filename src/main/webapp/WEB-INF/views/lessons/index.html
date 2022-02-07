@@ -3,22 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>All lessons</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link th:href="@{/static/css/style.css}" rel="stylesheet" />
+
 </head>
 <body>
 
-<div th:each="entity : ${entities}">
-    <a th:href="@{/lessons/{id}(id=${entity.getId()})}"
-       th:text="${'lesson ' + entity.getName() + ' for group with id = ' + entity.getGroupId() + ' and teacher with id = ' + entity.getTeacherId() + ' starts at ' + #temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm') + ' in class room with id = ' + entity.getClassRoomId()}">lesson</a>
-</div>
+<header>
+    <div th:insert="~{fragments/header :: header1}"></div>
+</header>
 
-<br/>
-<hr/>
+<figure class="text-center">
+    <blockquote class="blockquote">
+        <p class="h3">Timetable</p>
+    </blockquote>
+</figure>
 
-<a href="/lessons/new">Create new Lesson!</a>
-<br/>
+
+<table class="table-bordered border-primary text-center caption-top">
+    <caption>Timetable</caption>
+
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Lesson name</th>
+        <th scope="col">Group id</th>
+        <th scope="col">Teacher id</th>
+        <th scope="col">Date time</th>
+        <th scope="col">Class room id</th>
+        <th scope="col" style="border-right: white; border-top: solid white;"></th>
+    </tr>
+    </thead>
+
+    <div th:each="entity : ${entities}">
+        <tbody>
+        <td th:text="${entityStat.count}">Number</td>
+        <td th:text="${entity.getName()}">Lesson name</td>
+        <td th:text="${entity.getGroupId()}">Group id</td>
+        <td th:text="${entity.getTeacherId()}">Teacher id</td>
+        <td th:text="${#temporals.format(entity.getDateTime(), 'dd.MM.yyyy HH:mm')}">Date time</td>
+        <td th:text="${entity.getClassRoomId()}">Class room id</td>
+        <td class="my-td" style="border-right: 2px solid white; border-top: 2px solid white; border-bottom: 2px solid white">
+            <div class="btn-group" role="group" aria-label="Basic example" style="margin-left:5px">
+                <a th:href="@{/lessons/{id}/edit(id=${entity.getId()})}" class="btn btn-primary">Edit</a>
+                <form th:method="DELETE" th:action="@{/lessons/{id}(id=${entity.getId()})}">
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            </div>
+        </td>
+        </tbody>
+    </div>
+
+    <tfoot>
+    <tr class="my-tr">
+        <td id="td-bottom">
+            <a href="/lessons/new" class="btn btn-primary" style="margin-top: 10px">Add new</a>
+        </td>
+    </tr>
+    </tfoot>
+
+</table>
 
 <footer>
-    <div th:insert="~{fragments/footer :: footer1}"></div>
+    <div th:insert="~{fragments/footer :: footer}"></div>
 </footer>
 
 </body>

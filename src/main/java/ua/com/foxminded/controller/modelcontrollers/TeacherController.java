@@ -16,8 +16,7 @@ import ua.com.foxminded.service.TeacherService;
 public class TeacherController extends CrudController<Teacher> {
 
     private static final String ROOT_PACKAGE = "teachers";
-    private static final String DEPARTMENTS_NAME = "departments";
-    private static final String DEPARTMENT_NAME = "department";
+    private static final String DEPARTMENTS_ATTRIBUTE_NAME = "departments";
     private final TeacherService teacherService;
     private final DepartmentService departmentService;
 
@@ -39,10 +38,10 @@ public class TeacherController extends CrudController<Teacher> {
 
     @Override
     @GetMapping("/new")
-    public String newEntity(Model model, Teacher teacher){
+    public String newEntity(Model model, Teacher teacher) {
 
-        model.addAttribute(ENTITY_NAME, teacher);
-        model.addAttribute(DEPARTMENTS_NAME, departmentService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, teacher);
+        model.addAttribute(DEPARTMENTS_ATTRIBUTE_NAME, departmentService.getAll());
         return ROOT_PACKAGE + NEW_VIEW;
     }
 
@@ -50,18 +49,8 @@ public class TeacherController extends CrudController<Teacher> {
     @GetMapping("/{id}/edit")
     protected String edit(Model model, @PathVariable(ID) long id) {
 
-        model.addAttribute(ENTITY_NAME, this.getCrudService().getById(id));
-        model.addAttribute(DEPARTMENTS_NAME, departmentService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, this.getCrudService().getById(id));
+        model.addAttribute(DEPARTMENTS_ATTRIBUTE_NAME, departmentService.getAll());
         return this.getRootPackage() + EDIT_VIEW;
-    }
-
-    @Override
-    @GetMapping("/{id}")
-    protected String show(@PathVariable(ID) long id, Model model) {
-
-        Teacher teacher = teacherService.getById(id);
-        model.addAttribute(ENTITY_NAME, teacher);
-        model.addAttribute(DEPARTMENT_NAME, departmentService.getById(teacher.getDepartmentId()));
-        return this.getRootPackage() + SHOW_VIEW;
     }
 }

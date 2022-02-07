@@ -17,10 +17,8 @@ import ua.com.foxminded.service.GroupService;
 public class GroupController extends CrudController<Group> {
 
     private static final String ROOT_PACKAGE = "groups";
-    private static final String DEPARTMENTS_NAME = "departments";
-    private static final String DEPARTMENT_NAME = "department";
-    private static final String COURSES_NAME = "courses";
-    private static final String COURSE_NAME = "course";
+    private static final String DEPARTMENTS_ATTRIBUTE_NAME = "departments";
+    private static final String COURSES_ATTRIBUTE_NAME = "courses";
     private final GroupService groupService;
     private final DepartmentService departmentService;
     private final CourseService courseService;
@@ -46,9 +44,9 @@ public class GroupController extends CrudController<Group> {
     @GetMapping("/new")
     public String newEntity(Model model, Group group) {
 
-        model.addAttribute(ENTITY_NAME, group);
-        model.addAttribute(DEPARTMENTS_NAME, departmentService.getAll());
-        model.addAttribute(COURSES_NAME, courseService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, group);
+        model.addAttribute(DEPARTMENTS_ATTRIBUTE_NAME, departmentService.getAll());
+        model.addAttribute(COURSES_ATTRIBUTE_NAME, courseService.getAll());
         return ROOT_PACKAGE + NEW_VIEW;
     }
 
@@ -56,20 +54,9 @@ public class GroupController extends CrudController<Group> {
     @GetMapping("/{id}/edit")
     protected String edit(Model model, @PathVariable(ID) long id) {
 
-        model.addAttribute(ENTITY_NAME, this.getCrudService().getById(id));
-        model.addAttribute(DEPARTMENTS_NAME, departmentService.getAll());
-        model.addAttribute(COURSES_NAME, courseService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, this.getCrudService().getById(id));
+        model.addAttribute(DEPARTMENTS_ATTRIBUTE_NAME, departmentService.getAll());
+        model.addAttribute(COURSES_ATTRIBUTE_NAME, courseService.getAll());
         return this.getRootPackage() + EDIT_VIEW;
-    }
-
-    @Override
-    @GetMapping("/{id}")
-    protected String show(@PathVariable(ID) long id, Model model) {
-
-        Group group = groupService.getById(id);
-        model.addAttribute(ENTITY_NAME, group);
-        model.addAttribute(DEPARTMENT_NAME, departmentService.getById(group.getDepartmentId()));
-        model.addAttribute(COURSE_NAME, courseService.getById(group.getCourseId()));
-        return ROOT_PACKAGE + SHOW_VIEW;
     }
 }

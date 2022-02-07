@@ -25,19 +25,15 @@ public class LessonController {
     private static final DateTimeFormatter patchMappingFormatter = DateTimeFormatter.ofPattern(PATCH_MAPPING_TIME_PATTERN);
 
     private static final String ROOT_PACKAGE = "lessons";
-    private static final String ENTITY_NAME = "entity";
-    private static final String INDEX_ENTITY_NAME = "entities";
     private static final String INDEX_VIEW = "/index";
-    private static final String SHOW_VIEW = "/show";
     private static final String EDIT_VIEW = "/edit";
     private static final String NEW_VIEW = "/new";
     private static final String ID = "id";
-    private static final String GROUPS_NAME = "groups";
-    private static final String GROUP_NAME = "group";
-    private static final String TEACHERS_NAME = "teachers";
-    private static final String TEACHER_NAME = "teacher";
-    private static final String CLASSROOMS_NAME = "classrooms";
-    private static final String CLASSROOM_NAME = "classroom";
+    private static final String ENTITY_ATTRIBUTE_NAME = "entity";
+    private static final String ENTITIES_ATTRIBUTE_NAME = "entities";
+    private static final String GROUPS_ATTRIBUTE_NAME = "groups";
+    private static final String TEACHERS_ATTRIBUTE_NAME = "teachers";
+    private static final String CLASSROOMS_ATTRIBUTE_NAME = "classrooms";
 
     private final LessonService lessonService;
     private final GroupService groupService;
@@ -45,8 +41,7 @@ public class LessonController {
     private final ClassRoomService classRoomService;
 
     @Autowired
-    public LessonController(LessonService lessonService, GroupService groupService,
-                            TeacherService teacherService, ClassRoomService classRoomService) {
+    public LessonController(LessonService lessonService, GroupService groupService, TeacherService teacherService, ClassRoomService classRoomService) {
         this.lessonService = lessonService;
         this.groupService = groupService;
         this.teacherService = teacherService;
@@ -56,41 +51,25 @@ public class LessonController {
     @GetMapping
     protected String index(Model model) {
 
-        model.addAttribute(INDEX_ENTITY_NAME, lessonService.getAll());
+        model.addAttribute(ENTITIES_ATTRIBUTE_NAME, lessonService.getAll());
         return ROOT_PACKAGE + INDEX_VIEW;
-    }
-
-    @GetMapping("/{id}")
-    protected String show(@PathVariable(ID) long id, Model model) {
-
-        Lesson lesson = lessonService.getById(id);
-        model.addAttribute(ENTITY_NAME, lesson);
-        model.addAttribute(GROUP_NAME, groupService.getById(lesson.getGroupId()));
-        model.addAttribute(TEACHER_NAME, teacherService.getById(lesson.getTeacherId()));
-        model.addAttribute(CLASSROOM_NAME, classRoomService.getById(lesson.getClassRoomId()));
-        return ROOT_PACKAGE + SHOW_VIEW;
     }
 
     @GetMapping("/new")
     protected String newEntity(Model model) {
 
-        model.addAttribute(ENTITY_NAME, new Lesson());
-        model.addAttribute(GROUPS_NAME, groupService.getAll());
-        model.addAttribute(TEACHERS_NAME, teacherService.getAll());
-        model.addAttribute(CLASSROOMS_NAME, classRoomService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, new Lesson());
+        model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
+        model.addAttribute(TEACHERS_ATTRIBUTE_NAME, teacherService.getAll());
+        model.addAttribute(CLASSROOMS_ATTRIBUTE_NAME, classRoomService.getAll());
         return ROOT_PACKAGE + NEW_VIEW;
     }
 
     @PostMapping
-    public String createLesson(@RequestParam("name") String name,
-                               @RequestParam("groupId") Long groupId,
-                               @RequestParam("teacherId") Long teacherId,
-                               @RequestParam("dateTime") String dateTimeString,
-                               @RequestParam("classRoomId") Long classRoomId,
-                               Model model) {
+    public String createLesson(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model) {
 
         Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, postMappingFormatter), classRoomId));
-        model.addAttribute(ENTITY_NAME, lesson);
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lesson);
 
         return REDIRECT + ROOT_PACKAGE;
     }
@@ -98,23 +77,18 @@ public class LessonController {
     @GetMapping("/{id}/edit")
     protected String edit(Model model, @PathVariable(ID) long id) {
 
-        model.addAttribute(ENTITY_NAME, lessonService.getById(id));
-        model.addAttribute(GROUPS_NAME, groupService.getAll());
-        model.addAttribute(TEACHERS_NAME, teacherService.getAll());
-        model.addAttribute(CLASSROOMS_NAME, classRoomService.getAll());
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonService.getById(id));
+        model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
+        model.addAttribute(TEACHERS_ATTRIBUTE_NAME, teacherService.getAll());
+        model.addAttribute(CLASSROOMS_ATTRIBUTE_NAME, classRoomService.getAll());
         return ROOT_PACKAGE + EDIT_VIEW;
     }
 
     @PutMapping("/{id}")
-    public String update(@RequestParam("name") String name,
-                         @RequestParam("groupId") Long groupId,
-                         @RequestParam("teacherId") Long teacherId,
-                         @RequestParam("dateTime") String dateTimeString,
-                         @RequestParam("classRoomId") Long classRoomId, Model model,
-                         @PathVariable(ID) long id) {
+    public String update(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model, @PathVariable(ID) long id) {
 
         lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, patchMappingFormatter), classRoomId));
-        model.addAttribute(ENTITY_NAME, lessonService.getById(id));
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonService.getById(id));
 
         return REDIRECT + ROOT_PACKAGE;
     }
