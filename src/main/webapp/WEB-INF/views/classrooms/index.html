@@ -10,9 +10,7 @@
 </head>
 <body>
 
-<header>
-    <div th:insert="~{fragments/header :: header1}"></div>
-</header>
+<header th:insert="~{fragments/header :: header}"></header>
 
 <figure class="text-center">
     <blockquote class="blockquote">
@@ -58,11 +56,8 @@
 
 </table>
 
-<footer>
-    <div th:insert="~{fragments/footer :: footer}"></div>
-</footer>
+<footer th:insert="~{fragments/footer}"></footer>
 
 </body>
 
-</body>
 </html>

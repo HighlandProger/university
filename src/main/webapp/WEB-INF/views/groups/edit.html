@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<form class="my-form" th:method="PUT" th:action="@{/groups/{id}(id=${entity.getId()})}" th:object="${entity}">
+<form class="my-form" th:method="${entity.getId() == null} ? 'POST' : 'PUT'" th:action="${entity.getId() == null} ? @{/groups} : @{/groups/{id}(id=${entity.getId()})}" th:object="${entity}">
 
     <div>
         <label for="departmentId" class="form-label">Department</label>

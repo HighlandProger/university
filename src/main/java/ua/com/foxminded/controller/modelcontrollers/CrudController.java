@@ -8,9 +8,7 @@ public abstract class CrudController<T> {
 
     protected static final String REDIRECT = "redirect:/";
     protected static final String INDEX_VIEW = "/index";
-    protected static final String SHOW_VIEW = "/show";
     protected static final String EDIT_VIEW = "/edit";
-    protected static final String NEW_VIEW = "/new";
     protected static final String ID = "id";
     protected static final String ENTITY_ATTRIBUTE_NAME = "entity";
     protected static final String ENTITIES_ATTRIBUTE_NAME = "entities";
@@ -28,7 +26,7 @@ public abstract class CrudController<T> {
     @GetMapping("/new")
     protected String newEntity(Model model, T value) {
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, value);
-        return this.getRootPackage() + NEW_VIEW;
+        return this.getRootPackage() + EDIT_VIEW;
     }
 
     @PostMapping

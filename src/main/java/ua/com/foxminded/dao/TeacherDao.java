@@ -72,9 +72,9 @@ public class TeacherDao implements CrudDao<Teacher> {
     @Override
     public void update(long id, Teacher teacher){
 
-        logger.debug("Updating student with id = {}", id);
+        logger.debug("Updating teacher with id = {}", id);
         jdbcTemplate.update(UPDATE_SQL,
             teacher.getDepartmentId(), teacher.getFirstName(), teacher.getLastName(), teacher.getAge(), id);
-        logger.debug("Student with id = {} has been updated", id);
+        logger.debug("Teacher with id = {} has been updated", id);
     }
 }

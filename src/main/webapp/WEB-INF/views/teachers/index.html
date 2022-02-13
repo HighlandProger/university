@@ -10,9 +10,7 @@
 </head>
 <body>
 
-<header>
-    <div th:insert="~{fragments/header :: header1}"></div>
-</header>
+<header th:insert="~{fragments/header :: header}"></header>
 
 <figure class="text-center">
     <blockquote class="blockquote">
@@ -30,23 +28,23 @@
         <th scope="col">First name</th>
         <th scope="col">Last name</th>
         <th scope="col">Age</th>
-        <th scope="col">Department id</th>
+        <th scope="col">Department</th>
         <th scope="col" class="my-th" style="border-top: 2px solid white;"></th>
     </tr>
     </thead>
 
 
-    <div th:each="entity : ${entities}">
+    <div th:each="teacherDTO : ${teacherDTOS}">
     <tbody>
-    <td th:text="${entityStat.count}">Number</td>
-    <td th:text="${entity.getFirstName()}">First Name</td>
-    <td th:text="${entity.getLastName()}">Last Name</td>
-    <td th:text="${entity.getAge()}">Age</td>
-    <td th:text="${entity.getDepartmentId()}">Department id</td>
+    <td th:text="${teacherDTOStat.count}">Number</td>
+    <td th:text="${teacherDTO.getFirstName()}">First Name</td>
+    <td th:text="${teacherDTO.getLastName()}">Last Name</td>
+    <td th:text="${teacherDTO.getAge()}">Age</td>
+    <td th:text="${teacherDTO.getDepartmentName()}">Department</td>
     <td class="my-td" style="border-right: 2px solid white; border-top: 2px solid white; border-bottom: 2px solid white">
         <div class="btn-group" role="group" aria-label="Basic example">
-            <a th:href="@{/teachers/{id}/edit(id=${entity.getId()})}" class="btn btn-primary">Edit</a>
-            <form th:method="DELETE" th:action="@{/teachers/{id}(id=${entity.getId()})}">
+            <a th:href="@{/teachers/{id}/edit(id=${teacherDTO.getId()})}" class="btn btn-primary">Edit</a>
+            <form th:method="DELETE" th:action="@{/teachers/{id}(id=${teacherDTO.getId()})}">
                 <button type="submit" class="btn btn-primary">Delete</button>
             </form>
         </div>
@@ -65,9 +63,7 @@
 
 </table>
 
-<footer>
-    <div th:insert="~{fragments/footer :: footer}"></div>
-</footer>
+<footer th:insert="~{fragments/footer}"></footer>
 
 </body>
 </html>

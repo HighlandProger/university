@@ -10,9 +10,7 @@
 </head>
 <body>
 
-<header>
-    <div th:insert="~{fragments/header :: header1}"></div>
-</header>
+<header th:insert="~{fragments/header :: header}"></header>
 
 <figure class="text-center">
     <blockquote class="blockquote">
@@ -28,24 +26,24 @@
     <tr>
         <th scope="col">#</th>
         <th scope="col">Group abbreviation</th>
-        <th scope="col">Department id</th>
-        <th scope="col">Course id</th>
+        <th scope="col">Department name</th>
+        <th scope="col">Course establish year</th>
         <th scope="col">Group number</th>
         <th scope="col" style="border-right: white; border-top: solid white;"></th>
     </tr>
     </thead>
 
-    <div th:each="entity : ${entities}">
+    <div th:each="groupDTO : ${groupDTOS}">
         <tbody>
-        <td th:text="${entityStat.count}">Number</td>
-        <td th:text="${entity.getAbbreviation()}">Group abbreviation</td>
-        <td th:text="${entity.getDepartmentId()}">Department id</td>
-        <td th:text="${entity.getCourseId()}">Course id</td>
-        <td th:text="${entity.getGroupNumber()}">Group number</td>
+        <td th:text="${groupDTOStat.count}">Number</td>
+        <td th:text="${groupDTO.getAbbreviation()}">Group abbreviation</td>
+        <td th:text="${groupDTO.getDepartmentName()}">Department name</td>
+        <td th:text="${groupDTO.getCourseEstablishYear()}">Course establish year</td>
+        <td th:text="${groupDTO.getGroupNumber()}">Group number</td>
         <td class="my-td" style="border-right: 2px solid white; border-top: 2px solid white; border-bottom: 2px solid white">
             <div class="btn-group" role="group" aria-label="Basic example" style="margin-left:5px">
-                <a th:href="@{/groups/{id}/edit(id=${entity.getId()})}" class="btn btn-primary">Edit</a>
-                <form th:method="DELETE" th:action="@{/groups/{id}(id=${entity.getId()})}">
+                <a th:href="@{/groups/{id}/edit(id=${groupDTO.getId()})}" class="btn btn-primary">Edit</a>
+                <form th:method="DELETE" th:action="@{/groups/{id}(id=${groupDTO.getId()})}">
                     <button type="submit" class="btn btn-primary">Delete</button>
                 </form>
             </div>
@@ -63,9 +61,7 @@
 
 </table>
 
-<footer>
-    <div th:insert="~{fragments/footer :: footer}"></div>
-</footer>
+<footer th:insert="~{fragments/footer}"></footer>
 
 </body>
 </html>

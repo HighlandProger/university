@@ -6,11 +6,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ua.com.foxminded.dto.GroupDTO;
 import ua.com.foxminded.model.Group;
 import ua.com.foxminded.service.CourseService;
 import ua.com.foxminded.service.CrudService;
 import ua.com.foxminded.service.DepartmentService;
 import ua.com.foxminded.service.GroupService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/groups")
@@ -19,6 +23,7 @@ public class GroupController extends CrudController<Group> {
     private static final String ROOT_PACKAGE = "groups";
     private static final String DEPARTMENTS_ATTRIBUTE_NAME = "departments";
     private static final String COURSES_ATTRIBUTE_NAME = "courses";
+    private static final String GROUP_DTOS_ATTRIBUTE_NAME = "groupDTOS";
     private final GroupService groupService;
     private final DepartmentService departmentService;
     private final CourseService courseService;
@@ -40,6 +45,18 @@ public class GroupController extends CrudController<Group> {
         return ROOT_PACKAGE;
     }
 
+    private List<GroupDTO> getGroupDTOS() {
+        return groupService.getAll().stream().map(el -> new GroupDTO(el, departmentService.getById(el.getDepartmentId()), courseService.getById(el.getCourseId()))).collect(Collectors.toList());
+    }
+
+    @Override
+    @GetMapping
+    protected String index(Model model) {
+
+        model.addAttribute(GROUP_DTOS_ATTRIBUTE_NAME, getGroupDTOS());
+        return super.index(model);
+    }
+
     @Override
     @GetMapping("/new")
     public String newEntity(Model model, Group group) {
@@ -47,7 +64,7 @@ public class GroupController extends CrudController<Group> {
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, group);
         model.addAttribute(DEPARTMENTS_ATTRIBUTE_NAME, departmentService.getAll());
         model.addAttribute(COURSES_ATTRIBUTE_NAME, courseService.getAll());
-        return ROOT_PACKAGE + NEW_VIEW;
+        return ROOT_PACKAGE + EDIT_VIEW;
     }
 
     @Override
