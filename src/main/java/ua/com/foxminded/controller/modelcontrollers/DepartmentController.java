@@ -11,7 +11,7 @@ import ua.com.foxminded.service.DepartmentService;
 @RequestMapping("/departments")
 public class DepartmentController extends CrudController<Department> {
 
-    private static final String ROOT_PACKAGE = "departments";
+    private static final String VIEW_FOLDER_NAME = "departments";
     private final DepartmentService departmentService;
 
     @Autowired
@@ -25,8 +25,8 @@ public class DepartmentController extends CrudController<Department> {
     }
 
     @Override
-    protected String getRootPackage() {
-        return ROOT_PACKAGE;
+    protected String getViewFolderName() {
+        return VIEW_FOLDER_NAME;
     }
 
 }

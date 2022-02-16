@@ -12,12 +12,7 @@
 
 <header th:insert="~{fragments/header :: header}"></header>
 
-<figure class="text-center">
-    <blockquote class="blockquote">
-        <p class="h3">Our teachers</p>
-    </blockquote>
-</figure>
-
+<p class="h3 text-center">Our teachers</p>
 
 <table class="table-bordered border-primary text-center caption-top">
     <caption>Teachers</caption>
@@ -29,10 +24,9 @@
         <th scope="col">Last name</th>
         <th scope="col">Age</th>
         <th scope="col">Department</th>
-        <th scope="col" class="my-th" style="border-top: 2px solid white;"></th>
+        <th scope="col" class="my-col"></th>
     </tr>
     </thead>
-
 
     <div th:each="teacherDTO : ${teacherDTOS}">
     <tbody>
@@ -41,7 +35,7 @@
     <td th:text="${teacherDTO.getLastName()}">Last Name</td>
     <td th:text="${teacherDTO.getAge()}">Age</td>
     <td th:text="${teacherDTO.getDepartmentName()}">Department</td>
-    <td class="my-td" style="border-right: 2px solid white; border-top: 2px solid white; border-bottom: 2px solid white">
+    <td class="my-td">
         <div class="btn-group" role="group" aria-label="Basic example">
             <a th:href="@{/teachers/{id}/edit(id=${teacherDTO.getId()})}" class="btn btn-primary">Edit</a>
             <form th:method="DELETE" th:action="@{/teachers/{id}(id=${teacherDTO.getId()})}">
@@ -56,8 +50,8 @@
     <tfoot>
     <tr class="my-tr">
         <td id="td-bottom">
-        <a href="/teachers/new" class="btn btn-primary" style="margin-top: 10px">Add new</a>
-    </td>
+            <a href="/teachers/new" class="btn btn-primary" id="add-new-button">Add new</a>
+        </td>
     </tr>
     </tfoot>
 

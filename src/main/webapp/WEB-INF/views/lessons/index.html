@@ -12,11 +12,9 @@
 
 <header th:insert="~{fragments/header :: header}"></header>
 
-<figure class="text-center">
-    <blockquote class="blockquote">
-        <p class="h3">Timetable</p>
-    </blockquote>
-</figure>
+
+<p class="h3 text-center">Timetable</p>
+
 
 
 <table class="table-bordered border-primary text-center caption-top">
@@ -30,7 +28,7 @@
         <th scope="col">Teacher</th>
         <th scope="col">Date time</th>
         <th scope="col">Class room</th>
-        <th scope="col" style="border-right: white; border-top: solid white;"></th>
+        <th scope="col" class="my-col"></th>
     </tr>
     </thead>
 
@@ -39,11 +37,11 @@
         <td th:text="${lessonDTOStat.count}">Number</td>
         <td th:text="${lessonDTO.getName()}">Lesson name</td>
         <td th:text="${lessonDTO.getGroupAbbreviation()}">Group</td>
-        <td th:text="${lessonDTO.getTeacher()}">Teacher id</td>
+        <td th:text="${lessonDTO.getTeacherFullName()}">Teacher id</td>
         <td th:text="${#temporals.format(lessonDTO.getDateTime(), 'dd.MM.yyyy HH:mm')}">Date time</td>
         <td th:text="${lessonDTO.getClassNumber()}">Class room number</td>
-        <td class="my-td" style="border-right: 2px solid white; border-top: 2px solid white; border-bottom: 2px solid white">
-            <div class="btn-group" role="group" aria-label="Basic example" style="margin-left:5px">
+        <td class="my-td">
+            <div class="btn-group" role="group" aria-label="Basic example">
                 <a th:href="@{/lessons/{id}/edit(id=${lessonDTO.getId()})}" class="btn btn-primary">Edit</a>
                 <form th:method="DELETE" th:action="@{/lessons/{id}(id=${lessonDTO.getId()})}">
                     <button type="submit" class="btn btn-primary">Delete</button>
@@ -56,7 +54,7 @@
     <tfoot>
     <tr class="my-tr">
         <td id="td-bottom">
-            <a href="/lessons/new" class="btn btn-primary" style="margin-top: 10px">Add new</a>
+            <a href="/lessons/new" class="btn btn-primary" id="add-new-button">Add new</a>
         </td>
     </tr>
     </tfoot>

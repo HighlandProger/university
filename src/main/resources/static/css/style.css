@@ -8,6 +8,10 @@ body {
  margin-bottom: 10px;
 }
 
+#new-button {
+    margin-top: 10px;
+}
+
 .history {
     margin-top: 40px;
 }
@@ -18,8 +22,8 @@ body {
     margin-top: 20px;
 }
 
-.my-td {
-    text-align: left;
+.my-td.btn-group{
+    margin-left: 5px;
 }
 
 .my-tr {
@@ -41,6 +45,10 @@ body {
     text-align: left
 }
 
+#add-new-button {
+    margin-top: 10px;
+}
+
 img {
     margin-left: 20px;
     float: right
@@ -53,6 +61,23 @@ table {
     margin-left: 200px;
 }
 
+
+select.form-select {
+    font-size: 1.4rem;
+    height: 34px;
+}
+
+td.my-td {
+    text-align: left;
+    border-right: solid white;
+    border-top: solid white;
+    border-bottom: solid white;
+}
+
+th.my-col {
+    border-right: white;
+    border-top: solid white;
+}
 
 /* Sticky footer position and size
 -------------------------------------------------- */

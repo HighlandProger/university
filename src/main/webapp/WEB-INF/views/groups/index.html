@@ -12,12 +12,7 @@
 
 <header th:insert="~{fragments/header :: header}"></header>
 
-<figure class="text-center">
-    <blockquote class="blockquote">
-        <p class="h3">Our groups</p>
-    </blockquote>
-</figure>
-
+<p class="h3 text-center">Our groups</p>
 
 <table class="table-bordered border-primary text-center caption-top">
     <caption>Groups</caption>
@@ -29,7 +24,7 @@
         <th scope="col">Department name</th>
         <th scope="col">Course establish year</th>
         <th scope="col">Group number</th>
-        <th scope="col" style="border-right: white; border-top: solid white;"></th>
+        <th scope="col" class="my-col"></th>
     </tr>
     </thead>
 
@@ -40,8 +35,8 @@
         <td th:text="${groupDTO.getDepartmentName()}">Department name</td>
         <td th:text="${groupDTO.getCourseEstablishYear()}">Course establish year</td>
         <td th:text="${groupDTO.getGroupNumber()}">Group number</td>
-        <td class="my-td" style="border-right: 2px solid white; border-top: 2px solid white; border-bottom: 2px solid white">
-            <div class="btn-group" role="group" aria-label="Basic example" style="margin-left:5px">
+        <td class="my-td">
+            <div class="btn-group" role="group" aria-label="Basic example">
                 <a th:href="@{/groups/{id}/edit(id=${groupDTO.getId()})}" class="btn btn-primary">Edit</a>
                 <form th:method="DELETE" th:action="@{/groups/{id}(id=${groupDTO.getId()})}">
                     <button type="submit" class="btn btn-primary">Delete</button>
@@ -54,7 +49,7 @@
     <tfoot>
     <tr class="my-tr">
         <td id="td-bottom">
-            <a href="/groups/new" class="btn btn-primary" style="margin-top: 10px">Add new</a>
+            <a href="/groups/new" class="btn btn-primary" id="add-new-button">Add new</a>
         </td>
     </tr>
     </tfoot>

@@ -1,7 +1,5 @@
 package ua.com.foxminded.dto;
 
-import ua.com.foxminded.model.ClassRoom;
-import ua.com.foxminded.model.Group;
 import ua.com.foxminded.model.Lesson;
 import ua.com.foxminded.model.Teacher;
 
@@ -12,17 +10,17 @@ public class LessonDTO {
     private Long id;
     private String name;
     private String groupAbbreviation;
-    private String teacher;
+    private String teacherFullName;
     private LocalDateTime dateTime;
     private String classNumber;
 
-    public LessonDTO(Lesson lesson, Group group, Teacher teacher, ClassRoom classRoom) {
+    public LessonDTO(Lesson lesson, String groupAbbreviation, Teacher teacher, String classNumber) {
         this.id = lesson.getId();
         this.name = lesson.getName();
-        this.groupAbbreviation = group.getAbbreviation();
-        this.teacher = teacher.getFirstName() + " " + teacher.getLastName() + ", " + teacher.getAge();
         this.dateTime = lesson.getDateTime();
-        this.classNumber = classRoom.getClassNumber();
+        this.groupAbbreviation = groupAbbreviation;
+        this.teacherFullName = teacher.getFirstName() + " " + teacher.getLastName();
+        this.classNumber = classNumber;
     }
 
     public Long getId() {
@@ -49,12 +47,12 @@ public class LessonDTO {
         this.groupAbbreviation = groupAbbreviation;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public String getTeacherFullName() {
+        return teacherFullName;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
+    public void setTeacherFullName(String teacherFullName) {
+        this.teacherFullName = teacherFullName;
     }
 
     public LocalDateTime getDateTime() {

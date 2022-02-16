@@ -1,22 +1,22 @@
 package ua.com.foxminded.dto;
 
-import ua.com.foxminded.model.Group;
 import ua.com.foxminded.model.Student;
 
 public class StudentDTO {
 
     private Long id;
-    private String groupName;
+    private String groupAbbreviation;
     private String firstName;
     private String lastName;
     private int age;
 
-    public StudentDTO(Student student, Group group){
+    public StudentDTO(Student student, String groupAbbreviation) {
         this.id = student.getId();
-        this.groupName = group.getAbbreviation();
         this.firstName = student.getFirstName();
         this.lastName = student.getLastName();
         this.age = student.getAge();
+        this.groupAbbreviation = groupAbbreviation;
+
     }
 
     public Long getId() {
@@ -27,12 +27,12 @@ public class StudentDTO {
         this.id = id;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getGroupAbbreviation() {
+        return groupAbbreviation;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setGroupAbbreviation(String groupAbbreviation) {
+        this.groupAbbreviation = groupAbbreviation;
     }
 
     public String getFirstName() {

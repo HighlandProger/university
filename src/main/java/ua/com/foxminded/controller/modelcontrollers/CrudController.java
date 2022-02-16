@@ -15,45 +15,45 @@ public abstract class CrudController<T> {
 
     protected abstract CrudService<T> getCrudService();
 
-    protected abstract String getRootPackage();
+    protected abstract String getViewFolderName();
 
     @GetMapping
     protected String index(Model model) {
         model.addAttribute(ENTITIES_ATTRIBUTE_NAME, this.getCrudService().getAll());
-        return this.getRootPackage() + INDEX_VIEW;
+        return this.getViewFolderName() + INDEX_VIEW;
     }
 
     @GetMapping("/new")
     protected String newEntity(Model model, T value) {
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, value);
-        return this.getRootPackage() + EDIT_VIEW;
+        return this.getViewFolderName() + EDIT_VIEW;
     }
 
     @PostMapping
     protected String create(@ModelAttribute(ENTITY_ATTRIBUTE_NAME) T model) {
 
         this.getCrudService().create(model);
-        return REDIRECT + this.getRootPackage();
+        return REDIRECT + this.getViewFolderName();
     }
 
     @GetMapping("/{id}/edit")
     protected String edit(Model model, @PathVariable(ID) long id) {
 
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, this.getCrudService().getById(id));
-        return this.getRootPackage() + EDIT_VIEW;
+        return this.getViewFolderName() + EDIT_VIEW;
     }
 
     @PutMapping("/{id}")
     protected String update(@ModelAttribute(ENTITY_ATTRIBUTE_NAME) T model, @PathVariable(ID) long id) {
 
         this.getCrudService().update(id, model);
-        return REDIRECT + this.getRootPackage();
+        return REDIRECT + this.getViewFolderName();
     }
 
     @DeleteMapping("/{id}")
     protected String delete(@PathVariable(ID) long id) {
 
         this.getCrudService().delete(id);
-        return REDIRECT + this.getRootPackage();
+        return REDIRECT + this.getViewFolderName();
     }
 }

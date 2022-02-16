@@ -1,7 +1,5 @@
 package ua.com.foxminded.dto;
 
-import ua.com.foxminded.model.Course;
-import ua.com.foxminded.model.Department;
 import ua.com.foxminded.model.Group;
 
 public class GroupDTO {
@@ -12,13 +10,13 @@ public class GroupDTO {
     private int courseEstablishYear;
     private int groupNumber;
 
-    public GroupDTO(Group group, Department department, Course course){
+    public GroupDTO(Group group, String departmentName, int courseEstablishYear) {
 
         this.id = group.getId();
         this.abbreviation = group.getAbbreviation();
-        this.departmentName = department.getName();
-        this.courseEstablishYear = course.getEstablishYear();
         this.groupNumber = group.getGroupNumber();
+        this.departmentName = departmentName;
+        this.courseEstablishYear = courseEstablishYear;
     }
 
     public Long getId() {

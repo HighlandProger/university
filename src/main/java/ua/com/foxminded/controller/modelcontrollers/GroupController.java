@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/groups")
 public class GroupController extends CrudController<Group> {
 
-    private static final String ROOT_PACKAGE = "groups";
+    private static final String VIEW_FOLDER_NAME = "groups";
     private static final String DEPARTMENTS_ATTRIBUTE_NAME = "departments";
     private static final String COURSES_ATTRIBUTE_NAME = "courses";
-    private static final String GROUP_DTOS_ATTRIBUTE_NAME = "groupDTOS";
+    private static final String GROUPS_ATTRIBUTE_NAME = "groupDTOS";
     private final GroupService groupService;
     private final DepartmentService departmentService;
     private final CourseService courseService;
@@ -41,19 +41,15 @@ public class GroupController extends CrudController<Group> {
     }
 
     @Override
-    protected String getRootPackage() {
-        return ROOT_PACKAGE;
-    }
-
-    private List<GroupDTO> getGroupDTOS() {
-        return groupService.getAll().stream().map(el -> new GroupDTO(el, departmentService.getById(el.getDepartmentId()), courseService.getById(el.getCourseId()))).collect(Collectors.toList());
+    protected String getViewFolderName() {
+        return VIEW_FOLDER_NAME;
     }
 
     @Override
     @GetMapping
     protected String index(Model model) {
 
-        model.addAttribute(GROUP_DTOS_ATTRIBUTE_NAME, getGroupDTOS());
+        model.addAttribute(GROUPS_ATTRIBUTE_NAME, getGroupDTOS());
         return super.index(model);
     }
 
@@ -64,7 +60,7 @@ public class GroupController extends CrudController<Group> {
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, group);
         model.addAttribute(DEPARTMENTS_ATTRIBUTE_NAME, departmentService.getAll());
         model.addAttribute(COURSES_ATTRIBUTE_NAME, courseService.getAll());
-        return ROOT_PACKAGE + EDIT_VIEW;
+        return VIEW_FOLDER_NAME + EDIT_VIEW;
     }
 
     @Override
@@ -74,6 +70,15 @@ public class GroupController extends CrudController<Group> {
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, this.getCrudService().getById(id));
         model.addAttribute(DEPARTMENTS_ATTRIBUTE_NAME, departmentService.getAll());
         model.addAttribute(COURSES_ATTRIBUTE_NAME, courseService.getAll());
-        return this.getRootPackage() + EDIT_VIEW;
+        return this.getViewFolderName() + EDIT_VIEW;
+    }
+
+    private List<GroupDTO> getGroupDTOS() {
+        return groupService.getAll().stream()
+            .map(el -> new GroupDTO(
+                el,
+                departmentService.getById(el.getDepartmentId()).getName(),
+                courseService.getById(el.getCourseId()).getEstablishYear()))
+            .collect(Collectors.toList());
     }
 }

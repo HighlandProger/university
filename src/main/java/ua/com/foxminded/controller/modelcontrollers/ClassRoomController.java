@@ -11,7 +11,7 @@ import ua.com.foxminded.service.CrudService;
 @RequestMapping("/classrooms")
 public class ClassRoomController extends CrudController<ClassRoom> {
 
-    private static final String ROOT_PACKAGE = "classrooms";
+    private static final String VIEW_FOLDER_NAME = "classrooms";
     private final ClassRoomService classRoomService;
 
     @Autowired
@@ -25,8 +25,8 @@ public class ClassRoomController extends CrudController<ClassRoom> {
     }
 
     @Override
-    protected String getRootPackage() {
-        return ROOT_PACKAGE;
+    protected String getViewFolderName() {
+        return VIEW_FOLDER_NAME;
     }
 
 }

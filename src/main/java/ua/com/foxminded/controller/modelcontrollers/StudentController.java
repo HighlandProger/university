@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/students")
 public class StudentController extends CrudController<Student> {
 
-    private static final String ROOT_PACKAGE = "students";
+    private static final String VIEW_FOLDER_NAME = "students";
     private static final String GROUPS_ATTRIBUTE_NAME = "groups";
-    private static final String STUDENT_DTOS_ATTRIBUTE_NAME = "studentDTOS";
+    private static final String STUDENTS_ATTRIBUTE_NAME = "studentDTOS";
     private final StudentService studentService;
     private final GroupService groupService;
 
@@ -37,23 +37,15 @@ public class StudentController extends CrudController<Student> {
     }
 
     @Override
-    protected String getRootPackage() {
-        return ROOT_PACKAGE;
-    }
-
-    private List<StudentDTO> getStudentDTOS(){
-        return studentService.getAll().stream()
-            .map(el -> new StudentDTO(
-                el,
-                groupService.getById(el.getGroupId())))
-            .collect(Collectors.toList());
+    protected String getViewFolderName() {
+        return VIEW_FOLDER_NAME;
     }
 
     @Override
     @GetMapping
     protected String index(Model model) {
 
-        model.addAttribute(STUDENT_DTOS_ATTRIBUTE_NAME, getStudentDTOS());
+        model.addAttribute(STUDENTS_ATTRIBUTE_NAME, getStudentDTOS());
         return super.index(model);
     }
 
@@ -63,7 +55,7 @@ public class StudentController extends CrudController<Student> {
 
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, student);
         model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
-        return ROOT_PACKAGE + EDIT_VIEW;
+        return VIEW_FOLDER_NAME + EDIT_VIEW;
     }
 
     @Override
@@ -72,6 +64,14 @@ public class StudentController extends CrudController<Student> {
 
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, this.getCrudService().getById(id));
         model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
-        return this.getRootPackage() + EDIT_VIEW;
+        return this.getViewFolderName() + EDIT_VIEW;
+    }
+
+    private List<StudentDTO> getStudentDTOS(){
+        return studentService.getAll().stream()
+            .map(el -> new StudentDTO(
+                el,
+                groupService.getById(el.getGroupId()).getAbbreviation()))
+            .collect(Collectors.toList());
     }
 }

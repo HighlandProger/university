@@ -22,12 +22,10 @@ import static ua.com.foxminded.controller.modelcontrollers.CrudController.REDIRE
 @RequestMapping("/lessons")
 public class LessonController {
 
-    private static final String POST_MAPPING_TIME_PATTERN = "dd.MM.yyyy HH:mm";
-    private static final DateTimeFormatter postMappingFormatter = DateTimeFormatter.ofPattern(POST_MAPPING_TIME_PATTERN);
-    private static final String PATCH_MAPPING_TIME_PATTERN = "dd.MM.yyyy, HH:mm";
-    private static final DateTimeFormatter patchMappingFormatter = DateTimeFormatter.ofPattern(PATCH_MAPPING_TIME_PATTERN);
+    private static final String TIME_PATTERN = "dd.MM.yyyy HH:mm";
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(TIME_PATTERN);
 
-    private static final String ROOT_PACKAGE = "lessons";
+    private static final String VIEW_FOLDER_NAME = "lessons";
     private static final String INDEX_VIEW = "/index";
     private static final String EDIT_VIEW = "/edit";
     private static final String ID = "id";
@@ -36,7 +34,7 @@ public class LessonController {
     private static final String GROUPS_ATTRIBUTE_NAME = "groups";
     private static final String TEACHERS_ATTRIBUTE_NAME = "teachers";
     private static final String CLASSROOMS_ATTRIBUTE_NAME = "classrooms";
-    private static final String LESSON_DTOS_ATTRIBUTE_NAME = "lessonDTOS";
+    private static final String LESSONS_ATTRIBUTE_NAME = "lessonDTOS";
 
     private final LessonService lessonService;
     private final GroupService groupService;
@@ -51,22 +49,12 @@ public class LessonController {
         this.classRoomService = classRoomService;
     }
 
-    private List<LessonDTO> getLessonDTOS(){
-        return lessonService.getAll().stream().
-            map(el -> new LessonDTO(
-                el,
-                groupService.getById(el.getGroupId()),
-                teacherService.getById(el.getTeacherId()),
-                classRoomService.getById(el.getClassRoomId()))).
-            collect(Collectors.toList());
-    }
-
     @GetMapping
     protected String index(Model model) {
 
-        model.addAttribute(LESSON_DTOS_ATTRIBUTE_NAME, getLessonDTOS());
+        model.addAttribute(LESSONS_ATTRIBUTE_NAME, getLessonDTOS());
         model.addAttribute(ENTITIES_ATTRIBUTE_NAME, lessonService.getAll());
-        return ROOT_PACKAGE + INDEX_VIEW;
+        return VIEW_FOLDER_NAME + INDEX_VIEW;
     }
 
     @GetMapping("/new")
@@ -76,16 +64,16 @@ public class LessonController {
         model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
         model.addAttribute(TEACHERS_ATTRIBUTE_NAME, teacherService.getAll());
         model.addAttribute(CLASSROOMS_ATTRIBUTE_NAME, classRoomService.getAll());
-        return ROOT_PACKAGE + EDIT_VIEW;
+        return VIEW_FOLDER_NAME + EDIT_VIEW;
     }
 
     @PostMapping
     public String createLesson(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model) {
 
-        Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, postMappingFormatter), classRoomId));
+        Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, lesson);
 
-        return REDIRECT + ROOT_PACKAGE;
+        return REDIRECT + VIEW_FOLDER_NAME;
     }
 
     @GetMapping("/{id}/edit")
@@ -95,23 +83,33 @@ public class LessonController {
         model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
         model.addAttribute(TEACHERS_ATTRIBUTE_NAME, teacherService.getAll());
         model.addAttribute(CLASSROOMS_ATTRIBUTE_NAME, classRoomService.getAll());
-        return ROOT_PACKAGE + EDIT_VIEW;
+        return VIEW_FOLDER_NAME + EDIT_VIEW;
     }
 
     @PutMapping("/{id}")
     public String update(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model, @PathVariable(ID) long id) {
 
-        lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, patchMappingFormatter), classRoomId));
+        lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonService.getById(id));
 
-        return REDIRECT + ROOT_PACKAGE;
+        return REDIRECT + VIEW_FOLDER_NAME;
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable(ID) long id) {
 
         lessonService.delete(id);
-        return REDIRECT + ROOT_PACKAGE;
+        return REDIRECT + VIEW_FOLDER_NAME;
+    }
+
+    private List<LessonDTO> getLessonDTOS(){
+        return lessonService.getAll().stream().
+            map(el -> new LessonDTO(
+                el,
+                groupService.getById(el.getGroupId()).getAbbreviation(),
+                teacherService.getById(el.getTeacherId()),
+                classRoomService.getById(el.getClassRoomId()).getClassNumber())).
+            collect(Collectors.toList());
     }
 }
 

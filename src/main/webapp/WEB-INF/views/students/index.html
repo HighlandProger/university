@@ -12,11 +12,9 @@
 
 <header th:insert="~{fragments/header :: header}"></header>
 
-<figure class="text-center">
-    <blockquote class="blockquote">
-        <p class="h3">Our students</p>
-    </blockquote>
-</figure>
+
+<p class="h3 text-center">Our students</p>
+
 
 <table class="table-bordered border-primary text-center caption-top">
     <caption>Students</caption>
@@ -28,7 +26,7 @@
         <th scope="col">Last name</th>
         <th scope="col">Age</th>
         <th scope="col">Group</th>
-        <th scope="col" style="border-right: 2px solid white; border-top: 2px solid white;"></th>
+        <th scope="col" class="my-col"></th>
     </tr>
     </thead>
 
@@ -38,9 +36,9 @@
     <td th:text="${studentDTO.getFirstName()}">First Name</td>
     <td th:text="${studentDTO.getLastName()}">Last Name</td>
     <td th:text="${studentDTO.getAge()}">Age</td>
-    <td th:text="${studentDTO.getGroupName()}">Group</td>
-    <td class="my-td" style="border-right: 2px solid white; border-top: 2px solid white; border-bottom: 2px solid white">
-        <div class="btn-group" role="group" aria-label="Basic example" style="margin-left:5px">
+    <td th:text="${studentDTO.getGroupAbbreviation()}">Group</td>
+    <td class="my-td">
+        <div class="btn-group" role="group" aria-label="Basic example">
             <a th:href="@{/students/{id}/edit(id=${studentDTO.getId()})}" class="btn btn-primary">Edit</a>
             <form th:method="DELETE" th:action="@{/students/{id}(id=${studentDTO.getId()})}">
                 <button type="submit" class="btn btn-primary">Delete</button>
@@ -54,8 +52,8 @@
     <tfoot>
     <tr class="my-tr">
         <td id="td-bottom">
-        <a href="/students/new" class="btn btn-primary" style="margin-top: 10px">Add new</a>
-    </td>
+            <a href="/students/new" class="btn btn-primary" id="add-new-button">Add new</a>
+        </td>
     </tr>
     </tfoot>
 

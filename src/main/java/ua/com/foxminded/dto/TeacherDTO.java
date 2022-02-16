@@ -1,6 +1,5 @@
 package ua.com.foxminded.dto;
 
-import ua.com.foxminded.model.Department;
 import ua.com.foxminded.model.Teacher;
 
 public class TeacherDTO {
@@ -11,9 +10,9 @@ public class TeacherDTO {
     private String lastName;
     private int age;
 
-    public TeacherDTO(Teacher teacher, Department department){
+    public TeacherDTO(Teacher teacher, String departmentName) {
         this.id = teacher.getId();
-        this.departmentName = department.getName();
+        this.departmentName = departmentName;
         this.firstName = teacher.getFirstName();
         this.lastName = teacher.getLastName();
         this.age = teacher.getAge();
