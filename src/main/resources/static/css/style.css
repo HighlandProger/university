@@ -2,6 +2,7 @@
 
 body {
     font-family: 'Alegreya Sans', sans-serif;
+    padding-bottom: 240px;
 }
 
 #main-menu {
@@ -37,8 +38,12 @@ body {
     border-top: 2px solid white;
 }
 
-.btn-group {
+.btn-group form {
     margin-left: 5px;
+}
+
+.form-select {
+    font-size: 14px;
 }
 
 #td-bottom {
@@ -61,17 +66,12 @@ table {
     margin-left: 200px;
 }
 
-
-select.form-select {
-    font-size: 1.4rem;
-    height: 34px;
-}
-
 td.my-td {
     text-align: left;
     border-right: solid white;
     border-top: solid white;
     border-bottom: solid white;
+    padding-left: 5px;
 }
 
 th.my-col {
@@ -79,15 +79,14 @@ th.my-col {
     border-top: solid white;
 }
 
+.btn-group.form {
+    margin-left: 5px;
+}
 /* Sticky footer position and size
 -------------------------------------------------- */
 html {
     position: relative;
     min-height: 100%;
-}
-
-body {
-    padding-bottom: 200px;
 }
 
 .footer {
@@ -109,8 +108,7 @@ body {
 /* Sticky footer style and color
 -------------------------------------------------- */
 footer {
-    margin-top: 40px;
-    padding-top: 80px;
+    padding-top: 40px;
     background-color: #292c2f;
     color: #bbb;
 }
