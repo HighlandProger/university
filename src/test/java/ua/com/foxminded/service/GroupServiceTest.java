@@ -52,7 +52,7 @@ class GroupServiceTest {
 
         Exception exception = assertThrows(EntityNotFoundException.class,
             () -> groupService.getById(randomId));
-        String expectedString = "Group with id=" + randomId + " is not found";
+        String expectedString = "Object Group with id=" + randomId + " is not found";
         String actualString = exception.getMessage();
 
         assertEquals(expectedString, actualString);

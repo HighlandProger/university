@@ -81,9 +81,8 @@ class GroupDaoIT {
     void delete_shouldDeleteGroup() {
 
         assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
-        Department department = new Department("IT");
-        Course course = new Course(2021);
-        Group group = groupDao.create(new Group(department.getId(), course.getId(), 1));
+
+        Group group = groupDao.create(new Group(null, null, 1));
 
         groupDao.delete(group.getId());
 

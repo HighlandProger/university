@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ua.com.foxminded.controller.modelcontrollers.CrudController.REDIRECT;
+import static ua.com.foxminded.controller.modelcontrollers.AbstractController.REDIRECT;
 
 @Controller
 @RequestMapping("/lessons")
@@ -68,9 +68,9 @@ public class LessonController {
     }
 
     @PostMapping
-    public String createLesson(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model) {
+    public String create(@RequestParam("name") String name, @RequestParam("teacherId") Long teacherId, @RequestParam("groupId") Long groupId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model) {
 
-        Lesson lesson = lessonService.create(new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
+        Lesson lesson = lessonService.create(new Lesson(name, teacherId, groupId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, lesson);
 
         return REDIRECT + VIEW_FOLDER_NAME;
@@ -87,9 +87,9 @@ public class LessonController {
     }
 
     @PutMapping("/{id}")
-    public String update(@RequestParam("name") String name, @RequestParam("groupId") Long groupId, @RequestParam("teacherId") Long teacherId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model, @PathVariable(ID) long id) {
+    public String update(@RequestParam("name") String name, @RequestParam("teacherId") Long teacherId, @RequestParam("groupId") Long groupId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model, @PathVariable(ID) long id) {
 
-        lessonService.update(id, new Lesson(name, groupId, teacherId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
+        lessonService.update(id, new Lesson(name, teacherId, groupId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
         model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonService.getById(id));
 
         return REDIRECT + VIEW_FOLDER_NAME;
@@ -102,14 +102,7 @@ public class LessonController {
         return REDIRECT + VIEW_FOLDER_NAME;
     }
 
-    private List<LessonDTO> getLessonDTOS(){
-        return lessonService.getAll().stream().
-            map(el -> new LessonDTO(
-                el,
-                groupService.getById(el.getGroupId()).getAbbreviation(),
-                teacherService.getById(el.getTeacherId()),
-                classRoomService.getById(el.getClassRoomId()).getClassNumber())).
-            collect(Collectors.toList());
+    private List<LessonDTO> getLessonDTOS() {
+        return lessonService.getAll().stream().map(el -> new LessonDTO(el, groupService.getById(el.getGroupId()).getAbbreviation(), teacherService.getById(el.getTeacherId()), classRoomService.getById(el.getClassRoomId()).getClassNumber())).collect(Collectors.toList());
     }
 }
-

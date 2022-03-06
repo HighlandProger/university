@@ -52,7 +52,7 @@ class DepartmentServiceTest {
 
         Exception exception = assertThrows(EntityNotFoundException.class,
             () -> departmentService.getById(randomId));
-        String expectedString = "Department with id=" + randomId + " is not found";
+        String expectedString = "Object Department with id=" + randomId + " is not found";
         String actualString = exception.getMessage();
 
         assertEquals(expectedString, actualString);

@@ -47,4 +47,12 @@ public class Course {
     public int hashCode() {
         return Objects.hash(getEstablishYear());
     }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+            "id=" + id +
+            ", establishYear=" + establishYear +
+            '}';
+    }
 }

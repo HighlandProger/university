@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.com.foxminded.dto.GroupDTO;
 import ua.com.foxminded.model.Group;
+import ua.com.foxminded.service.AbstractService;
 import ua.com.foxminded.service.CourseService;
-import ua.com.foxminded.service.CrudService;
 import ua.com.foxminded.service.DepartmentService;
 import ua.com.foxminded.service.GroupService;
 
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/groups")
-public class GroupController extends CrudController<Group> {
+public class GroupController extends AbstractController<Group> {
 
     private static final String VIEW_FOLDER_NAME = "groups";
     private static final String DEPARTMENTS_ATTRIBUTE_NAME = "departments";
@@ -36,7 +36,7 @@ public class GroupController extends CrudController<Group> {
     }
 
     @Override
-    protected CrudService<Group> getCrudService() {
+    protected AbstractService<Group> getCrudService() {
         return groupService;
     }
 

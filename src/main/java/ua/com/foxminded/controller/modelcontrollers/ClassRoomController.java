@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.com.foxminded.model.ClassRoom;
+import ua.com.foxminded.service.AbstractService;
 import ua.com.foxminded.service.ClassRoomService;
-import ua.com.foxminded.service.CrudService;
 
 @Controller
 @RequestMapping("/classrooms")
-public class ClassRoomController extends CrudController<ClassRoom> {
+public class ClassRoomController extends AbstractController<ClassRoom> {
 
     private static final String VIEW_FOLDER_NAME = "classrooms";
     private final ClassRoomService classRoomService;
@@ -20,7 +20,7 @@ public class ClassRoomController extends CrudController<ClassRoom> {
     }
 
     @Override
-    protected CrudService<ClassRoom> getCrudService() {
+    protected AbstractService<ClassRoom> getCrudService() {
         return classRoomService;
     }
 

@@ -2,9 +2,9 @@ package ua.com.foxminded.controller.modelcontrollers;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ua.com.foxminded.service.CrudService;
+import ua.com.foxminded.service.AbstractService;
 
-public abstract class CrudController<T> {
+public abstract class AbstractController<T> {
 
     protected static final String REDIRECT = "redirect:/";
     protected static final String INDEX_VIEW = "/index";
@@ -13,7 +13,7 @@ public abstract class CrudController<T> {
     protected static final String ENTITY_ATTRIBUTE_NAME = "entity";
     protected static final String ENTITIES_ATTRIBUTE_NAME = "entities";
 
-    protected abstract CrudService<T> getCrudService();
+    protected abstract AbstractService<T> getCrudService();
 
     protected abstract String getViewFolderName();
 

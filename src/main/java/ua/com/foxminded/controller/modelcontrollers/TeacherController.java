@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.com.foxminded.dto.TeacherDTO;
 import ua.com.foxminded.model.Teacher;
-import ua.com.foxminded.service.CrudService;
+import ua.com.foxminded.service.AbstractService;
 import ua.com.foxminded.service.DepartmentService;
 import ua.com.foxminded.service.TeacherService;
 
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/teachers")
-public class TeacherController extends CrudController<Teacher> {
+public class TeacherController extends AbstractController<Teacher> {
 
     private static final String VIEW_FOLDER_NAME = "teachers";
     private static final String DEPARTMENTS_ATTRIBUTE_NAME = "departments";
@@ -32,7 +32,7 @@ public class TeacherController extends CrudController<Teacher> {
     }
 
     @Override
-    protected CrudService<Teacher> getCrudService() {
+    protected AbstractService<Teacher> getCrudService() {
         return teacherService;
     }
 

@@ -53,7 +53,7 @@ class StudentServiceTest {
 
         Exception exception = assertThrows(EntityNotFoundException.class,
             () -> studentService.getById(randomId));
-        String expectedString = "Student with id=" + randomId + " is not found";
+        String expectedString = "Object Student with id=" + randomId + " is not found";
         String actualString = exception.getMessage();
 
         assertEquals(expectedString, actualString);

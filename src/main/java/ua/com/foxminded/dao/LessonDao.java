@@ -2,7 +2,6 @@ package ua.com.foxminded.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,11 +10,12 @@ import ua.com.foxminded.utils.LessonRowMapper;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class LessonDao implements CrudDao<Lesson> {
+public class LessonDao extends AbstractDao<Lesson> {
 
     private static final String CREATE_SQL = "INSERT INTO lessons (name, teacher_id, group_id, date_time, class_room_id) VALUES (?,?,?,?,?) RETURNING lessons.*;";
     private static final String GET_BY_ID_SQL = "SELECT * FROM lessons WHERE id = ?;";
@@ -23,11 +23,45 @@ public class LessonDao implements CrudDao<Lesson> {
     private static final String DELETE_SQL = "DELETE FROM lessons WHERE id = ?;";
     private static final String UPDATE_SQL = "UPDATE lessons SET name = ?, group_id = ?, teacher_id = ?, date_time = ?, class_room_id = ? WHERE id = ?";
     private static final Logger logger = LoggerFactory.getLogger(LessonDao.class.getName());
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate = getJdbcTemplate();
 
-    @Autowired
     public LessonDao(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        super(dataSource);
+    }
+
+    @Override
+    protected Object[] getParams(Lesson value) {
+        String name = value.getName();
+        long teacherId = value.getTeacherId();
+        long groupId = value.getGroupId();
+        LocalDateTime dateTime = value.getDateTime();
+        long classRoomId = value.getClassRoomId();
+        return new Object[]{name, teacherId, groupId, dateTime, classRoomId};
+    }
+
+    @Override
+    protected String getCreateObjectSql() {
+        return null;
+    }
+
+    @Override
+    protected String getObjectByIdSql() {
+        return null;
+    }
+
+    @Override
+    protected String getAllObjectsSql() {
+        return null;
+    }
+
+    @Override
+    protected String getDeleteObjectSql() {
+        return null;
+    }
+
+    @Override
+    protected String getUpdateObjectSql() {
+        return null;
     }
 
     @Override

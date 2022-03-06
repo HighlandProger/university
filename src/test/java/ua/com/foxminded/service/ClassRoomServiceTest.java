@@ -54,7 +54,7 @@ class ClassRoomServiceTest {
 
         Exception exception = assertThrows(EntityNotFoundException.class,
             () -> classRoomService.getById(randomId));
-        String expectedString = "Class room with id=" + randomId + " is not found";
+        String expectedString = "Object ClassRoom with id=" + randomId + " is not found";
         String actualString = exception.getMessage();
 
         assertEquals(expectedString, actualString);
