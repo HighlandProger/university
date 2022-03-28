@@ -26,17 +26,17 @@
     </tr>
     </thead>
 
-    <div th:each="studentDTO : ${studentDTOS}">
+    <div th:each="entity : ${entities}">
     <tbody>
-    <td th:text="${studentDTOStat.count}">Number</td>
-    <td th:text="${studentDTO.getFirstName()}">First Name</td>
-    <td th:text="${studentDTO.getLastName()}">Last Name</td>
-    <td th:text="${studentDTO.getAge()}">Age</td>
-    <td th:text="${studentDTO.getGroupAbbreviation()}">Group</td>
+    <td th:text="${entityStat.count}">Number</td>
+    <td th:text="${entity.getFirstName()}">First Name</td>
+    <td th:text="${entity.getLastName()}">Last Name</td>
+    <td th:text="${entity.getAge()}">Age</td>
+    <td th:text="${entity.getGroup().buildAbbreviation()}">Group</td>
     <td class="my-td">
         <div class="btn-group" role="group" aria-label="Basic example">
-            <a th:href="@{/students/{id}/edit(id=${studentDTO.getId()})}" class="btn btn-primary">Edit</a>
-            <form th:method="DELETE" th:action="@{/students/{id}(id=${studentDTO.getId()})}">
+            <a th:href="@{/students/{id}/edit(id=${entity.getId()})}" class="btn btn-primary">Edit</a>
+            <form th:method="DELETE" th:action="@{/students/{id}(id=${entity.getId()})}">
                 <button type="submit" class="btn btn-primary">Delete</button>
             </form>
         </div>

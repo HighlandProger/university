@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StudentDaoIT {
 
     private static final int GENERATED_STUDENTS_COUNT = 3;
+    private final Group randomGroup = new Group(8L, null, null, 3);
 
     @Autowired
     private StudentDao studentDao;
@@ -36,9 +37,9 @@ class StudentDaoIT {
     void create_shouldCreateStudent() {
 
         assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
-        Group group = new Group(1L, 1L, 1L, 2);
+        Group group = new Group(1L, null, null, 2);
 
-        expectedStudent = new Student(1L, group.getId(), "Tom", "Holland", 24);
+        expectedStudent = new Student(5L,"Tom", "Holland", 23, group);
         Student actualStudent = studentDao.create(expectedStudent);
 
         assertEquals(expectedStudent, actualStudent);
@@ -63,9 +64,9 @@ class StudentDaoIT {
     void getAll_shouldReturnAllStudents() {
 
         assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
-        Student student1 = studentDao.create(new Student("Justin", "Timberlake", 32));
-        Student student2 = studentDao.create(new Student("Bob", "Marley", 40));
-        Student student3 = studentDao.create(new Student("Tom", "Hanks", 48));
+        Student student1 = studentDao.create(new Student("Justin", "Timberlake", 32, randomGroup));
+        Student student2 = studentDao.create(new Student("Bob", "Marley", 40, randomGroup));
+        Student student3 = studentDao.create(new Student("Tom", "Hanks", 48, randomGroup));
 
         List<Student> expectedStudents = Arrays.asList(student1, student2, student3);
         List<Student> actualStudents = studentDao.getAll().stream().skip(GENERATED_STUDENTS_COUNT).collect(Collectors.toList());
@@ -89,19 +90,26 @@ class StudentDaoIT {
     void update_shouldUpdateStudent() {
 
         assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
-        Student student1 = studentDao.create(new Student("John", "Johnson", 11, 1L));
-        Student student2 = new Student("Nick", "Nickolson", 22, 2L);
+        Student student = studentDao.create(new Student("John", "Johnson", 11, randomGroup));
         assertEquals(GENERATED_STUDENTS_COUNT + 1, studentDao.getAll().size());
 
-        studentDao.update(student1.getId(), student2);
+        String randomFirstName = "Jack";
+        String randomLastName = "Jackson";
+        int randomAge = 23;
+        int randomNumber = 3;
 
-        Optional<Student> updatedStudent = studentDao.getById(student1.getId());
+        Group changedRandomGroup = randomGroup;
+        randomGroup.setId(randomGroup.getId() + randomNumber);
+
+        student.setFirstName(randomFirstName);
+        student.setLastName(randomLastName);
+        student.setAge(randomAge);
+        student.setGroup(changedRandomGroup);
+        studentDao.update(student);
+
+        Optional<Student> updatedStudent = studentDao.getById(student.getId());
 
         assertTrue(updatedStudent.isPresent());
-        assertEquals(student1.getId(), updatedStudent.get().getId());
-        assertEquals(student2.getFirstName(), updatedStudent.get().getFirstName());
-        assertEquals(student2.getLastName(), updatedStudent.get().getLastName());
-        assertEquals(student2.getAge(), updatedStudent.get().getAge());
-        assertEquals(student2.getGroupId(), updatedStudent.get().getGroupId());
+        assertEquals(updatedStudent.get(), student);
     }
 }

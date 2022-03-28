@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 class LessonServiceTest {
 
     private final Lesson expectedLesson =
-        new Lesson(1L, "Algebra", 1L, 2L, DateUtils.getLocalDateTimeFromString("05.01.2022 13:00"), 1L);
+        new Lesson(1L, "Algebra", null, null, DateUtils.getLocalDateTimeFromString("05.01.2022 13:00"), null);
     private final long randomId = 5;
 
     @InjectMocks
@@ -81,8 +81,8 @@ class LessonServiceTest {
     @Test
     void  update_shouldCallLessonDaoUpdate() {
 
-        lessonService.update(randomId, expectedLesson);
+        lessonService.update(expectedLesson);
 
-        verify(lessonDao).update(randomId, expectedLesson);
+        verify(lessonDao).update(expectedLesson);
     }
 }

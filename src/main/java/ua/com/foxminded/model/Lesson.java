@@ -1,56 +1,93 @@
 package ua.com.foxminded.model;
 
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/**
+ * Model class Lesson.
+ * ORM - lessons
+ */
+@Entity
+@Table(name = "lessons")
 public class Lesson {
 
-    private static final String TIME_PATTERN = "dd.MM.yyyy HH:mm";
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TIME_PATTERN);
-
+    /**
+     * Property - id
+     */
     private Long id;
+    /**
+     * Property - name
+     */
     private String name;
-    private Long teacherId;
-    private Long groupId;
+    /**
+     * Property - teacher
+     */
+    private Teacher teacher;
+    /**
+     * Property - group
+     */
+    private Group group;
+    /**
+     * Property - date time
+     */
     private LocalDateTime dateTime;
-    private Long classRoomId;
+    /**
+     * Property - class room
+     */
+    private ClassRoom classRoom;
 
+    /**
+     * Empty constructor
+     */
     public Lesson() {
     }
 
-    public Lesson(Long id, String name, Long teacherId, Long groupId, LocalDateTime dateTime, Long classRoomId) {
+    /**
+     * Full Constructor
+     *
+     * @param id        lesson's id
+     * @param name      lesson's name
+     * @param teacher   lesson's teacher
+     * @param dateTime  lesson's date time
+     * @param classRoom lesson's class room
+     */
+    public Lesson(Long id, String name, Teacher teacher, Group group, LocalDateTime dateTime, ClassRoom classRoom) {
 
         this.id = id;
         this.name = name;
-        this.teacherId = teacherId;
-        this.groupId = groupId;
+        this.teacher = teacher;
+        this.group = group;
         this.dateTime = dateTime;
-        this.classRoomId = classRoomId;
+        this.classRoom = classRoom;
     }
 
-    public Lesson(String name, Long teacherId, Long groupId, LocalDateTime dateTime, Long classRoomId) {
+    /**
+     * Constructor for creating using DAO
+     *
+     * @param name      lesson's name
+     * @param teacher   lesson's teacher
+     * @param dateTime  lesson's date time
+     * @param classRoom lesson's class room
+     */
+    public Lesson(String name, Teacher teacher, Group group, LocalDateTime dateTime, ClassRoom classRoom) {
 
         this.name = name;
-        this.teacherId = teacherId;
-        this.groupId = groupId;
+        this.teacher = teacher;
+        this.group = group;
         this.dateTime = dateTime;
-        this.classRoomId = classRoomId;
+        this.classRoom = classRoom;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Lesson)) return false;
-        Lesson lesson = (Lesson) o;
-        return getName().equals(lesson.getName()) && getTeacherId().equals(lesson.getTeacherId()) && getGroupId().equals(lesson.getGroupId()) && getDateTime().equals(lesson.getDateTime());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getTeacherId(), getGroupId(), getDateTime());
-    }
-
+    /**
+     * This method is used to ORM property id
+     * in column id at lessons table
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return id;
     }
@@ -59,6 +96,11 @@ public class Lesson {
         this.id = id;
     }
 
+    /**
+     * This method is used to ORM property name
+     * in column name at lessons table
+     */
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -67,36 +109,89 @@ public class Lesson {
         this.name = name;
     }
 
-    public Long getTeacherId() {
-        return teacherId;
+    /**
+     * This method is used to ORM for property teacher
+     * in column teacher_id at lessons table.
+     * Reference - depends on property id in Teacher class
+     */
+    @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @JoinColumn(name = "teacher_id")
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeacherId(Long teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    /**
+     * This method is used to ORM for property group
+     * in column group_id at lessons table.
+     * Reference - depends on property id in Group class
+     */
+    @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @JoinColumn(name = "group_id")
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
+    /**
+     * This method is used to ORM property dateTime
+     * in column date_time at lessons table
+     */
+    @Column(name = "date_time", nullable = false)
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setClassRoom(Long classRoomId) {
-        this.classRoomId = classRoomId;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public Long getClassRoomId() {
-        return classRoomId;
+    /**
+     * This method is used to ORM for property classRoom
+     * in column class_room_id at lessons table.
+     * Reference - depends on property id in ClassRoom class
+     */
+    @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @JoinColumn(name = "class_room_id")
+    public ClassRoom getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(ClassRoom classRoom) {
+        this.classRoom = classRoom;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lesson)) return false;
+        Lesson lesson = (Lesson) o;
+        return Objects.equals(getId(), lesson.getId()) && Objects.equals(getName(), lesson.getName()) && Objects.equals(getTeacher(), lesson.getTeacher()) && Objects.equals(getGroup(), lesson.getGroup()) && Objects.equals(getDateTime(), lesson.getDateTime()) && Objects.equals(getClassRoom(), lesson.getClassRoom());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getTeacher(), getGroup(), getDateTime(), getClassRoom());
     }
 
     @Override
     public String toString() {
-        return "Lesson{" + "id=" + id + ", name='" + name + '\'' + ", teacherId=" + teacherId + ", groupId=" + groupId + ", dateTime=" + dateTime.format(formatter) + '}';
+        return "Lesson{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", teacher=" + teacher +
+            ", group=" + group +
+            ", dateTime=" + dateTime +
+            ", classRoom=" + classRoom +
+            '}';
     }
 }

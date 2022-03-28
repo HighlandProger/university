@@ -1,43 +1,76 @@
 package ua.com.foxminded.model;
 
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * Model class Group.
+ * ORM - groups
+ */
+@Entity
+@Table(name = "groups")
 public class Group {
 
+    /**
+     * Property - id
+     */
     private Long id;
-    private Long departmentId;
-    private Long courseId;
+    /**
+     * Property - department
+     */
+    private Department department;
+    /**
+     * Property - course
+     */
+    private Course course;
+    /**
+     * Property - group number
+     */
     private int groupNumber;
 
+    /**
+     * Empty constructor
+     */
     public Group() {
     }
 
-    public Group(Long departmentId, Long courseId, int groupNumber) {
-        this.departmentId = departmentId;
-        this.courseId = courseId;
-        this.groupNumber = groupNumber;
-    }
-
-    public Group(Long id, Long departmentId, Long courseId, int groupNumber) {
+    /**
+     * Full Constructor
+     *
+     * @param id          group's id
+     * @param department  group's department
+     * @param course      group's course
+     * @param groupNumber group's group number
+     */
+    public Group(Long id, Department department, Course course, int groupNumber) {
         this.id = id;
-        this.departmentId = departmentId;
-        this.courseId = courseId;
+        this.department = department;
+        this.course = course;
         this.groupNumber = groupNumber;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Group)) return false;
-        Group group = (Group) o;
-        return getGroupNumber() == group.getGroupNumber() && getDepartmentId().equals(group.getDepartmentId()) && getCourseId().equals(group.getCourseId());
+    /**
+     * Constructor for creating using DAO
+     *
+     * @param department  group's department
+     * @param course      group's course
+     * @param groupNumber group's group number
+     */
+    public Group(Department department, Course course, int groupNumber) {
+        this.department = department;
+        this.course = course;
+        this.groupNumber = groupNumber;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getDepartmentId(), getCourseId(), getGroupNumber());
-    }
-
+    /**
+     * This method is used to ORM property id
+     * in column id at groups table
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return id;
     }
@@ -46,22 +79,43 @@ public class Group {
         this.id = id;
     }
 
-    public Long getDepartmentId() {
-        return departmentId;
+    /**
+     * This method is used to ORM for property department
+     * in column department_id at groups table.
+     * Reference - depends on property id in Department class
+     */
+    @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @JoinColumn(name = "department_id")
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
-    public Long getCourseId() {
-        return courseId;
+    /**
+     * This method is used to ORM for property course
+     * in column course_id at groups table.
+     * Reference - depends on property id in Course class
+     */
+    @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @JoinColumn(name = "course_id")
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseId(Long courseId) {
-        this.courseId = courseId;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
+    /**
+     * This method is used to ORM property groupNumber
+     * in column group_number at groups table
+     */
+    @Column(name = "group_number")
     public int getGroupNumber() {
         return groupNumber;
     }
@@ -70,7 +124,30 @@ public class Group {
         this.groupNumber = groupNumber;
     }
 
-    public String getAbbreviation(){
-        return "" + departmentId + courseId + groupNumber;
+    public String buildAbbreviation() {
+        return "" + department.getId() + course.getId() + groupNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Group)) return false;
+        Group group = (Group) o;
+        return getGroupNumber() == group.getGroupNumber() && Objects.equals(getId(), group.getId()) && Objects.equals(getDepartment(), group.getDepartment()) && Objects.equals(getCourse(), group.getCourse());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDepartment(), getCourse(), getGroupNumber());
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+            "id=" + id +
+            ", department=" + department +
+            ", course=" + course +
+            ", groupNumber=" + groupNumber +
+            '}';
     }
 }

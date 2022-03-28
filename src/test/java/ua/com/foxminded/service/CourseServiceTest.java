@@ -78,8 +78,10 @@ class CourseServiceTest {
     @Test
     void  update_shouldCallCourseDaoUpdate() {
 
-        courseService.update(randomId, expectedCourse);
+        int randomEstablishYear = expectedCourse.getEstablishYear() + 4;
+        expectedCourse.setEstablishYear(randomEstablishYear);
+        courseService.update(expectedCourse);
 
-        verify(courseDao).update(randomId, expectedCourse);
+        verify(courseDao).update(expectedCourse);
     }
 }

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 class TeacherServiceTest {
 
     private final Teacher expectedTeacher =
-        new Teacher(1L, 2L, "Nicola", "Tesla", 49);
+        new Teacher(1L, "Nicola", "Tesla", 49, null);
     private final long randomId = 5;
 
     @InjectMocks
@@ -78,8 +78,8 @@ class TeacherServiceTest {
     @Test
     void  update_shouldCallTeacherDaoUpdate() {
 
-        teacherService.update(randomId, expectedTeacher);
+        teacherService.update(expectedTeacher);
 
-        verify(teacherDao).update(randomId, expectedTeacher);
+        verify(teacherDao).update(expectedTeacher);
     }
 }

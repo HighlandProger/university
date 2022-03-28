@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class GroupServiceTest {
 
-    private final Group expectedGroup = new Group(1L,2L, 3L, 4);
+    private final Group expectedGroup = new Group(1L,null, null, 4);
     private final long randomId = 5;
 
     @InjectMocks
@@ -77,8 +77,8 @@ class GroupServiceTest {
     @Test
     void  update_shouldCallGroupDaoUpdate() {
 
-        groupService.update(randomId, expectedGroup);
+        groupService.update(expectedGroup);
 
-        verify(groupDao).update(randomId, expectedGroup);
+        verify(groupDao).update(expectedGroup);
     }
 }

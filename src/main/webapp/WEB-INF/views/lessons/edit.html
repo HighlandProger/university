@@ -34,7 +34,7 @@
     <div class="mb-3">
         <label for="groupId" class="form-label">Group</label>
         <select class="form-select" aria-label="Default select example" th:field="*{groupId}" id="groupId">
-            <option th:each="group : ${groups}" th:value="${group.getId()}" th:text="${group.getAbbreviation()}">
+            <option th:each="group : ${groups}" th:value="${group.getId()}" th:text="${group.buildAbbreviation()}">
             </option>
         </select>
     </div>
@@ -53,7 +53,7 @@
 
             <div class="form-group">
                 <div class='input-group date' id='date-picker'>
-                    <input type='text' class="form-control" id="dateTime" name="dateTime" th:value="${#temporals.format(entity.getDateTime(), 'dd-MM-yyyy HH:mm')}" />
+                    <input type='text' class="form-control" id="dateTime" name="dateTime" th:value="${entity.getDateTime()}" />
                     <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                     </span>

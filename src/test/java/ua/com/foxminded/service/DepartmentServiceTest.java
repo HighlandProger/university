@@ -77,8 +77,9 @@ class DepartmentServiceTest {
     @Test
     void  update_shouldCallDepartmentDaoUpdate() {
 
-        departmentService.update(randomId, expectedDepartment);
 
-        verify(departmentDao).update(randomId, expectedDepartment);
+        departmentService.update(expectedDepartment);
+
+        verify(departmentDao).update(expectedDepartment);
     }
 }

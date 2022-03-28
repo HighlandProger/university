@@ -5,42 +5,62 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.dto.LessonDTO;
+import ua.com.foxminded.model.ClassRoom;
+import ua.com.foxminded.model.Group;
 import ua.com.foxminded.model.Lesson;
-import ua.com.foxminded.service.ClassRoomService;
-import ua.com.foxminded.service.GroupService;
-import ua.com.foxminded.service.LessonService;
-import ua.com.foxminded.service.TeacherService;
+import ua.com.foxminded.model.Teacher;
+import ua.com.foxminded.service.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static ua.com.foxminded.controller.modelcontrollers.AbstractController.REDIRECT;
-
+/**
+ * Controller class {@link LessonController} for model {@link Lesson}
+ */
 @Controller
 @RequestMapping("/lessons")
-public class LessonController {
+public class LessonController extends AbstractController<Lesson> {
 
-    private static final String TIME_PATTERN = "dd.MM.yyyy HH:mm";
-    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(TIME_PATTERN);
-
+    /**
+     * Property - {@link #VIEW_FOLDER_NAME} name of folder with index view
+     */
     private static final String VIEW_FOLDER_NAME = "lessons";
-    private static final String INDEX_VIEW = "/index";
-    private static final String EDIT_VIEW = "/edit";
-    private static final String ID = "id";
-    private static final String ENTITY_ATTRIBUTE_NAME = "entity";
-    private static final String ENTITIES_ATTRIBUTE_NAME = "entities";
+    /**
+     * Property - {@link #GROUPS_ATTRIBUTE_NAME} for model attribute
+     */
     private static final String GROUPS_ATTRIBUTE_NAME = "groups";
+    /**
+     * Property - {@link #TEACHERS_ATTRIBUTE_NAME} for model attribute
+     */
     private static final String TEACHERS_ATTRIBUTE_NAME = "teachers";
+    /**
+     * Property - {@link #CLASSROOMS_ATTRIBUTE_NAME} for model attribute
+     */
     private static final String CLASSROOMS_ATTRIBUTE_NAME = "classrooms";
-    private static final String LESSONS_ATTRIBUTE_NAME = "lessonDTOS";
 
+    /**
+     * Property - {@link #lessonService} service for database
+     */
     private final LessonService lessonService;
+    /**
+     * Property - {@link #groupService} service for database
+     */
     private final GroupService groupService;
+    /**
+     * Property - {@link #teacherService} service for database
+     */
     private final TeacherService teacherService;
+    /**
+     * Property - {@link #classRoomService} service for database
+     */
     private final ClassRoomService classRoomService;
 
+    /**
+     * Constructor {@link LessonController} initializes {@link #lessonService}, {@link #groupService},
+     * {@link #teacherService}, {@link #classRoomService} properties using Spring
+     *
+     * @param lessonService    {@link LessonService} bean
+     * @param groupService     {@link GroupService} bean
+     * @param teacherService   {@link TeacherService} bean
+     * @param classRoomService {@link ClassRoomService} bean
+     */
     @Autowired
     public LessonController(LessonService lessonService, GroupService groupService, TeacherService teacherService, ClassRoomService classRoomService) {
         this.lessonService = lessonService;
@@ -49,60 +69,115 @@ public class LessonController {
         this.classRoomService = classRoomService;
     }
 
-    @GetMapping
-    protected String index(Model model) {
-
-        model.addAttribute(LESSONS_ATTRIBUTE_NAME, getLessonDTOS());
-        model.addAttribute(ENTITIES_ATTRIBUTE_NAME, lessonService.getAll());
-        return VIEW_FOLDER_NAME + INDEX_VIEW;
+    /**
+     * Returns {@link AbstractService} with value {@link Lesson} for using inherited methods
+     *
+     * @return {@link AbstractService} with value {@link Lesson} for using inherited methods
+     * @see AbstractController#getCrudService()
+     */
+    @Override
+    protected AbstractService<Lesson> getCrudService() {
+        return lessonService;
     }
 
-    @GetMapping("/new")
-    protected String newEntity(Model model) {
+    /**
+     * Returns {@link #VIEW_FOLDER_NAME} for using inherited methods
+     *
+     * @return {@link #VIEW_FOLDER_NAME} for using inherited methods
+     * @see AbstractController#getViewFolderName()
+     */
+    @Override
+    protected String getViewFolderName() {
+        return VIEW_FOLDER_NAME;
+    }
 
-        model.addAttribute(ENTITY_ATTRIBUTE_NAME, new Lesson());
+    /**
+     * Returns {@link #EDIT_VIEW} in folder: {@link #VIEW_FOLDER_NAME} with empty fields.
+     *
+     * <p>Mapping for GET request sends four models:
+     * {@link LessonDTO} with attribute name: {@link #ENTITY_ATTRIBUTE_NAME},
+     * list of {@link Group} objects in database with attribute name: {@link #GROUPS_ATTRIBUTE_NAME},
+     * list of {@link Teacher} objects in database with attribute name: {@link #TEACHERS_ATTRIBUTE_NAME}
+     * list of {@link ClassRoom} objects in database with attribute name: {@link #CLASSROOMS_ATTRIBUTE_NAME}
+     *
+     * @param model  model to send to view
+     * @param lesson new {@link Lesson} object
+     * @return {@link #EDIT_VIEW} in folder: {@link #VIEW_FOLDER_NAME} with empty fields
+     */
+    @Override
+    @GetMapping("/new")
+    public String newEntity(Model model, Lesson lesson) {
+
+        LessonDTO lessonDTO = new LessonDTO(lesson);
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonDTO);
         model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
         model.addAttribute(TEACHERS_ATTRIBUTE_NAME, teacherService.getAll());
         model.addAttribute(CLASSROOMS_ATTRIBUTE_NAME, classRoomService.getAll());
         return VIEW_FOLDER_NAME + EDIT_VIEW;
     }
 
-    @PostMapping
-    public String create(@RequestParam("name") String name, @RequestParam("teacherId") Long teacherId, @RequestParam("groupId") Long groupId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model) {
-
-        Lesson lesson = lessonService.create(new Lesson(name, teacherId, groupId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
-        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lesson);
-
-        return REDIRECT + VIEW_FOLDER_NAME;
-    }
-
+    /**
+     * Returns {@link #EDIT_VIEW} in folder: {@link #VIEW_FOLDER_NAME} with filled fields.
+     *
+     * <p>Mapping for GET request sends four models:
+     * {@link LessonDTO} with attribute name: {@link #ENTITY_ATTRIBUTE_NAME},
+     * list of {@link Group} objects in database with attribute name: {@link #GROUPS_ATTRIBUTE_NAME},
+     * list of {@link Teacher} objects in database with attribute name: {@link #TEACHERS_ATTRIBUTE_NAME}
+     * list of {@link ClassRoom} objects in database with attribute name: {@link #CLASSROOMS_ATTRIBUTE_NAME}
+     *
+     * @param model model to send to view
+     * @param id    {@link #ID} of {@link Lesson}object
+     * @return {@link #EDIT_VIEW} in folder: {@link #VIEW_FOLDER_NAME} with filled fields
+     */
+    @Override
     @GetMapping("/{id}/edit")
     protected String edit(Model model, @PathVariable(ID) long id) {
 
-        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonService.getById(id));
+        LessonDTO lessonDTO = new LessonDTO(lessonService.getById(id));
+        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonDTO);
         model.addAttribute(GROUPS_ATTRIBUTE_NAME, groupService.getAll());
         model.addAttribute(TEACHERS_ATTRIBUTE_NAME, teacherService.getAll());
         model.addAttribute(CLASSROOMS_ATTRIBUTE_NAME, classRoomService.getAll());
-        return VIEW_FOLDER_NAME + EDIT_VIEW;
+        return this.getViewFolderName() + EDIT_VIEW;
     }
 
+    /**
+     * Returns {@link #REDIRECT} to {@link #INDEX_VIEW} of folder with name: {@link #VIEW_FOLDER_NAME}
+     *
+     * <p>Mapping for POST request casts model to {@link LessonDTO}
+     * object. After, retrieved {@link LessonDTO} object converts to {@link Lesson}
+     * object and saves to database
+     *
+     * @param lessonDTO retrieved from model {@link LessonDTO} object
+     * @return {@link #REDIRECT} to {@link #INDEX_VIEW} of folder with name: {@link #VIEW_FOLDER_NAME}
+     * @see AbstractService#create(Object)
+     * @see LessonDTO#getLesson(AbstractService, AbstractService, AbstractService)
+     */
+    @PostMapping
+    protected String create(@ModelAttribute(ENTITY_ATTRIBUTE_NAME) LessonDTO lessonDTO) {
+
+        Lesson lesson = lessonDTO.getLesson(groupService, teacherService, classRoomService);
+        lessonService.create(lesson);
+        return REDIRECT + getViewFolderName();
+    }
+
+    /**
+     * Returns {@link #REDIRECT} to {@link #INDEX_VIEW} of folder with name: {@link #VIEW_FOLDER_NAME}
+     *
+     * <p>Mapping for PUT request casts model to {@link LessonDTO}
+     * object. After, retrieved {@link LessonDTO} object converts to {@link Lesson}
+     * object and updates in database
+     *
+     * @param lessonDTO retrieved from model {@link LessonDTO} object
+     * @return {@link #REDIRECT} to {@link #INDEX_VIEW} of folder with name: {@link #VIEW_FOLDER_NAME}
+     * @see AbstractService#create(Object)
+     * @see LessonDTO#getLesson(AbstractService, AbstractService, AbstractService)
+     */
     @PutMapping("/{id}")
-    public String update(@RequestParam("name") String name, @RequestParam("teacherId") Long teacherId, @RequestParam("groupId") Long groupId, @RequestParam("dateTime") String dateTimeString, @RequestParam("classRoomId") Long classRoomId, Model model, @PathVariable(ID) long id) {
+    protected String update(@ModelAttribute(ENTITY_ATTRIBUTE_NAME) LessonDTO lessonDTO) {
 
-        lessonService.update(id, new Lesson(name, teacherId, groupId, LocalDateTime.parse(dateTimeString, timeFormatter), classRoomId));
-        model.addAttribute(ENTITY_ATTRIBUTE_NAME, lessonService.getById(id));
-
-        return REDIRECT + VIEW_FOLDER_NAME;
-    }
-
-    @DeleteMapping("/{id}")
-    public String delete(@PathVariable(ID) long id) {
-
-        lessonService.delete(id);
-        return REDIRECT + VIEW_FOLDER_NAME;
-    }
-
-    private List<LessonDTO> getLessonDTOS() {
-        return lessonService.getAll().stream().map(el -> new LessonDTO(el, groupService.getById(el.getGroupId()).getAbbreviation(), teacherService.getById(el.getTeacherId()), classRoomService.getById(el.getClassRoomId()).getClassNumber())).collect(Collectors.toList());
+        Lesson lesson = lessonDTO.getLesson(groupService, teacherService, classRoomService);
+        lessonService.update(lesson);
+        return REDIRECT + getViewFolderName();
     }
 }

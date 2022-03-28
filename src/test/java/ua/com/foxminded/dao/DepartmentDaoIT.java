@@ -87,16 +87,16 @@ class DepartmentDaoIT {
     void update_shouldUpdateDepartment() {
 
         assertEquals(GENERATED_DEPARTMENTS_COUNT, departmentDao.getAll().size());
-        Department department1 = departmentDao.create(new Department("IT"));
-        Department department2 = new Department("Geography");
+        Department department = departmentDao.create(new Department("IT"));
+        String randomDepartmentName = "Economics";
         assertEquals(GENERATED_DEPARTMENTS_COUNT + 1, departmentDao.getAll().size());
 
-        departmentDao.update(department1.getId(), department2);
+        department.setName(randomDepartmentName);
+        departmentDao.update(department);
 
-        Optional<Department> updatedDepartment = departmentDao.getById(department1.getId());
+        Optional<Department> updatedDepartment = departmentDao.getById(department.getId());
 
         assertTrue(updatedDepartment.isPresent());
-        assertEquals(department1.getId(), updatedDepartment.get().getId());
-        assertEquals(department2.getName(), updatedDepartment.get().getName());
+        assertEquals(updatedDepartment.get(), department);
     }
 }
