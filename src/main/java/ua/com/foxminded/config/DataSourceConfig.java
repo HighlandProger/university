@@ -1,16 +1,19 @@
 package ua.com.foxminded.config;
 
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -58,23 +61,26 @@ public class DataSourceConfig {
     @Value("${postgres.password}")
     private String password;
 
-    /**
-     * Creates LocalSessionFactoryBean bean for AbstractDao methods
-     * for example {@link ua.com.foxminded.dao.AbstractDao#create(Object)},
-     * whose use {@link SessionFactory#openSession()}. It also sets data source: {@link #dataSource()},
-     * package to scan: {@link ua.com.foxminded}, Hibernate properties: {@link #hibernateProperties()}
-     *
-     * @return LocalSessionFactoryBean which opens the session for Session object in AbstractDao
-     * @see ua.com.foxminded.dao.AbstractDao
-     */
     @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("ua.com.foxminded");
-        sessionFactory.setHibernateProperties(hibernateProperties());
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
 
-        return sessionFactory;
+    //    /**
+//     * Creates LocalSessionFactoryBean bean for AbstractDao methods
+//     * for example {@link ua.com.foxminded.dao.AbstractDao#create(Object)},
+//     * whose use {@link SessionFactory#openSession()}. It also sets data source: {@link #dataSource()},
+//     * package to scan: {@link ua.com.foxminded}, Hibernate properties: {@link #hibernateProperties()}
+//     *
+//     * @return LocalSessionFactoryBean which opens the session for Session object in AbstractDao
+//     * @see ua.com.foxminded.dao.AbstractDao
+//     */
+    @Bean
+    public SessionFactory sessionFactory() {
+        return new LocalSessionFactoryBuilder(dataSource())
+            .scanPackages("ua.com.foxminded")
+            .addProperties(hibernateProperties())
+            .buildSessionFactory();
     }
 
     /**
@@ -86,7 +92,7 @@ public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
 
-        BasicDataSource dataSource = new BasicDataSource();
+        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
         dataSource.setUsername(userName);
@@ -121,11 +127,10 @@ public class DataSourceConfig {
      *
      * @return PlatformTransactionManager bean with fixed SessionFactory object for Hibernate transaction manager
      */
+
     @Bean
-    public PlatformTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        return transactionManager;
+    public HibernateExceptionTranslator hibernateExceptionTranslator() {
+        return new HibernateExceptionTranslator();
     }
 
     /**
@@ -135,11 +140,21 @@ public class DataSourceConfig {
      */
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty(
-            "hibernate.hbm2ddl.auto", "update");
-        hibernateProperties.setProperty(
+        hibernateProperties.put(
+            "hibernate.hbm2ddl.auto", "create-drop");
+        hibernateProperties.put(
             "hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
 
         return hibernateProperties;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        return new HibernateTransactionManager(sessionFactory());
+    }
+
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor petpp() {
+        return new PersistenceExceptionTranslationPostProcessor();
     }
 }

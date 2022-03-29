@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.GenericTypeResolver;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import ua.com.foxminded.exception.ClassNotFoundException;
 
 import javax.persistence.OptimisticLockException;
@@ -17,6 +20,8 @@ import java.util.Optional;
  *
  * @param <T> the type of ua.com.foxminded.model package classes
  */
+
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public abstract class AbstractDao<T> {
 
     /**
@@ -62,25 +67,25 @@ public abstract class AbstractDao<T> {
         this.simpleClassName = this.genericType.getSimpleName();
     }
 
-    /**
-     * Returns created object in table mapped by value class type
-     *
-     * @param value value to create
-     * @return non-null value with defined id, described by AbstractDao
-     */
-    public T create(T value) {
-
-        try (Session session = sessionFactory.openSession()) {
-
-            session.beginTransaction();
-            logger.debug("Creating new {} object", simpleClassName);
-            value = genericType.cast(session.merge(value));
-            logger.debug("{} object has been created", simpleClassName);
-            session.getTransaction().commit();
-            return value;
-        }
+    public Session session() {
+        return sessionFactory.getCurrentSession();
     }
 
+    public void flush() {
+        session().flush();
+    }
+
+    /**
+     * Returns a list of all values of type described this AbstractDao in mapped table of a database
+     *
+     * @return a list of all values of type described this AbstractDao in mapped table of a database
+     */
+    public List<T> getAll() {
+
+        logger.info(TransactionSynchronizationManager.getCurrentTransactionName());
+        logger.debug("Getting all {} objects", simpleClassName);
+        return session().createQuery("FROM " + simpleClassName, genericType).list();
+    }
 
     /**
      * If a value with param id is present in table mapped by this class type,
@@ -94,53 +99,26 @@ public abstract class AbstractDao<T> {
      */
     public Optional<T> getById(long id) {
 
-        try (Session session = sessionFactory.openSession()) {
-
-            session.beginTransaction();
-            logger.debug("Getting {} object by id = {}", simpleClassName, id);
-            T obtainedObject = session.get(genericType, id);
-            logger.debug("{} object with id ={} has been obtained", simpleClassName, id);
-            session.getTransaction().commit();
-            return Optional.of(obtainedObject);
-        }
+        logger.info(TransactionSynchronizationManager.getCurrentTransactionName());
+        logger.debug("Getting {} object by id = {}", simpleClassName, id);
+        T obtainedObject = session().get(genericType, id);
+        logger.debug("{} obtained", obtainedObject);
+        return Optional.of(obtainedObject);
     }
 
     /**
-     * Returns a list of all values of type described this AbstractDao in mapped table of a database
+     * Returns created object in table mapped by value class type
      *
-     * @return a list of all values of type described this AbstractDao in mapped table of a database
+     * @param value value to create
+     * @return non-null value with defined id, described by AbstractDao
      */
-    public List<T> getAll() {
+    public T create(T value) {
 
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            logger.debug("Getting all {} objects", simpleClassName);
-            List<T> obtainedObjects = session.createQuery(
-                "SELECT a FROM " + simpleClassName + " a", genericType).getResultList();
-            logger.debug("All objects {} have been obtained", simpleClassName);
-            session.getTransaction().commit();
-            return obtainedObjects;
-        }
-    }
+        logger.debug("Creating new {}", value);
+        value = genericType.cast(session().merge(value));
+        logger.debug("{} has been created ", value);
 
-    /**
-     * Deletes object with param id from the table mapped by the class described in AbstractDao,
-     * if object with such param id is present in database, otherwise throws EntityNotFoundException
-     *
-     * @param id id of deleting from database object
-     * @throws ua.com.foxminded.exception.EntityNotFoundException if object with such param id is not present in database
-     */
-    public void delete(long id) {
-
-        try (Session session = sessionFactory.openSession()) {
-
-            session.beginTransaction();
-            logger.debug("Deleting {} object with id = {}", simpleClassName, id);
-            T value = session.load(genericType, id);
-            session.delete(value);
-            logger.debug("{} object with id = {} has been deleted", simpleClassName, id);
-            session.getTransaction().commit();
-        }
+        return value;
     }
 
     /**
@@ -153,13 +131,23 @@ public abstract class AbstractDao<T> {
      */
     public void update(T value) {
 
-        try (Session session = sessionFactory.openSession()) {
+        logger.debug("Updating {}", value);
+        session().update(value);
+        logger.debug("{} has been updated", value);
+    }
 
-            session.beginTransaction();
-            logger.debug("Updating {} object", simpleClassName);
-            session.update(value);
-            logger.debug("{} object has been updated", simpleClassName);
-            session.getTransaction().commit();
-        }
+    /**
+     * Deletes object with param id from the table mapped by the class described in AbstractDao,
+     * if object with such param id is present in database, otherwise throws EntityNotFoundException
+     *
+     * @param id id of deleting from database object
+     * @throws ua.com.foxminded.exception.EntityNotFoundException if object with such param id is not present in database
+     */
+    public void delete(long id) {
+
+        logger.debug("Deleting {} object with id = {}", simpleClassName, id);
+        T value = session().load(genericType, id);
+        session().delete(value);
+        logger.debug("{} object with id = {} has been deleted", simpleClassName, id);
     }
 }

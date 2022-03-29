@@ -15,12 +15,5 @@ import javax.sql.DataSource;
 @ComponentScan("ua.com.foxminded.dao")
 public class SpringDaoTestConfig {
 
-    @Autowired
-    private DataSource dataSource;
-
-    @Bean
-    PlatformTransactionManager transactionManager(DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
-    }
 
 }
