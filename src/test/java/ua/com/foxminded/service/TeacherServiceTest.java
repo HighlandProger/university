@@ -6,12 +6,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.TeacherDao;
-import ua.com.foxminded.model.Teacher;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Teacher;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -76,7 +77,7 @@ class TeacherServiceTest {
     }
 
     @Test
-    void  update_shouldCallTeacherDaoUpdate() {
+    void update_shouldCallTeacherDaoUpdate() {
 
         teacherService.update(expectedTeacher);
 

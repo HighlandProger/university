@@ -1,6 +1,5 @@
 package ua.com.foxminded.dao;
 
-import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,7 @@ class LessonDaoIT {
 
         assertEquals(GENERATED_LESSONS_COUNT, lessonDao.getAll().size());
 
-        expectedLesson = new Lesson( 19L, "Algebra", randomTeacher, randomGroup, randomDateTime, randomClassRoom);
+        expectedLesson = new Lesson(19L, "Algebra", randomTeacher, randomGroup, randomDateTime, randomClassRoom);
         Lesson actualLesson = lessonDao.create(expectedLesson);
 
         System.out.println(expectedLesson);

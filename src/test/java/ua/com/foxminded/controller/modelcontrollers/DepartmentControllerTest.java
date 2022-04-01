@@ -121,16 +121,17 @@ class DepartmentControllerTest {
     @Test
     void update_shouldUpdateDepartmentAndRedirect() throws Exception {
 
-        String randomName = "Math";
+        String changedName = "Math";
+        Department changedDepartment = new Department(randomDepartment.getId(), changedName);
 
         mockMvc.perform(put(TEMPLATE_URL + SLASH + randomDepartment.getId())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param(NAME, randomName))
+                .param(NAME, changedDepartment.getName()))
             .andExpect(status().is3xxRedirection())
             .andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(ID, is(randomDepartment.getId()))))
-            .andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(NAME, is(randomName))));
+            .andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(NAME, is(changedDepartment.getName()))));
 
-//        verify(departmentService, times(1)).update(randomDepartment.getId(), new Department(randomName));
+        verify(departmentService, times(1)).update(changedDepartment);
         verifyNoMoreInteractions(departmentService);
     }
 

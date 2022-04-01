@@ -89,11 +89,17 @@ class CourseControllerTest {
     @Test
     void update_shouldUpdateCourseAndRedirect() throws Exception {
 
-        int randomYear = 3027;
+        int changedYear = 3027;
+        Course changedCourse = new Course(randomCourse.getId(), changedYear);
 
-        mockMvc.perform(put(TEMPLATE_URL + SLASH + randomCourse.getId()).contentType(MediaType.APPLICATION_FORM_URLENCODED).param(ESTABLISH_YEAR, String.valueOf(randomYear))).andExpect(status().is3xxRedirection()).andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(ID, is(randomCourse.getId())))).andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(ESTABLISH_YEAR, is(randomYear))));
+        mockMvc.perform(put(TEMPLATE_URL + SLASH + randomCourse.getId())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param(ESTABLISH_YEAR, String.valueOf(changedCourse.getEstablishYear())))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(ID, is(changedCourse.getId()))))
+            .andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(ESTABLISH_YEAR, is(changedCourse.getEstablishYear()))));
 
-//        verify(courseService, times(1)).update(randomCourse.getId(), new Course(randomYear));
+        verify(courseService, times(1)).update(changedCourse);
         verifyNoMoreInteractions(courseService);
     }
 

@@ -6,19 +6,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.GroupDao;
-import ua.com.foxminded.model.Group;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Group;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceTest {
 
-    private final Group expectedGroup = new Group(1L,null, null, 4);
+    private final Group expectedGroup = new Group(1L, null, null, 4);
     private final long randomId = 5;
 
     @InjectMocks
@@ -75,7 +76,7 @@ class GroupServiceTest {
     }
 
     @Test
-    void  update_shouldCallGroupDaoUpdate() {
+    void update_shouldCallGroupDaoUpdate() {
 
         groupService.update(expectedGroup);
 

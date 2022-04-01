@@ -110,7 +110,7 @@ public class Group {
      * Reference - depends on property id in Course class
      */
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     @JoinColumn(name = "course_id")
     public Course getCourse() {
         return course;

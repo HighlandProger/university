@@ -6,15 +6,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.LessonDao;
-import ua.com.foxminded.model.Lesson;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Lesson;
 import ua.com.foxminded.utils.DateUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -79,7 +78,7 @@ class LessonServiceTest {
     }
 
     @Test
-    void  update_shouldCallLessonDaoUpdate() {
+    void update_shouldCallLessonDaoUpdate() {
 
         lessonService.update(expectedLesson);
 

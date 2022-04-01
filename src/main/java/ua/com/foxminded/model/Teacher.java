@@ -93,7 +93,7 @@ public class Teacher extends Person {
      * Reference - depends on property id in Department class
      */
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
     @JoinColumn(name = "department_id")
     public Department getDepartment() {
         return department;
@@ -126,7 +126,7 @@ public class Teacher extends Person {
         if (this == o) return true;
         if (!(o instanceof Teacher)) return false;
         Teacher teacher = (Teacher) o;
-        return getId().equals(teacher.getId()) && getDepartment().equals(teacher.getDepartment());
+        return Objects.equals(getId(), teacher.getId()) && Objects.equals(getDepartment(), teacher.getDepartment());
     }
 
     @Override

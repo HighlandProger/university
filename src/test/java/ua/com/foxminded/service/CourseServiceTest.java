@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.CourseDao;
-import ua.com.foxminded.model.Course;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Course;
 
 import java.util.Optional;
 
@@ -76,7 +76,7 @@ class CourseServiceTest {
     }
 
     @Test
-    void  update_shouldCallCourseDaoUpdate() {
+    void update_shouldCallCourseDaoUpdate() {
 
         int randomEstablishYear = expectedCourse.getEstablishYear() + 4;
         expectedCourse.setEstablishYear(randomEstablishYear);
