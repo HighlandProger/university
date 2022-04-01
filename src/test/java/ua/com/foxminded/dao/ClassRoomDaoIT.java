@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
 import ua.com.foxminded.model.ClassRoom;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +33,7 @@ class ClassRoomDaoIT {
 
         assertEquals(GENERATED_CLASS_ROOMS_COUNT, classRoomDao.getAll().size());
 
-        expectedClassRoom = new ClassRoom(8L, "4");
+        expectedClassRoom = new ClassRoom(5L, "4");
         ClassRoom actualClassRoom = classRoomDao.create(expectedClassRoom);
 
         assertEquals(expectedClassRoom, actualClassRoom);

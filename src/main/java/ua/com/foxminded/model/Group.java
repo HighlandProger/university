@@ -3,6 +3,7 @@ package ua.com.foxminded.model;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,6 +30,14 @@ public class Group {
      * Property - group number
      */
     private int groupNumber;
+    /**
+     * Property - students
+     */
+    private List<Student> students;
+    /**
+     * Property - lessons
+     */
+    private List<Lesson> lessons;
 
     /**
      * Empty constructor
@@ -85,7 +94,7 @@ public class Group {
      * Reference - depends on property id in Department class
      */
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     @JoinColumn(name = "department_id")
     public Department getDepartment() {
         return department;
@@ -101,7 +110,7 @@ public class Group {
      * Reference - depends on property id in Course class
      */
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "course_id")
     public Course getCourse() {
         return course;
@@ -122,6 +131,32 @@ public class Group {
 
     public void setGroupNumber(int groupNumber) {
         this.groupNumber = groupNumber;
+    }
+
+    /**
+     * This method is used to cascade remove students in the removed group
+     */
+    @OneToMany(mappedBy = "group")
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    /**
+     * This method is used to cascade remove lessons in the removed group
+     */
+    @OneToMany(mappedBy = "group")
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 
     public String buildAbbreviation() {

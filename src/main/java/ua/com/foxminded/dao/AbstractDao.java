@@ -16,29 +16,28 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * DAO class AbstractDao
+ * DAO class AbstractDao. Propagation REQUIRED - If there is no existing physical
+ * transaction, then the Spring container will create one.
  *
  * @param <T> the type of ua.com.foxminded.model package classes
  */
-
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional(propagation = Propagation.REQUIRED)
 public abstract class AbstractDao<T> {
 
     /**
      * Property - logger to log important actions
      */
     private static final Logger logger = LoggerFactory.getLogger(AbstractDao.class.getName());
-
     /**
-     * Property - generic type
+     * Property - genericType for Object casting
      */
     private final Class<T> genericType;
     /**
-     * Property - session factory
+     * Property - sessionFactory for database
      */
     private final SessionFactory sessionFactory;
     /**
-     * Property - simple class name
+     * Property - simpleClassName for logs and table names in SQL
      */
     private final String simpleClassName;
 
@@ -69,10 +68,6 @@ public abstract class AbstractDao<T> {
 
     public Session session() {
         return sessionFactory.getCurrentSession();
-    }
-
-    public void flush() {
-        session().flush();
     }
 
     /**

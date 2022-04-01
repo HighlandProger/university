@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -61,20 +59,16 @@ public class DataSourceConfig {
     @Value("${postgres.password}")
     private String password;
 
-    @Bean
-    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-        return new PropertySourcesPlaceholderConfigurer();
-    }
 
-    //    /**
-//     * Creates LocalSessionFactoryBean bean for AbstractDao methods
-//     * for example {@link ua.com.foxminded.dao.AbstractDao#create(Object)},
-//     * whose use {@link SessionFactory#openSession()}. It also sets data source: {@link #dataSource()},
-//     * package to scan: {@link ua.com.foxminded}, Hibernate properties: {@link #hibernateProperties()}
-//     *
-//     * @return LocalSessionFactoryBean which opens the session for Session object in AbstractDao
-//     * @see ua.com.foxminded.dao.AbstractDao
-//     */
+    /**
+     * Creates LocalSessionFactoryBean bean for AbstractDao methods
+     * for example {@link ua.com.foxminded.dao.AbstractDao#create(Object)},
+     * whose use {@link SessionFactory#openSession()}. It also sets data source: {@link #dataSource()},
+     * package to scan: {@link ua.com.foxminded}, Hibernate properties: {@link #hibernateProperties()}
+     *
+     * @return LocalSessionFactoryBean which opens the session for Session object in AbstractDao
+     * @see ua.com.foxminded.dao.AbstractDao
+     */
     @Bean
     public SessionFactory sessionFactory() {
         return new LocalSessionFactoryBuilder(dataSource())
@@ -123,14 +117,23 @@ public class DataSourceConfig {
     }
 
     /**
-     * Creates PlatformTransaction bean with fixed SessionFactory object for Hibernate transaction manager
+     * Creates HibernateExceptionTransaction bean for exception logs
      *
-     * @return PlatformTransactionManager bean with fixed SessionFactory object for Hibernate transaction manager
+     * @return HibernateExceptionTransaction bean for exception logs
      */
-
     @Bean
     public HibernateExceptionTranslator hibernateExceptionTranslator() {
         return new HibernateExceptionTranslator();
+    }
+
+    /**
+     * Creates PlatformTransactionManager for Hibernate transaction manager
+     *
+     * @return PlatformTransactionManager for Hibernate transaction manager
+     */
+    @Bean
+    public PlatformTransactionManager transactionManager() {
+        return new HibernateTransactionManager(sessionFactory());
     }
 
     /**
@@ -141,20 +144,11 @@ public class DataSourceConfig {
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.put(
-            "hibernate.hbm2ddl.auto", "create-drop");
+            "hibernate.hbm2ddl.auto", "update");
         hibernateProperties.put(
             "hibernate.dialect", "org.hibernate.dialect.PostgreSQL82Dialect");
 
         return hibernateProperties;
     }
 
-    @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new HibernateTransactionManager(sessionFactory());
-    }
-
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor petpp() {
-        return new PersistenceExceptionTranslationPostProcessor();
-    }
 }

@@ -3,7 +3,7 @@ package ua.com.foxminded.model;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "teachers")
-public class Teacher extends Person implements Serializable {
+public class Teacher extends Person {
 
     /**
      * Property - id
@@ -22,6 +22,10 @@ public class Teacher extends Person implements Serializable {
      * Property - department
      */
     private Department department;
+    /**
+     * Property - lessons
+     */
+    private List<Lesson> lessons;
 
     /**
      * Empty constructor
@@ -89,7 +93,7 @@ public class Teacher extends Person implements Serializable {
      * Reference - depends on property id in Department class
      */
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "department_id")
     public Department getDepartment() {
         return department;
@@ -97,6 +101,19 @@ public class Teacher extends Person implements Serializable {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    /**
+     * This method is used to cascade remove lessons with the removed teacher
+     */
+    @OneToMany(mappedBy = "teacher")
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 
     @Override

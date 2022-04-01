@@ -1,6 +1,9 @@
 package ua.com.foxminded.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,6 +22,11 @@ public class Course {
      * Property - establish year
      */
     private int establishYear;
+
+    /**
+     * Property - groups
+     */
+    private List<Group> groups;
 
     /**
      * Empty constructor
@@ -72,6 +80,19 @@ public class Course {
 
     public void setEstablishYear(int establishYear) {
         this.establishYear = establishYear;
+    }
+
+    /**
+     * This method is used to cascade remove groups in the removed course
+     */
+    @OneToMany(mappedBy = "course")
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     @Override

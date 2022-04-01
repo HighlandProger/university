@@ -39,7 +39,7 @@ class StudentDaoIT {
         assertEquals(GENERATED_STUDENTS_COUNT, studentDao.getAll().size());
         Group group = new Group(1L, null, null, 2);
 
-        expectedStudent = new Student(5L,"Tom", "Holland", 23, group);
+        expectedStudent = new Student(7L,"Tom", "Holland", 23, group);
         Student actualStudent = studentDao.create(expectedStudent);
 
         assertEquals(expectedStudent, actualStudent);
@@ -99,7 +99,7 @@ class StudentDaoIT {
         int randomNumber = 3;
 
         Group changedRandomGroup = randomGroup;
-        randomGroup.setId(randomGroup.getId() + randomNumber);
+        changedRandomGroup.setId(randomGroup.getId() + randomNumber);
 
         student.setFirstName(randomFirstName);
         student.setLastName(randomLastName);

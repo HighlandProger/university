@@ -1,6 +1,9 @@
 package ua.com.foxminded.model;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,6 +22,10 @@ public class ClassRoom {
      * Property - class number
      */
     private String classNumber;
+    /**
+     * Property - lessons
+     */
+    private List<Lesson> lessons;
 
     /**
      * Empty constructor
@@ -72,6 +79,19 @@ public class ClassRoom {
 
     public void setClassNumber(String classNumber) {
         this.classNumber = classNumber;
+    }
+
+    /**
+     * This method is used to cascade remove lessons in the removed class room
+     */
+    @OneToMany(mappedBy = "classRoom")
+    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 
     @Override

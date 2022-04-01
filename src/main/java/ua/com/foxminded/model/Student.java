@@ -88,7 +88,7 @@ public class Student extends Person {
      * Reference - depends on property id in Group class
      */
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "group_id")
     public Group getGroup() {
         return group;

@@ -3,10 +3,8 @@ package ua.com.foxminded.dao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
 import ua.com.foxminded.model.Course;
@@ -22,8 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SpringDaoTestConfig.class)
 @Transactional
-@Rollback
-
 class CourseDaoIT {
 
     private static final int GENERATED_COURSES_COUNT = 3;
@@ -86,7 +82,6 @@ class CourseDaoIT {
 
     @Test
     void update_shouldUpdateCourse() {
-
 
         assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
         Course course = courseDao.create(new Course(2021));
