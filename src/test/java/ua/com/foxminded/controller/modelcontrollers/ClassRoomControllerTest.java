@@ -89,11 +89,17 @@ class ClassRoomControllerTest {
     @Test
     void update_shouldUpdateClassRoomAndRedirect() throws Exception {
 
-        String randomClassNumber = "4";
+        String changedClassNumber = "4";
+        ClassRoom changedClassRoom = new ClassRoom(randomClassRoom.getId(), changedClassNumber);
 
-        mockMvc.perform(put(TEMPLATE_URL + SLASH + randomClassRoom.getId()).contentType(MediaType.APPLICATION_FORM_URLENCODED).param(CLASS_NUMBER, randomClassNumber)).andExpect(status().is3xxRedirection()).andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(ID, is(randomClassRoom.getId())))).andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(CLASS_NUMBER, is(randomClassNumber))));
+        mockMvc.perform(put(TEMPLATE_URL + SLASH + randomClassRoom.getId())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param(CLASS_NUMBER, changedClassRoom.getClassNumber()))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(ID, is(randomClassRoom.getId()))))
+            .andExpect(model().attribute(ENTITY_ATTRIBUTE_NAME, hasProperty(CLASS_NUMBER, is(changedClassRoom.getClassNumber()))));
 
-        verify(classRoomService, times(1)).update(randomClassRoom.getId(), new ClassRoom(randomClassRoom.getId(), randomClassNumber));
+        verify(classRoomService, times(1)).update(changedClassRoom);
         verifyNoMoreInteractions(classRoomService);
     }
 

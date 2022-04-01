@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http//thymeleaf.org">
 <head>
-    <title>Update teacher</title>
+    <title>Update student</title>
     <meta th:insert="~{fragments/head}">
 </head>
 <body>
@@ -25,9 +25,9 @@
     </div>
 
     <div>
-        <label for="groupId" class="form-label">Group</label>
-        <select class="form-select" aria-label="Default select example" th:field="*{groupId}" id="groupId">
-            <option th:each="group : ${groups}" th:value="${group.getId()}" th:text="${group.getAbbreviation()}">
+        <label for="group" class="form-label">Group</label>
+        <select class="form-select" aria-label="Default select example" th:field="*{groupId}" id="group">
+            <option th:each="group : ${groups}" th:value="${group.getId()}" th:text="${group.buildAbbreviation()}">
             </option>
         </select>
     </div>

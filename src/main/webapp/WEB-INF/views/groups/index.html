@@ -24,17 +24,17 @@
     </tr>
     </thead>
 
-    <div th:each="groupDTO : ${groupDTOS}">
+    <div th:each="entity : ${entities}">
         <tbody>
-        <td th:text="${groupDTOStat.count}">Number</td>
-        <td th:text="${groupDTO.getAbbreviation()}">Group abbreviation</td>
-        <td th:text="${groupDTO.getDepartmentName()}">Department name</td>
-        <td th:text="${groupDTO.getCourseEstablishYear()}">Course establish year</td>
-        <td th:text="${groupDTO.getGroupNumber()}">Group number</td>
+        <td th:text="${entityStat.count}">Number</td>
+        <td th:text="${entity.buildAbbreviation()}">Group abbreviation</td>
+        <td th:text="${entity.getDepartment().getName()}">Department name</td>
+        <td th:text="${entity.getCourse().getEstablishYear()}">Course establish year</td>
+        <td th:text="${entity.getGroupNumber()}">Group number</td>
         <td class="my-td">
             <div class="btn-group" role="group" aria-label="Basic example">
-                <a th:href="@{/groups/{id}/edit(id=${groupDTO.getId()})}" class="btn btn-primary">Edit</a>
-                <form th:method="DELETE" th:action="@{/groups/{id}(id=${groupDTO.getId()})}">
+                <a th:href="@{/groups/{id}/edit(id=${entity.getId()})}" class="btn btn-primary">Edit</a>
+                <form th:method="DELETE" th:action="@{/groups/{id}(id=${entity.getId()})}">
                     <button type="submit" class="btn btn-primary">Delete</button>
                 </form>
             </div>

@@ -1,30 +1,79 @@
 package ua.com.foxminded.model;
 
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * Model class Student.
+ * ORM - students
+ */
+@Entity
+@Table(name = "students")
 public class Student extends Person {
 
+    /**
+     * Property - id
+     */
     private Long id;
-    private Long groupId;
+    /**
+     * Property - group
+     */
+    private Group group;
 
+    /**
+     * Empty constructor
+     */
     public Student() {
     }
 
-    public Student(Long id, Long groupId, String firstName, String lastName, int age) {
+    /**
+     * Full Constructor
+     *
+     * @param id        student's id
+     * @param firstName student's first name
+     * @param lastName  student's last name
+     * @param age       student's age
+     * @param group     student's group
+     */
+    public Student(Long id, String firstName, String lastName, int age, Group group) {
         super(firstName, lastName, age);
         this.id = id;
-        this.groupId = groupId;
+        this.group = group;
     }
 
+    /**
+     * Constructor only with super class params
+     *
+     * @param firstName student's first name
+     * @param lastName  student's last name
+     * @param age       student's age
+     */
     public Student(String firstName, String lastName, int age) {
         super(firstName, lastName, age);
     }
 
-    public Student(String firstName, String lastName, int age, long groupId) {
+    /**
+     * Constructor for creating using DAO
+     *
+     * @param firstName student's first name
+     * @param lastName  student's last name
+     * @param age       student's age
+     * @param group     student's group
+     */
+    public Student(String firstName, String lastName, int age, Group group) {
         super(firstName, lastName, age);
-        this.groupId =groupId;
+        this.group = group;
     }
 
+    /**
+     * This method is used to ORM property id
+     * in column id at students table
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return id;
     }
@@ -33,12 +82,20 @@ public class Student extends Person {
         this.id = id;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    /**
+     * This method is used to ORM for property group
+     * in column group_id at students table.
+     * Reference - depends on property id in Group class
+     */
+    @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn(name = "group_id")
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     @Override
@@ -46,16 +103,20 @@ public class Student extends Person {
         if (this == o) return true;
         if (!(o instanceof Student)) return false;
         Student student = (Student) o;
-        return Objects.equals(getGroupId(), student.getGroupId());
+        return Objects.equals(getId(), student.getId()) && Objects.equals(getGroup(), student.getGroup());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getGroupId());
+        return Objects.hash(getId(), getGroup());
     }
 
     @Override
     public String toString() {
-        return "Student{" + "id=" + id + ", groupId=" + groupId + ", " + super.toString() + '}';
+        return "Student{" +
+            "id=" + id +
+            super.toString() +
+            ", group=" + group +
+            '}';
     }
 }

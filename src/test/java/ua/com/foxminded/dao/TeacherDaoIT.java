@@ -9,7 +9,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
 import ua.com.foxminded.model.Department;
-import ua.com.foxminded.model.Student;
 import ua.com.foxminded.model.Teacher;
 
 import java.util.Arrays;
@@ -27,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TeacherDaoIT {
 
     private static final int GENERATED_TEACHERS_COUNT = 3;
+    private final Department randomDepartment = new Department(9L, "Geography");
 
     @Autowired
     private TeacherDao teacherDao;
@@ -39,7 +39,7 @@ class TeacherDaoIT {
         assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
         Department department = new Department(1L, "IT");
 
-        expectedTeacher = new Teacher(1L, department.getId(), "Antony", "Hopkins", 58);
+        expectedTeacher = new Teacher(1L, "Antony", "Hopkins", 58, department);
         Teacher actualTeacher = teacherDao.create(expectedTeacher);
 
         assertEquals(expectedTeacher, actualTeacher);
@@ -90,19 +90,27 @@ class TeacherDaoIT {
     void update_shouldUpdateTeacher() {
 
         assertEquals(GENERATED_TEACHERS_COUNT, teacherDao.getAll().size());
-        Teacher teacher1 = teacherDao.create(new Teacher("Tom", "Thompson", 44, 4L));
-        Teacher teacher2 = new Teacher("Paul", "Paulson", 55, 5L);
+        Teacher teacher = teacherDao.create(new Teacher("Tom", "Thompson", 44, new Department(4L, "IT")));
         assertEquals(GENERATED_TEACHERS_COUNT + 1, teacherDao.getAll().size());
 
-        teacherDao.update(teacher1.getId(), teacher2);
+        String randomFirstName = "Bob";
+        String randomLastName = "Williams";
+        int randomAge = 43;
+        int randomNumber = 6;
 
-        Optional<Teacher> updatedTeacher = teacherDao.getById(teacher1.getId());
+        Department changedRandomDepartment = randomDepartment;
+        changedRandomDepartment.setId(randomDepartment.getId() + randomNumber);
+
+        teacher.setFirstName(randomFirstName);
+        teacher.setLastName(randomLastName);
+        teacher.setAge(randomAge);
+        teacher.setDepartment(changedRandomDepartment);
+
+        teacherDao.update(teacher);
+
+        Optional<Teacher> updatedTeacher = teacherDao.getById(teacher.getId());
 
         assertTrue(updatedTeacher.isPresent());
-        assertEquals(teacher1.getId(), updatedTeacher.get().getId());
-        assertEquals(teacher2.getFirstName(), updatedTeacher.get().getFirstName());
-        assertEquals(teacher2.getLastName(), updatedTeacher.get().getLastName());
-        assertEquals(teacher2.getAge(), updatedTeacher.get().getAge());
-        assertEquals(teacher2.getDepartmentId(), updatedTeacher.get().getDepartmentId());
+        assertEquals(updatedTeacher.get(), teacher);
     }
 }

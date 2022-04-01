@@ -38,7 +38,7 @@ class GroupDaoIT {
 
         assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
 
-        expectedGroup = new Group(1L, 1L, 1L, 2);
+        expectedGroup = new Group(1L, new Department(1L, "IT"), new Course(3L, 2023), 2);
         Group actualGroup = groupDao.create(expectedGroup);
 
         assertEquals(expectedGroup, actualGroup);
@@ -50,9 +50,9 @@ class GroupDaoIT {
         assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
         Department department = new Department(1L, "IT");
         Course course = new Course(1L, 2021);
-        Group group1 = groupDao.create(new Group(department.getId(), course.getId(), 1));
-        Group group2 = groupDao.create(new Group(department.getId(), course.getId(), 2));
-        Group group3 = groupDao.create(new Group(department.getId(), course.getId(), 3));
+        Group group1 = groupDao.create(new Group(department, course, 1));
+        Group group2 = groupDao.create(new Group(department, course, 2));
+        Group group3 = groupDao.create(new Group(department, course, 3));
 
         expectedGroup = group2;
         Optional<Group> actualGroup = groupDao.getById(expectedGroup.getId());
@@ -67,9 +67,9 @@ class GroupDaoIT {
         assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
         Department department = new Department(1L, "IT");
         Course course = new Course(1L, 2021);
-        Group group1 = groupDao.create(new Group(department.getId(), course.getId(), 1));
-        Group group2 = groupDao.create(new Group(department.getId(), course.getId(), 2));
-        Group group3 = groupDao.create(new Group(department.getId(), course.getId(), 3));
+        Group group1 = groupDao.create(new Group(department, course, 1));
+        Group group2 = groupDao.create(new Group(department, course, 2));
+        Group group3 = groupDao.create(new Group(department, course, 3));
 
         List<Group> expectedGroups = Arrays.asList(group1, group2, group3);
         List<Group> actualGroups = groupDao.getAll().stream().skip(GENERATED_GROUPS_COUNT).collect(Collectors.toList());
@@ -93,18 +93,25 @@ class GroupDaoIT {
     void update_shouldUpdateGroup() {
 
         assertEquals(GENERATED_GROUPS_COUNT, groupDao.getAll().size());
-        Group group1 = groupDao.create(new Group(1L, 1L, 1));
-        Group group2 = new Group(2L, 2L, 2);
+        Department department = new Department(1L, "IT");
+        Course course = new Course(1L, 2021);
+        Group group = groupDao.create(new Group(department, course, 1));
         assertEquals(GENERATED_GROUPS_COUNT + 1, groupDao.getAll().size());
 
-        groupDao.update(group1.getId(), group2);
+        int randomNumber = 4;
+        int randomGroupNumber = group.getGroupNumber() + randomNumber;
+        Department randomDepartment = new Department(department.getId() + randomNumber, department.getName());
+        Course randomCourse = new Course(course.getId() + randomNumber, course.getEstablishYear());
 
-        Optional<Group> updatedGroup = groupDao.getById(group1.getId());
+        group.setDepartment(randomDepartment);
+        group.setCourse(randomCourse);
+        group.setGroupNumber(randomGroupNumber);
+
+        groupDao.update(group);
+
+        Optional<Group> updatedGroup = groupDao.getById(group.getId());
 
         assertTrue(updatedGroup.isPresent());
-        assertEquals(group1.getId(), updatedGroup.get().getId());
-        assertEquals(group2.getDepartmentId(), updatedGroup.get().getDepartmentId());
-        assertEquals(group2.getCourseId(), updatedGroup.get().getCourseId());
-        assertEquals(group2.getGroupNumber(), updatedGroup.get().getGroupNumber());
+        assertEquals(updatedGroup.get(), group);
     }
 }

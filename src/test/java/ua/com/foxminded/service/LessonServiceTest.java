@@ -6,15 +6,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ua.com.foxminded.dao.LessonDao;
-import ua.com.foxminded.model.Lesson;
 import ua.com.foxminded.exception.EntityNotFoundException;
+import ua.com.foxminded.model.Lesson;
 import ua.com.foxminded.utils.DateUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.when;
 class LessonServiceTest {
 
     private final Lesson expectedLesson =
-        new Lesson(1L, "Algebra", 1L, 2L, DateUtils.getLocalDateTimeFromString("05.01.2022 13:00"), 1L);
+        new Lesson(1L, "Algebra", null, null, DateUtils.getLocalDateTimeFromString("05.01.2022 13:00"), null);
     private final long randomId = 5;
 
     @InjectMocks
@@ -79,10 +78,10 @@ class LessonServiceTest {
     }
 
     @Test
-    void  update_shouldCallLessonDaoUpdate() {
+    void update_shouldCallLessonDaoUpdate() {
 
-        lessonService.update(randomId, expectedLesson);
+        lessonService.update(expectedLesson);
 
-        verify(lessonDao).update(randomId, expectedLesson);
+        verify(lessonDao).update(expectedLesson);
     }
 }

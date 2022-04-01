@@ -14,11 +14,17 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+/**
+ * Configuration class SpringWebConfig for web
+ */
 @Configuration
 @ComponentScan("ua.com.foxminded")
 @EnableWebMvc
 public class SpringWebConfig implements WebMvcConfigurer {
 
+    /**
+     * Property - application context
+     */
     private final ApplicationContext applicationContext;
 
     @Autowired
@@ -26,6 +32,13 @@ public class SpringWebConfig implements WebMvcConfigurer {
         this.applicationContext = applicationContext;
     }
 
+    /**
+     * Creates SpringResourceTemplateResolver bean with configured {@link #applicationContext},
+     * prefix and suffix for views
+     *
+     * @return SpringResourceTemplateResolver bean with configured {@link #applicationContext},
+     * prefix and suffix for views
+     */
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
 
@@ -37,6 +50,13 @@ public class SpringWebConfig implements WebMvcConfigurer {
         return templateResolver;
     }
 
+    /**
+     * Creates SpringTemplateEngine bean with configured dialect, {@link #templateResolver()}
+     * and EnableSpringELCompiler
+     *
+     * @return SpringTemplateEngine bean with configured dialect, {@link #templateResolver()}
+     * and EnableSpringELCompiler
+     */
     @Bean
     public SpringTemplateEngine templateEngine() {
 
@@ -48,6 +68,11 @@ public class SpringWebConfig implements WebMvcConfigurer {
         return templateEngine;
     }
 
+    /**
+     * Configures resolver in views
+     *
+     * @param registry ViewResolverRegistry with set viewResolver
+     */
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
 

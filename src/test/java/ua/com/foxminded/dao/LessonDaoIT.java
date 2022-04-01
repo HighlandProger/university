@@ -8,10 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import ua.com.foxminded.config.SpringDaoTestConfig;
-import ua.com.foxminded.model.ClassRoom;
-import ua.com.foxminded.model.Group;
-import ua.com.foxminded.model.Lesson;
-import ua.com.foxminded.model.Teacher;
+import ua.com.foxminded.model.*;
 import ua.com.foxminded.utils.DateUtils;
 
 import java.time.LocalDateTime;
@@ -30,6 +27,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class LessonDaoIT {
 
     private static final int GENERATED_LESSONS_COUNT = 18;
+    private final Department randomDepartment = new Department(1L, "IT");
+    private final Course randomCourse = new Course(1L, 2031);
+    private final Teacher randomTeacher = new Teacher(1L, "Jack", "Nicolson", 54, randomDepartment);
+    private final Group randomGroup = new Group(1L, randomDepartment, randomCourse, 0);
+    private final LocalDateTime randomDateTime = DateUtils.getLocalDateTimeFromString("15.03.2022 12:44");
+    private final ClassRoom randomClassRoom = new ClassRoom(1L, "1");
 
     @Autowired
     private LessonDao lessonDao;
@@ -40,14 +43,12 @@ class LessonDaoIT {
     void create_shouldCreateLesson() {
 
         assertEquals(GENERATED_LESSONS_COUNT, lessonDao.getAll().size());
-        Teacher teacher = new Teacher(1L, 2L, "John", "Travolta", 54);
-        Group group = new Group(1L, 1L, 2L, 3);
-        String lessonDate = "01.01.2022 15:30";
-        LocalDateTime dateTime = DateUtils.getLocalDateTimeFromString(lessonDate);
-        ClassRoom classRoom = new ClassRoom(1L, "1");
 
-        expectedLesson = new Lesson(1L, "Algebra", teacher.getId(), group.getId(), dateTime, classRoom.getId());
+        expectedLesson = new Lesson(19L, "Algebra", randomTeacher, randomGroup, randomDateTime, randomClassRoom);
         Lesson actualLesson = lessonDao.create(expectedLesson);
+
+        System.out.println(expectedLesson);
+        System.out.println(actualLesson);
 
         assertEquals(expectedLesson, actualLesson);
     }
@@ -56,15 +57,10 @@ class LessonDaoIT {
     void getById_shouldReturnLesson() {
 
         assertEquals(GENERATED_LESSONS_COUNT, lessonDao.getAll().size());
-        Teacher teacher = new Teacher(1L, 2L, "John", "Travolta", 54);
-        Group group = new Group(1L, 1L, 2L, 3);
-        String lessonDate = "01.01.2022 15:30";
-        LocalDateTime dateTime = DateUtils.getLocalDateTimeFromString(lessonDate);
-        ClassRoom classRoom = new ClassRoom(1L, "1");
 
-        Lesson lesson1 = lessonDao.create(new Lesson("Algebra", teacher.getId(), group.getId(), dateTime, classRoom.getId()));
-        Lesson lesson2 = lessonDao.create(new Lesson("Geometry", teacher.getId(), group.getId(), dateTime, classRoom.getId()));
-        Lesson lesson3 = lessonDao.create(new Lesson("Drawing", teacher.getId(), group.getId(), dateTime, classRoom.getId()));
+        Lesson lesson1 = lessonDao.create(new Lesson("Algebra", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
+        Lesson lesson2 = lessonDao.create(new Lesson("Geometry", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
+        Lesson lesson3 = lessonDao.create(new Lesson("Drawing", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
 
         expectedLesson = lesson2;
         Optional<Lesson> actualLesson = lessonDao.getById(expectedLesson.getId());
@@ -77,15 +73,10 @@ class LessonDaoIT {
     void getAll_shouldReturnAllLessons() {
 
         assertEquals(GENERATED_LESSONS_COUNT, lessonDao.getAll().size());
-        Teacher teacher = new Teacher(1L, 2L, "John", "Travolta", 54);
-        Group group = new Group(1L, 1L, 2L, 3);
-        String lessonDate = "01.01.2022 15:30";
-        LocalDateTime dateTime = DateUtils.getLocalDateTimeFromString(lessonDate);
-        ClassRoom classRoom = new ClassRoom(1L, "1");
 
-        Lesson lesson1 = lessonDao.create(new Lesson("Algebra", teacher.getId(), group.getId(), dateTime, classRoom.getId()));
-        Lesson lesson2 = lessonDao.create(new Lesson("Geometry", teacher.getId(), group.getId(), dateTime, classRoom.getId()));
-        Lesson lesson3 = lessonDao.create(new Lesson("Drawing", teacher.getId(), group.getId(), dateTime, classRoom.getId()));
+        Lesson lesson1 = lessonDao.create(new Lesson("Algebra", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
+        Lesson lesson2 = lessonDao.create(new Lesson("Geometry", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
+        Lesson lesson3 = lessonDao.create(new Lesson("Drawing", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
 
         List<Lesson> expectedLessons = Arrays.asList(lesson1, lesson2, lesson3);
         List<Lesson> actualLessons = lessonDao.getAll().stream().skip(GENERATED_LESSONS_COUNT).collect(Collectors.toList());
@@ -97,9 +88,8 @@ class LessonDaoIT {
     void delete_shouldDeleteLesson() {
 
         assertEquals(GENERATED_LESSONS_COUNT, lessonDao.getAll().size());
-        String lessonDate = "01.01.2022 15:30";
-        LocalDateTime dateTime = DateUtils.getLocalDateTimeFromString(lessonDate);
-        Lesson lesson = lessonDao.create(new Lesson(null, null, null, dateTime, null));
+
+        Lesson lesson = lessonDao.create(new Lesson("Physics", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
         assertEquals(GENERATED_LESSONS_COUNT + 1, lessonDao.getAll().size());
 
         lessonDao.delete(lesson.getId());
@@ -111,19 +101,24 @@ class LessonDaoIT {
     void update_shouldUpdateCourse() {
 
         assertEquals(GENERATED_LESSONS_COUNT, lessonDao.getAll().size());
-        Lesson lesson1 = lessonDao.create(new Lesson("Math", 1L, 1L, DateUtils.getLocalDateTimeFromString("01.01.2021 11:00"), 1L));
-        Lesson lesson2 = new Lesson("Biology", 2L, 2L, DateUtils.getLocalDateTimeFromString("02.02.2022 22:00"), 1L);
+        Lesson lesson = lessonDao.create(new Lesson("Math", randomTeacher, randomGroup, randomDateTime, randomClassRoom));
         assertEquals(GENERATED_LESSONS_COUNT + 1, lessonDao.getAll().size());
 
-        lessonDao.update(lesson1.getId(), lesson2);
+        Teacher changedRandomTeacher = new Teacher(5L, "Joshua", "Bloh", 50, new Department());
+        Group changedRandomGroup = new Group(6L, new Department(), new Course(), 8);
+        LocalDateTime changedRandomDateTime = DateUtils.getLocalDateTimeFromString("20.01.2010 14:42");
+        ClassRoom changedRandomClassRoom = new ClassRoom(4L, "5");
 
-        Optional<Lesson> updatedLesson = lessonDao.getById(lesson1.getId());
+        lesson.setTeacher(changedRandomTeacher);
+        lesson.setGroup(changedRandomGroup);
+        lesson.setDateTime(changedRandomDateTime);
+        lesson.setClassRoom(changedRandomClassRoom);
+
+        lessonDao.update(lesson);
+
+        Optional<Lesson> updatedLesson = lessonDao.getById(lesson.getId());
 
         assertTrue(updatedLesson.isPresent());
-        assertEquals(lesson1.getId(), updatedLesson.get().getId());
-        assertEquals(lesson2.getName(), updatedLesson.get().getName());
-        assertEquals(lesson2.getGroupId(), updatedLesson.get().getGroupId());
-        assertEquals(lesson2.getTeacherId(), updatedLesson.get().getTeacherId());
-        assertEquals(lesson2.getDateTime(), updatedLesson.get().getDateTime());
+        assertEquals(lesson, updatedLesson.get());
     }
 }

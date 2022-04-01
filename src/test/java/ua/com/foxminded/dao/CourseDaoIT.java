@@ -3,7 +3,6 @@ package ua.com.foxminded.dao;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = SpringDaoTestConfig.class)
 @Transactional
-@Rollback
 class CourseDaoIT {
 
     private static final int GENERATED_COURSES_COUNT = 3;
@@ -52,7 +50,6 @@ class CourseDaoIT {
 
         expectedCourse = course2;
         Optional<Course> actualCourse = courseDao.getById(expectedCourse.getId());
-
         assertTrue(actualCourse.isPresent());
         assertEquals(expectedCourse, actualCourse.get());
     }
@@ -87,16 +84,17 @@ class CourseDaoIT {
     void update_shouldUpdateCourse() {
 
         assertEquals(GENERATED_COURSES_COUNT, courseDao.getAll().size());
-        Course course1 = courseDao.create(new Course(2021));
-        Course course2 = new Course(2030);
+        Course course = courseDao.create(new Course(2021));
+        int randomEstablishYear = course.getEstablishYear() + 285;
+
         assertEquals(GENERATED_COURSES_COUNT + 1, courseDao.getAll().size());
 
-        courseDao.update(course1.getId(), course2);
+        course.setEstablishYear(randomEstablishYear);
+        courseDao.update(course);
 
-        Optional<Course> updatedCourse = courseDao.getById(course1.getId());
+        Optional<Course> updatedCourse = courseDao.getById(course.getId());
 
         assertTrue(updatedCourse.isPresent());
-        assertEquals(course1.getId(), updatedCourse.get().getId());
-        assertEquals(course2.getEstablishYear(), updatedCourse.get().getEstablishYear());
+        assertEquals(updatedCourse.get(), course);
     }
 }
